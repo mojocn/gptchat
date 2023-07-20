@@ -1,0 +1,68 @@
+# GPTchat
+
+[![demo][live-demo]][live-demo-url]
+[![author][author-image]][author-url]
+[![license][license-image]][license-url]
+[![release][release-image]][release-url]
+[![last commit][last-commit-image]][last-commit-url]
+
+[live-demo]: https://img.shields.io/badge/Live-Demo-green.svg
+
+[live-demo-url]: https://ai.mojotv.cn/
+
+[author-image]: https://img.shields.io/badge/Eric-Zhou-blue.svg
+
+[author-url]: https://github.com/mojocn
+
+[license-image]: https://img.shields.io/badge/license-GNU-blue.svg
+
+[license-url]: https://github.com/mojocn/gptchat/blob/main/LICENSE
+
+[release-image]: https://img.shields.io/github/v/release/mojocn/gptchat?color=blue
+
+[release-url]: https://github.com/mojocn/gptchat/releases/latest
+
+[last-commit-image]: https://img.shields.io/github/last-commit/mojocn/gptchat?label=last%20commit
+
+[last-commit-url]: https://github.com/mojocn/gptchat/commits
+
+## ✨ Features
+
+* 🤖 Support Open AI and Azure Open AI
+* 💬 Chat with session and context
+* 🚀 Support Open AI and azure API
+* 🔍 Shortcut to quickly activate the app anywhere in the browser
+* 🎨 Markdown and code highlight support
+* 📚 Prompt Library for custom prompts and community prompts
+* 💾 Conversation history saved in localstorage
+* 📥 Export and Import all your data
+* 🔗 User Auth
+* 💰 Make revenue with your own Open AI key
+* 🌙 Dark mode
+
+## 🔧 Manual Installation
+
+- Fork this repo
+- New vercel.com Project [Vercel](https://vercel.com/)
+- Connect your repo
+- Create postgresSQL database in Vercel storage
+- Set env variables in Vercel
+- Deploy your app
+
+## 💰 Cha-Ching
+
+- [Lemonsqueezy Webhook](https://github.com/mojocn/gptchat/blob/main/app/api/webhook/lemon/route.tsx)
+- [Lemonsqueezy Product](https://mojoai.lemonsqueezy.com/checkout?cart=a34be65a-10d2-48dc-b1e7-6ed70d7bacc4)
+
+## 🔨 Build from Source
+
+- Clone the source code
+- `npm install`
+- `npm dev`
+
+## 📜 Changelog
+
+### v0.0.1
+
+- Support copy message text
+- Improve setting page form element style

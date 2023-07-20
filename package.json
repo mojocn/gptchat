@@ -1,0 +1,48 @@
+{
+  "name": "gptchat",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@tabler/icons-react": "^2.23.0",
+    "@types/node": "20.4.2",
+    "@types/react": "18.2.15",
+    "@types/react-dom": "18.2.7",
+    "@vercel/analytics": "^1.0.1",
+    "@vercel/postgres": "^0.3.1",
+    "@vercel/postgres-kysely": "^0.4.0",
+    "autoprefixer": "10.4.14",
+    "eslint": "8.44.0",
+    "eslint-config-next": "13.4.9",
+    "eventsource-parser": "^1.0.0",
+    "install": "^0.13.0",
+    "kysely": "^0.25.0",
+    "mermaid": "^10.2.2",
+    "next": "13.4.9",
+    "nodemailer": "^6.9.3",
+    "pg": "^8.11.0",
+    "postcss": "8.4.26",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-markdown": "^8.0.7",
+    "rehype-highlight": "^6.0.0",
+    "rehype-katex": "^6.0.3",
+    "remark-breaks": "^3.0.3",
+    "remark-gfm": "^3.0.1",
+    "remark-math": "^5.1.1",
+    "sass": "^1.62.1",
+    "tailwindcss": "3.3.3",
+    "typescript": "5.1.6",
+    "zustand": "^4.3.8"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/nodemailer": "^6.4.8",
+    "bcrypt": "^5.0.1"
+  }
+}
