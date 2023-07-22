@@ -15,13 +15,14 @@ export default function Register() {
     const doAction = async (formData: FormData) => startTransition(() => {
         doUserRegister(formData).then(res => {
             if (res) {
-                showToast('注册成功 '+res.email)
+                showToast('Register succeed '+res.email)
                 setTimeout(() => {
                     router.push('/login')
                 }, 50)
             }
         }).catch(e => {
-            showToast('注册失败:' + e?.message)
+            console.error(e)
+            showToast('Register failed : email is already exist')
         });
     })
 
