@@ -27,11 +27,17 @@ export async function doUserLogin(formData: FormData): Promise<object> {
     if (user && !bcryptPasswordCheck(password.trim(), user.password)) {
         throw new Error('Password is incorrect')
     }
+    try {
+        const t = await doTokenInsert({
+            user_id: user.id,
+            token,
+        } as TokenInsert)
+    }catch (e) {
+        console.error(e)
+        throw new Error('Login failed')
 
-    const t = await doTokenInsert({
-        user_id: user.id,
-        token,
-    } as TokenInsert)
+    }
+
 
     //expire in 1 day
     cookies().set('token', token, {

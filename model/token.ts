@@ -39,19 +39,19 @@ export async function doTokenInsert(token: TokenInsert) {
         .returningAll()
         .executeTakeFirstOrThrow()
 }
-export async function findTokenById(id: number) {
+export async function findTokenById(uid: number) {
     return await db.selectFrom('tokens')
-        .where('id', '=', id)
+        .where('user_id', '=', uid)
         .selectAll()
         .executeTakeFirstOrThrow()
 }
 
-export async function findTokenByIdToken(id: number,token:string) {
+export async function findTokenByIdToken(uid: number,token:string) {
     return await db.selectFrom('tokens')
-        .where('id', '=', id)
+        .where('user_id', '=', uid)
         .where('token', '=', token.trim())
         .selectAll()
-        .executeTakeFirst()
+        .executeTakeFirstOrThrow()
 }
 export async function deleteTokenByIdToken(token:string) {
     return await db.deleteFrom('tokens').where('token', '=', token.trim())

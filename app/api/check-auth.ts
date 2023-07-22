@@ -9,10 +9,17 @@ export async function checkAuth(req: NextRequest): Promise<boolean> {
     if (!token || !uid) {
         return false
     }
-    const res = await findTokenByIdToken(parseInt(uid), token)
-    if (!res) {
+    try {
+        const res = await findTokenByIdToken(parseInt(uid), token)
+        if (!res) {
+            return false
+        }
+    }catch (e) {
+        console.error(e)
         return false
+
     }
+
     return true;
 
 }
