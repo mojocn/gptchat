@@ -15,11 +15,10 @@ export async function doUserRegister(formData: FormData) {
     //todo:: handle duplicate error
     let hashedPassword = password && bcryptPasswordHash(password as string);
 
-    await findUserByEmail(email).then((user) => {
-        if (user) {
-            throw new Error('Email already exists')
-        }
-    })
+    const user = await findUserByEmail(email)
+    if (user && user.id) {
+        throw new Error('Email already exists')
+    }
 
     const newUser: UserInsert = {
         username,

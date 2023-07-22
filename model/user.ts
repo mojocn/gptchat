@@ -40,7 +40,7 @@ export async function findUserByEmail(email: string) {
     return await db.selectFrom('users')
         .where('email', '=', email.trim())
         .selectAll()
-        .executeTakeFirstOrThrow()
+        .executeTakeFirst()
 }
 
 export async function findPeople(criteria: Partial<User>) {
