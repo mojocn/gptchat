@@ -56,7 +56,7 @@ export const useLocal = create<LocalStore>((set) => ({
     lang: "en",
     setLang: (lang: string) => set(state => {
         state.lang = lang
-        if (lang == "cn") {
+        if (lang == "zh") {
             state.t = cn
         } else if (lang == "en") {
             state.t = en
