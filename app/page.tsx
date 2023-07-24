@@ -1,11 +1,10 @@
 'use client';
 import React, {useEffect} from 'react';
-import {useConfigStore} from "@/store/config";
 import {useUserStore} from "@/store/user";
 import {useRouter} from "next/navigation";
 import ChatInput from "@/components/chat-input";
 import dynamic from 'next/dynamic'
-import {Theme} from "@/types/const";
+import {useTheme} from "@/app/use-theme";
 
 
 const SideBar = dynamic(() => import('../components/sidebar'), {ssr: false,});
@@ -15,20 +14,7 @@ const PromptList = dynamic(() => import('../components/prompt-list'), {ssr: fals
 export default function Home() {
     const router = useRouter();
     const {isAuthed} = useUserStore();
-    const {theme} = useConfigStore()
-    useEffect(() => {
-        // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-        if (theme === Theme.Dark || (theme === Theme.Auto && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
-        if (theme === Theme.Light || (theme === Theme.Auto && window.matchMedia('(prefers-color-scheme: light)').matches)) {
-            document.documentElement.classList.add('light')
-        } else {
-            document.documentElement.classList.remove('light')
-        }
-    }, [theme])
+    useTheme();
 
     useEffect(() => {
         !isAuthed && router.push('/login')

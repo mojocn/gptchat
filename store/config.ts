@@ -4,7 +4,7 @@ import {ModelType, Theme} from "@/types/const";
 
 export const DEFAULT_CONFIG = {
     fontSize: 14,
-    theme: Theme.Auto as Theme,
+    theme: Theme.Dark as Theme,
     modelConfig: {
         model: "gpt-3.5-turbo" as ModelType,
         temperature: 1,

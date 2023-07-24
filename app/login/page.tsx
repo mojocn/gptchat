@@ -8,11 +8,13 @@ import {UserModel, UserState, useUserStore} from "@/store/user";
 import Image from 'next/image'
 
 import logoPng from "../apple-touch-icon.png"
+import {useTheme} from "@/app/use-theme";
 
 export default function Login() {
     const {setUser}: UserState = useUserStore();
     let [isPending, startTransition] = useTransition()
     const router = useRouter();
+    useTheme();
 
     const doAction = async (formData: FormData) => startTransition(() => {
         doUserLogin(formData).then(res => {
@@ -85,8 +87,11 @@ export default function Login() {
                                 </button>
                                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                                     Does not have an account? <a href="/register"
-                                                                 className="font-medium text-primary-600 hover:underline dark:text-primary-500">Register
+                                                                 className="font-medium text-primary-600 hover:underline dark:text-primary-500 mr-4">Register
                                     here</a>
+                                    Forget your password? <a href="/password-reset"
+                                                             className="font-medium text-primary-600 hover:underline dark:text-primary-500">Password
+                                    Reset</a>
                                 </p>
                             </form>
                         </div>
