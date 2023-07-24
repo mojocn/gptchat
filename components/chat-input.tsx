@@ -37,7 +37,6 @@ const ChatInput = () => {
     const {setIsScrollBottom, setIsScrollTop, setIsScrollAuto}: UiStore = useUiStore();
     let {prompts, setPrompts, rawPrompts} = usePromptStore();
 
-
     const doClearMessages = () => {
         setPrompts([]);
         selectedSessionId && deleteMessagesBySessionId(selectedSessionId);
@@ -120,7 +119,7 @@ const ChatInput = () => {
         setUserInput("");
         try {
             await doCallOpenAiCompletion(user.username, selectedSessionId);
-        }catch (e) {
+        } catch (e) {
             //redirect to login
             // @ts-ignore
             showToast(e.message)

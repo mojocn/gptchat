@@ -20,17 +20,11 @@ export interface PromptStore {
 
 
 export const usePromptStore = create<PromptStore>()(
-    persist(
-        (set, get) => ({
-            prompts: loadPrompt(),
-            setPrompts: (prompts: Prompt[]) => set({prompts}),
-            rawPrompts: loadPrompt(),
-        }),
-        {
-            name: 'prompt-template',
-            version: 1,
-        },
-    ),
+    (set, get) => ({
+        prompts: loadPrompt(),
+        setPrompts: (prompts: Prompt[]) => set({prompts}),
+        rawPrompts: loadPrompt(),
+    })
 );
 
 function loadPrompt(): Prompt[] {
