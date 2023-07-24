@@ -4,7 +4,7 @@ import React from 'react';
 import {useRouter} from "next/navigation";
 import {showToast} from "@/components/ui-lib";
 import {doPasswordReset} from "./actions";
-import {UserModel, UserState, useUserStore} from "@/store/user";
+import {UserState, useUserStore} from "@/store/user";
 import Image from 'next/image'
 import logoPng from "../apple-touch-icon.png"
 import {useTheme} from "@/app/use-theme";
@@ -55,29 +55,7 @@ export default function Login() {
                                     dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
                                            placeholder="name@company.com" required/>
                                 </div>
-                                <div>
-                                    <label htmlFor="password"
-                                           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                                    <input type="password" name="password" id="password" placeholder="••••••••"
-                                           className="bg-gray-50 border border-gray-300
-                                                                        w-full
 
-                                    text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-700 dark:border-gray-600
-                                    dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
-                                           required/>
-                                </div>
-                                <div>
-                                    <label htmlFor="confirm_password"
-                                           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm
-                                        password</label>
-                                    <input type="confirm_password" name="confirm_password" id="confirm_password"
-                                           placeholder="••••••••" className="bg-gray-50 border
-                                                                        w-full
-
-                                    border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-700
-                                    dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
-                                           required/>
-                                </div>
 
 
                                 <div className="flex items-start">
@@ -97,8 +75,8 @@ export default function Login() {
                                 <button type="submit" className=" text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300
                                                                     w-full
 
-                                font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-400 dark:hover:bg-blue-700 dark:focus:ring-primary-800">Create
-                                    an account
+                                font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-400 dark:hover:bg-blue-700 dark:focus:ring-primary-800">
+                                    Send password reset email
                                 </button>
 
                             </form>

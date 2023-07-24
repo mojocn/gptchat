@@ -2,7 +2,7 @@ export const promptData = {
     "var":[
         [
             "Leetcode Solution explanation",
-            "Please provide me with the solution for problem number {{questionNumber}} on Leetcode using {{programLanguage}}, and include an explanation in markdown format."
+            "Please provide me with the solution for problem number {{number}} on Leetcode using {{lang}}, and include an explanation in markdown format."
         ],
     ],
     "cn": [

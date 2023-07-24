@@ -1,6 +1,6 @@
 'use server'
 import {bcryptPasswordHash} from "@/pkg/bcrypt";
-import {sendMail, sendResetPasswordEmail} from "@/pkg/mail";
+import {sendResetPasswordEmail} from "@/pkg/mail";
 import {doUpdateUserByEmail, findUserByEmail} from "@/model/user";
 
 
@@ -17,7 +17,7 @@ export async function doPasswordReset(formData: FormData): Promise<object> {
     }
     const res = await doUpdateUserByEmail(email, {password: hashedPassword});
     if (res.numUpdatedRows > 0) {
-        await sendMail(user.email, 'Password Reset', `Hi ${user.username},\n your new password is ${newPassword}. \n https://ai.mojotv.cn/login`);
+        await sendResetPasswordEmail(user.email, user.username, newPassword)
         return user;
     } else {
         throw new Error('invalid email')

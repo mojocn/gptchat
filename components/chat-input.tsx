@@ -208,6 +208,7 @@ const ChatInput = () => {
                       }
                       }
                       onFocus={() => {
+                          setPrompts([])
                           setIsScrollTop(false)
                           setIsScrollBottom(false)
                           setIsScrollAuto(true)

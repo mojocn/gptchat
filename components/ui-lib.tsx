@@ -32,7 +32,7 @@ export function Toast(props: ToastProps) {
     return (
         <div className="fixed top-4 left-0 w-screen flex justify-center pointer-events-none">
             <div
-                className="flex align-center pointer-events-auto  max-w-4/5 break-words text-md bg-white shadow border border-gray-200 p-4 rounded-lg mb-4">
+                className="flex align-center pointer-events-auto  max-w-4/5 break-words text-md bg-white text-slate-900 border border-gray-200 p-2 rounded-lg">
                 <span>{props.content}</span>
                 {props.action && (
                     <button
@@ -157,7 +157,7 @@ export function CaButton(props: {
 
 export function showToast(
     content: string,
-    delay = 3000,
+    delay = 500,
     action?: ToastProps["action"],
 ) {
     const div = document.createElement("div");
