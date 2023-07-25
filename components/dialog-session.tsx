@@ -2,6 +2,7 @@ import {FC, KeyboardEvent, useEffect, useRef, useState} from 'react';
 import {Session, useChatStore} from "@/store/chat";
 import {CaButton, CaInput, CaSelect} from "@/components/ui-lib";
 import {ALL_MODELS, ModelType} from "@/types/const";
+import {useLocal} from "@/store/local";
 
 
 interface Props {
@@ -16,7 +17,7 @@ export const DialogSession: FC<Props> = ({
     const modalRef = useRef<HTMLFormElement>(null);
     const [form, setForm] = useState({...session});
     const {upsertSession} = useChatStore();
-
+    const {t} = useLocal()
 
     const handleSubmit = () => {
         upsertSession(form);
@@ -66,7 +67,7 @@ export const DialogSession: FC<Props> = ({
             >
                 <div className="flex my-2 justify-between">
                     <label htmlFor="title"
-                           className="mr-3 text-sm text-gray-900 dark:text-white align-middle">Session Title</label>
+                           className="mr-3 text-sm text-gray-900 dark:text-white align-middle">{t.SessionTitle}</label>
                     <input type="text" name="title" id="title"
                            value={form.title}
                            onChange={e => {
@@ -76,21 +77,19 @@ export const DialogSession: FC<Props> = ({
                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
                            focus:ring-primary-600 focus:border-primary-600 block w-64 p-1 dark:bg-gray-700 dark:border-gray-600
                            dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                           placeholder="session title to be renamed"/>
+                           placeholder={t.SessionTitlePh}/>
                 </div>
 
 
                 <CaSelect
-                    name="model"
+                    name={t.OpenAiModel}
                     value={form.modelConfig.model}
                     onChange={v => {
                         setForm({...form, modelConfig: {...form.modelConfig, model: v as ModelType}})
-
                     }
                     }
-                    placeholder="choose a model"
+                    placeholder={t.OpenAiModel}
                     options={ALL_MODELS}
-
                 />
 
 
@@ -105,7 +104,7 @@ export const DialogSession: FC<Props> = ({
                          min={0} max={1} step={0.1}
                 />
 
-                <CaInput name={'temperature'}
+                <CaInput name={t.Temperature}
                          value={form.modelConfig.temperature}
                          onChange={e => {
                              setForm({
@@ -114,13 +113,13 @@ export const DialogSession: FC<Props> = ({
                              })
                          }
                          }
-                         placeholder={'temperature'}
+                         placeholder={t.Temperature}
                          type={'number'}
                          min={0} max={1} step={0.1}
                 />
 
 
-                <CaInput name={'max_history'}
+                <CaInput name={t.MaxHistoryMsg}
                          value={form.modelConfig.max_history}
                          onChange={e => {
                              setForm({
@@ -130,7 +129,7 @@ export const DialogSession: FC<Props> = ({
 
                          }
                          }
-                         placeholder={'max_history'}
+                         placeholder={t.MaxHistoryMsg}
                          type={'number'}
                          min={4} max={32} step={2}
                 />

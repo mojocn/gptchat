@@ -15,6 +15,11 @@ const cn = {
     Edit: "编辑",
     Rename: "重命名对话",
     Typing: "正在输入…",
+    SessionTitle: '会话标题',
+    SessionTitlePh: '重命名会话标题',
+    MaxHistoryMsg: '上文消息数量',
+    OpenAiModel: "OpenAI 模型",
+    Temperature: '温度',
 }
 type Translation = typeof cn;
 
@@ -32,6 +37,12 @@ const en: Translation = {
     Edit: "Edit",
     Rename: "Rename Chat",
     Typing: "Typing…",
+    SessionTitle: 'Session Title',
+    SessionTitlePh: 'rename session title',
+    MaxHistoryMsg: 'Max Context Message',
+    OpenAiModel: "OpenAI model",
+    Temperature: 'temperature',
+
 }
 export const ALL_LANG: OptionItem[] = [
     {
@@ -52,7 +63,7 @@ export interface LocalStore {
 
 
 export const useLocal = create<LocalStore>((set) => ({
-    t: en,
+    t: cn,
     lang: "en",
     setLang: (lang: string) => set(state => {
         state.lang = lang
