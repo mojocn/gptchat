@@ -164,8 +164,8 @@ export function CaButton(props: {
     title?: string;
     disabled?: boolean;
 }) {
-    let className = `inline-flex items-center justify-center py-0.5 px-2 mb-2 mr-2 overflow-hidden 
-    text-sm font-medium rounded-lg hover:text-gray-500 dark:text-white`
+    let className =  ` inline-flex items-center justify-center py-0.5 px-2 mb-2 mr-2 overflow-hidden 
+    text-sm font-medium rounded-lg hover:text-gray-500 dark:text-white ` + props.className
     switch (props.type) {
         case 'primary':
             className += ' text-blue-700 bg-blue-100 hover:bg-blue-200 dark:bg-blue-800 dark:hover:bg-blue-700'

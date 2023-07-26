@@ -156,7 +156,7 @@ export function ChatMsg({msg}: { msg: Message }) {
                                 <button
                                     onClick={() => doMsgDrawback(msg)}
                                 >
-                                    {t.DrawBack}
+                                    {t.Drawback}
                                 </button>
                             )
                         }
