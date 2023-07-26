@@ -84,8 +84,13 @@ export function ChatMsg({msg}: { msg: Message }) {
         setLastUserInput(userInput)
         setIsScrollAuto(true);
 
-        const eMsg = await doCallOpenAiCompletion(user.username, selectedSessionId);
-        eMsg && showToast(eMsg)
+        const {code, msg} = await doCallOpenAiCompletion(user.username, selectedSessionId);
+        if (code != 200) {
+            msg && showToast(msg)
+        }
+        if (code == 401) {
+            window.location.href = '/login'
+        }
 
 
     }

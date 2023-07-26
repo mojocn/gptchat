@@ -117,13 +117,11 @@ const ChatInput = () => {
         upsertMessage(newMsg, selectedSessionId);
         setLastUserInput(userInput)
         setUserInput("");
-        try {
-            await doCallOpenAiCompletion(user.username, selectedSessionId);
-        } catch (e) {
-            //redirect to login
-            // @ts-ignore
-            showToast(e.message)
-            //redirect to login page
+        const {code, msg} = await doCallOpenAiCompletion(user.username, selectedSessionId);
+        if (code !== 200) {
+            showToast(msg)
+        }
+        if (code === 401) {
             window.location.href = '/login'
         }
     };

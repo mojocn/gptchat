@@ -63,7 +63,7 @@ export interface ChatState {
     getLastMessages: (sessionId: string, size: number) => RequestMessage[]
     getChatCompletionArgs: (username: string) => OpenAiChatCompletionReq
 
-    doCallOpenAiCompletion: (username: string, selectedSessionId: string) => Promise<string>
+    doCallOpenAiCompletion: (username: string, selectedSessionId: string) => Promise<Result>
 }
 
 export interface Message {
@@ -234,7 +234,7 @@ export const useChatStore = create<ChatState>()(persist(
                     top_p: s?.modelConfig.top_p,
                     frequency_penalty: s?.modelConfig.frequency_penalty,
                     presence_penalty: s?.modelConfig.presence_penalty,
-                    max_tokens: s?.modelConfig.max_tokens,
+                    //max_tokens: s?.modelConfig.max_tokens,
                     stream: true,
                     user: username,
                 } as OpenAiChatCompletionReq;
@@ -250,30 +250,22 @@ export const useChatStore = create<ChatState>()(persist(
                     streaming: true,
                 } as Message;
                 get().upsertMessage(msgObj, selectedSessionId);//todo:: start to show blank message
-                let eMsg = ''
-                try {
-                    await callAzureChatCompletion(openAiArgs, (msgId: string, deltaMsg: string) => {
-                        get().deleteMessageFromSelectedSession(BLANK_LOADING_MSG_ID);
-                        msgObj.id = msgId;
-                        msgObj.content += deltaMsg;
-                        msgObj.time = (new Date().toLocaleString());
-                        msgObj.isTyping = false;
-                        msgObj.streaming = true;
-                        get().upsertMessage(msgObj, selectedSessionId);
-                    });
-                } catch (e) {
+                const result = await callAzureChatCompletion(openAiArgs, (msgId: string, deltaMsg: string) => {
                     get().deleteMessageFromSelectedSession(BLANK_LOADING_MSG_ID);
-                    console.error(e)
-                    // @ts-ignore
-                    eMsg = e.message;
+                    msgObj.id = msgId;
+                    msgObj.content += deltaMsg;
+                    msgObj.time = (new Date().toLocaleString());
+                    msgObj.isTyping = false;
+                    msgObj.streaming = true;
+                    get().upsertMessage(msgObj, selectedSessionId);
+                });
+                if (result.code !== 200) {
+                    get().deleteMessageFromSelectedSession(BLANK_LOADING_MSG_ID);
                 }
                 msgObj.isTyping = false;
                 msgObj.streaming = false;
                 get().upsertMessage(msgObj, selectedSessionId);
-                if (eMsg){
-                    throw new Error(eMsg);
-                }
-                return eMsg;
+                return result;
             }
 
         } as ChatState);
@@ -284,6 +276,11 @@ export const useChatStore = create<ChatState>()(persist(
 
 const BLANK_LOADING_MSG_ID = "blank_loading_msg_id";
 
+interface Result {
+    code: number
+    msg: string
+}
+
 export async function callAzureChatCompletion(arg: OpenAiChatCompletionReq, handleDeltaMsgFn: (messageId: string, deltaMsg: string) => void) {
     arg.stream = true
     const response = await fetch('/api/gpt', {
@@ -293,12 +290,14 @@ export async function callAzureChatCompletion(arg: OpenAiChatCompletionReq, hand
         },
         body: JSON.stringify(arg)
     })
+    let result = {code: response.status, msg: ''} as Result
     if (!response.ok) {
-        const bodyTxt = await response.text();
-        throw new Error("```json \n http : " + response.status + "\n" + bodyTxt + "\n```");
+        result.msg = await response.text();
+        return result
     }
     if (!response.body) {
-        throw new Error("response.body is null")
+        result.msg = "response.body is null";
+        return result
     }
     const reader = response.body.getReader()
     const onParse = (event: ParsedEvent | ReconnectInterval) => {
@@ -324,5 +323,6 @@ export async function callAzureChatCompletion(arg: OpenAiChatCompletionReq, hand
         const textValue = decoder.decode(value);
         parser.feed(textValue);
     }
+    return result
 }
 
