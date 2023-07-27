@@ -234,7 +234,7 @@ export const useChatStore = create<ChatState>()(persist(
                     top_p: s?.modelConfig.top_p,
                     frequency_penalty: s?.modelConfig.frequency_penalty,
                     presence_penalty: s?.modelConfig.presence_penalty,
-                    //max_tokens: s?.modelConfig.max_tokens,
+                    max_tokens: s?.modelConfig.max_tokens,
                     stream: true,
                     user: username,
                 } as OpenAiChatCompletionReq;

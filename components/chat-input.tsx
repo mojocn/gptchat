@@ -119,7 +119,8 @@ const ChatInput = () => {
         setUserInput("");
         const {code, msg} = await doCallOpenAiCompletion(user.username, selectedSessionId);
         if (code !== 200) {
-            showToast(msg)
+            console.error(msg, code)
+            showToast(msg, 1000)
         }
         if (code === 401) {
             window.location.href = '/login'

@@ -1,118 +1,69 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder#example
-import {useState, useRef, useEffect} from "react";
+import {useState, useRef} from "react";
 import {CaButton} from "@/components/ui-lib";
 import {IconPlayerPause, IconPlayerPlay, IconPlayerRecord, IconPlayerStop} from "@tabler/icons-react";
+import {sleep} from "@/pkg/util";
+
+const constraints = {audio: true, video: false};
 
 
 const AudioRecorder = () => {
-    const [audio, setAudio] = useState<string>("");
-    const [chunks, setChucks] = useState<Blob[]>([])
-    const [recorder, setRecorder] = useState<MediaRecorder | undefined>(undefined);
-    const [recorderState, setRecorderState] = useState<RecordingState>(recorder?.state || "inactive")
-    let audioCtx = new AudioContext();
-    const constraints = {audio: true};
-    const canvasRef = useRef<HTMLCanvasElement>(null)
+    const [audioURL, setAudioURL] = useState<string>("");
+    const [recorderState, setRecorderState] = useState<RecordingState>("inactive")
+    const recorderRef = useRef<MediaRecorder | null>(null);
+    const streamRef = useRef<MediaStream | null>(null);
+    const audioBlobRef = useRef<Blob | null>(null);
 
-    function visualize(stream: MediaStream) {
-        audioCtx = new AudioContext();
-
-        const source = audioCtx.createMediaStreamSource(stream);
-
-        const analyser = audioCtx.createAnalyser();
-        analyser.fftSize = 2048;
-        const bufferLength = analyser.frequencyBinCount;
-        const dataArray = new Uint8Array(bufferLength);
-
-        source.connect(analyser);
-        //analyser.connect(audioCtx.destination);
-
-        draw()
-
-        function draw() {
-            const canvas = canvasRef.current
-            if (!canvas) return;
-            const canvasCtx = canvas.getContext("2d");
-            if (!canvasCtx) return;
-            const WIDTH = canvas.width
-            const HEIGHT = canvas.height;
-
-            requestAnimationFrame(draw);
-
-            analyser.getByteTimeDomainData(dataArray);
-
-            canvasCtx.fillStyle = 'rgb(200, 200, 200)';
-            canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
-
-            canvasCtx.lineWidth = 2;
-            canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
-
-            canvasCtx.beginPath();
-
-            let sliceWidth = WIDTH * 1.0 / bufferLength;
-            let x = 0;
-
-
-            for (let i = 0; i < bufferLength; i++) {
-
-                let v = dataArray[i] / 128.0;
-                let y = v * HEIGHT / 2;
-
-                if (i === 0) {
-                    canvasCtx.moveTo(x, y);
-                } else {
-                    canvasCtx.lineTo(x, y);
-                }
-
-                x += sliceWidth;
+    async function recorderInit() {
+        if (recorderRef.current) {
+            return;
+        }
+        if (!navigator.mediaDevices) return;
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            streamRef.current = stream;
+            const mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.onerror = (e) => {
+                console.error('Error: ', e);
             }
+            mediaRecorder.ondataavailable = (e) => {
+                debugger
+                audioBlobRef.current = e.data;
+            };
+            mediaRecorder.onstop = (e) => {
+                const blob = audioBlobRef.current;
+                if (!blob) return;
+                console.info(blob.type)
+                const url = URL.createObjectURL(blob);
+                setAudioURL(url);
+                console.log(url)
+            };
+            recorderRef.current = mediaRecorder;
+        } catch (e) {
+            console.error(e)
+        }
 
-            canvasCtx.lineTo(canvas.width, canvas.height / 2);
-            canvasCtx.stroke();
+    }
 
+    function recorderRm() {
+        const r = recorderRef.current;
+        if (r) {
+            r.onstop = null;
+            r.ondataavailable = null;
+            r.onerror = null;
+            recorderRef.current = null;
+            streamRef.current = null;
         }
     }
 
-    function initAudioRecorder() {
-        setRecorder(undefined)
-        setChucks([]);
-        if (!navigator.mediaDevices) return;
-        navigator.mediaDevices.getUserMedia(constraints).then(stream => {
-            const mediaRecorder = new MediaRecorder(stream);
-            visualize(stream);
-            mediaRecorder.onstop = (e) => {
-                const blob = new Blob(chunks, {type: "audio/ogg; codecs=opus"});
-                const audioURL = URL.createObjectURL(blob);
-                setAudio(audioURL);
-                setChucks([])
-            };
-            mediaRecorder.onerror = (e) => {
-                console.log('Error: ', e);
-            }
-            mediaRecorder.ondataavailable = (e) => {
-                chunks.push(e.data);
-            };
-            setRecorder(mediaRecorder)
-        }).catch(e => {
-            // @ts-ignore
-            alert("The following error occurred: " + e.message)
-        }).finally(() => {
-            // @ts-ignore
-            console.log("finally")
-        });
-
-
-    }
-
-    useEffect(() => {
-        initAudioRecorder()
-    }, []);
-
 
     const startRecording = async () => {
+        await recorderInit();
+        const recorder = recorderRef.current;
         if (!recorder) return;
         debugger
         if (recorder.state === 'inactive') {
-            setChucks([])
+            audioBlobRef.current = null;
             recorder.start()
         } else if (recorder.state === 'paused') {
             recorder.resume()
@@ -123,46 +74,37 @@ const AudioRecorder = () => {
         }
         setRecorderState(recorder.state)
     };
-    const stopRecording = () => {
+    const stopRecording = async () => {
+        const recorder = recorderRef.current;
         if (!recorder) return;
+        debugger
         if (recorder.state === 'recording') {
-            setTimeout(() => {
-                recorder.stop();
-                setRecorderState(recorder.state)
-            }, 200)
+            await sleep(100)
+            recorder.stop();
+            await sleep(500)
+            setRecorderState(recorder.state)
+            console.log(audioURL)
+            recorderRm();
         }
     };
     return (
-        <div>
-            <h2>Audio Recorder</h2>
-            <canvas ref={canvasRef}></canvas>
-            <div className="flex-row gap-x-4">
-
-                <CaButton
-                    className="text-gray-200 bg-green-800"
-                    onClick={startRecording}>
-                    {recorderState === 'inactive' ? <IconPlayerRecord className="fill-red-900"/> : recorderState === 'recording' ? <IconPlayerPause className="fill-blue-900"/> : <IconPlayerPlay className="fill-green-900"/>}
-                </CaButton>
-
-                {
-                    recorderState === 'recording' && <CaButton
-                        className="text-gray-200 bg-red-800"
-                        onClick={stopRecording}><IconPlayerStop/></CaButton>
-                }
-
-
-            </div>
-
-            {audio ? (
-                <div className="audio-container">
-                    <audio src={audio} controls></audio>
-                    <a download href={audio}>
-                        Download Recording
-                    </a>
-                </div>
-            ) : null}
+        <div className="flex-row gap-x-4">
+            <CaButton
+                className="text-gray-200 bg-green-800"
+                onClick={startRecording}>
+                {recorderState === 'inactive' ?
+                    <IconPlayerRecord className="fill-red-900"/> : recorderState === 'recording' ?
+                        <IconPlayerPause className="fill-blue-900"/> : <IconPlayerPlay className="fill-green-900"/>}
+            </CaButton>
+            {
+                recorderState === 'recording' && <CaButton
+                    className="text-gray-200 bg-red-800"
+                    onClick={stopRecording}><IconPlayerStop/></CaButton>
+            }
+            {audioURL && <audio src={audioURL} controls/>}
         </div>
     );
 };
 export default AudioRecorder;
+
 
