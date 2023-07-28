@@ -4,24 +4,34 @@ import {findTokenByIdToken} from "@/model/token";
 
 
 export async function checkAuth(req: NextRequest): Promise<boolean> {
+    try {
+        const res = await checkUser(req)
+        if (res) return true;
+    } catch (e) {
+        console.error(e)
+    }
+    return false
+}
+
+export async function checkAdmin(req: NextRequest): Promise<boolean> {
+    try {
+        const res = await checkUser(req)
+        if (res && res.user_id === 1) {
+            return true
+        }
+    } catch (e) {
+        console.error(e)
+    }
+    return false;
+}
+
+async function checkUser(req: NextRequest) {
     const token = cookies().get('token')?.value ?? ''
     const uid = cookies().get('uid')?.value ?? '-1'
     if (!token || !uid) {
-        return false
+        return undefined
     }
-    try {
-        const res = await findTokenByIdToken(parseInt(uid), token)
-        if (!res) {
-            return false
-        }
-    }catch (e) {
-        console.error(e)
-        return false
-
-    }
-
-    return true;
-
+    return await findTokenByIdToken(parseInt(uid), token)
 }
 
 export function jsonData(data: any, code?: number, msg?: string) {
