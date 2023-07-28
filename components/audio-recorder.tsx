@@ -1,48 +1,13 @@
-// https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder#example
 import {useState, useRef} from "react";
 import {CaButton} from "@/components/ui-lib";
 import {IconPlayerPause, IconPlayerPlay, IconPlayerRecord, IconPlayerStop} from "@tabler/icons-react";
 import {sleep} from "@/pkg/util";
-import {
-    AudioConfig,
-    PronunciationAssessmentConfig, PronunciationAssessmentResult, PropertyId,
-    SpeechConfig, SpeechRecognitionResult,
-    SpeechRecognizer
-} from "microsoft-cognitiveservices-speech-sdk";
-import {NextResponse} from "next/server";
+
 
 const constraints = {audio: true, video: false};
 
-async function callXhr() {
-    //https://github.com/Azure-Samples/cognitive-services-speech-sdk/blob/master/samples/js/node/pronunciationAssessmentContinue.js#LL37C4-L37C52
-//https://github.com/Azure-Samples/cognitive-services-speech-sdk/blob/master/samples/js/browser/public/index.html
-
-    const pronunciationAssessmentConfig0 = PronunciationAssessmentConfig.fromJSON("{\"referenceText\":\"good morning\",\"gradingSystem\":\"HundredMark\",\"granularity\":\"Phoneme\",\"EnableMiscue\":true}");
-    const pronunciationAssessmentConfig = PronunciationAssessmentConfig.fromJSON("{\"referenceText\":\"good morning\",\"gradingSystem\":\"HundredMark\",\"granularity\":\"Phoneme\",\"phonemeAlphabet\":\"IPA\"}");
-    const pronunciationAssessmentConfig2 = PronunciationAssessmentConfig.fromJSON("{\"referenceText\":\"good morning\",\"gradingSystem\":\"HundredMark\",\"granularity\":\"Phoneme\",\"EnableMiscue\":true}");
-    const speechConfig = SpeechConfig.fromAuthorizationToken("", "");
-    const audioConfig = AudioConfig.fromDefaultMicrophoneInput()
 
 
-    // setting the recognition language to English.
-    speechConfig.speechRecognitionLanguage = "en-US";
-
-    // create the speech recognizer.
-    const reco = new SpeechRecognizer(speechConfig, audioConfig);
-    pronunciationAssessmentConfig.applyTo(reco);
-
-    reco.recognizeOnceAsync((speechRecognitionResult: SpeechRecognitionResult) => {
-            // The pronunciation assessment result as a Speech SDK object
-            var pronunciationAssessmentResult = PronunciationAssessmentResult.fromResult(speechRecognitionResult);
-
-            // The pronunciation assessment result as a JSON string
-            var pronunciationAssessmentResultJson = speechRecognitionResult.properties.getProperty(PropertyId.SpeechServiceResponse_JsonResult);
-        },
-        console.error);
-
-
-    return NextResponse.json({ok: true});
-}
 
 
 const AudioRecorder = () => {

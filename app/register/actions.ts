@@ -23,6 +23,7 @@ export async function doUserRegister(formData: FormData) {
     const newUser: UserInsert = {
         username,
         email,
+        gpt_visit: 0,
         password: hashedPassword,
     };
     return await doUserInsert(newUser);

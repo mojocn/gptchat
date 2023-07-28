@@ -1,22 +1,25 @@
 import {cookies} from "next/headers";
-import {NextRequest, NextResponse} from "next/server";
+import {NextResponse} from "next/server";
 import {findTokenByIdToken} from "@/model/token";
 
-
-export async function checkAuth(req: NextRequest): Promise<boolean> {
+/*
+*
+* return user_id
+* */
+export async function checkAuth(): Promise<number> {
     try {
-        const res = await checkUser(req)
-        if (res) return true;
+        const res = await checkUserToken()
+        if (res) return res.user_id;
     } catch (e) {
         console.error(e)
     }
-    return false
+    return 0
 }
 
-export async function checkAdmin(req: NextRequest): Promise<boolean> {
+export async function checkAdmin(): Promise<boolean> {
     try {
-        const res = await checkUser(req)
-        if (res && res.user_id === 1) {
+        const token = await checkUserToken()
+        if (token && token.user_id === 1) {
             return true
         }
     } catch (e) {
@@ -25,7 +28,7 @@ export async function checkAdmin(req: NextRequest): Promise<boolean> {
     return false;
 }
 
-async function checkUser(req: NextRequest) {
+async function checkUserToken() {
     const token = cookies().get('token')?.value ?? ''
     const uid = cookies().get('uid')?.value ?? '-1'
     if (!token || !uid) {

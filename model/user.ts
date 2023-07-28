@@ -1,5 +1,6 @@
-import { ColumnType, Generated, Insertable, Selectable, Updateable } from 'kysely'
+import {ColumnType, Generated, Insertable, Selectable, Updateable} from 'kysely'
 import {db} from "@/model/pgdb";
+import {sql} from "@vercel/postgres";
 
 /*
 *
@@ -22,6 +23,7 @@ export interface UserTable {
     email: string
     created_at: ColumnType<Date, string | undefined, never>
     last_active_at: ColumnType<Date, string | undefined, never>
+    gpt_visit: number
 }
 
 export type User = Selectable<UserTable>
@@ -29,13 +31,16 @@ export type UserInsert = Insertable<UserTable>
 export type UserUpdate = Updateable<UserTable>
 
 
-
-export async function findUserById(id: number) {
-    return await db.selectFrom('users')
-        .where('id', '=', id)
-        .selectAll()
-        .executeTakeFirstOrThrow()
+export async function UserVisitInc(userId: number) {
+    try {
+        await sql`UPDATE users SET gpt_visit = gpt_visit + 1 where id = ${userId};`
+    } catch (e) {
+        console.error("UserVisitInc error")
+        console.error(e)
+    }
 }
+
+
 export async function findUserByEmail(email: string) {
     return await db.selectFrom('users')
         .where('email', '=', email.trim())
@@ -76,6 +81,7 @@ export async function findPeople(criteria: Partial<User>) {
 export async function doUpdatePerson(id: number, updateWith: UserUpdate) {
     await db.updateTable('users').set(updateWith).where('id', '=', id).execute()
 }
+
 export async function doUpdateUserByEmail(email: string, user: UserUpdate) {
     return await db.updateTable('users').set(user).where('email', '=', email).executeTakeFirstOrThrow()
 }

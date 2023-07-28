@@ -1,6 +1,7 @@
 import {OpenAiChatCompletionReq} from "@/pkg/openai";
 import {checkAuth} from "../check-auth";
 import {NextResponse, NextRequest} from "next/server";
+import {UserVisitInc} from "@/model/user";
 
 const OPENAI_API_TYPE = process.env.OPENAI_API_TYPE || 'openai';// auzre
 const OPENAI_API_HOST = process.env.OPENAI_API_HOST || 'https://api.openai.com';
@@ -12,10 +13,11 @@ const AZURE_DEPLOYMENT_ID = process.env.AZURE_DEPLOYMENT_ID || 'gpt-35-turbo';
 
 
 export async function POST(req: NextRequest): Promise<Response> {
-    const isAuth = await checkAuth(req);
-    if (!isAuth) {
+    const userId = await checkAuth();
+    if (userId < 1) {
         return NextResponse.json({error: 'Unauthorized'}, {status: 401})
     }
+    await UserVisitInc(userId)
     const payload: OpenAiChatCompletionReq = await req.json()
 
     let url = `${OPENAI_API_HOST}/v1/chat/completions`;

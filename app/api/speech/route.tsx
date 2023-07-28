@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic"
 const speechKey = process.env.SPEECH_KEY || "";
 const region = process.env.SPEECH_REGION || "";
 export async function GET(req: NextRequest) {
-    const isAuth = await checkAdmin(req);
+    const isAuth = await checkAdmin();
     if (!isAuth) {
         return NextResponse.json({error: 'Unauthorized'}, {status: 401})
     }

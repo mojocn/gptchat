@@ -3,7 +3,7 @@ import {checkAdmin, checkAuth, jsonData} from "@/app/api/check-auth";
 import {sqlPagination} from "@/model/pagination";
 export const dynamic = "force-dynamic"
 export async function GET(req: NextRequest): Promise<Response> {
-    const isAuth = await checkAdmin(req);
+    const isAuth = await checkAdmin();
     if (!isAuth) {
         return NextResponse.json({error: 'Unauthorized'}, {status: 401})
     }
