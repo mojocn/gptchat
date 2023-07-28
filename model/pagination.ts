@@ -5,8 +5,8 @@ import {OrderByDirection} from "kysely/dist/esm/parser/order-by-parser";
 interface Pagination {
     page: number
     size: number
-    query: Record<string, string | number>
-    sort: Record<string, OrderByDirection>
+    query: Map<string, string | number>
+    sort: Map<string, OrderByDirection>
 }
 
 export interface PaginationData extends Pagination {
@@ -17,18 +17,20 @@ export interface PaginationData extends Pagination {
 
 function toPagination(u: URLSearchParams): Pagination {
     const page = {
-        page: parseInt(u.get('page') ?? '1'),
-        size: parseInt(u.get('size') ?? '10'),
+        page: parseInt(u.get('_page') ?? '1'),
+        size: parseInt(u.get('_size') ?? '15'),
+        sort: new Map<string, OrderByDirection>(),
+        query: new Map<string, string | number>(),
     } as Pagination
     u.forEach((v, k) => {
-        if (k !== 'page' && k !== 'size' && k !== 'sort' && k !== 'order') {
-            page.query[k] = v
+        if (k !== '_page' && k !== '_size' && k !== '_sort') {
+            page.query.set(k, v)
         }
     })
-    u.get('sort')?.split(',').forEach(s => {
+    u.get('_sort')?.split(',').forEach(s => {
         const [k, v] = s.split(':')
         if (k) {
-            page.sort[k] = v ? v.toLocaleLowerCase() as OrderByDirection : 'desc'
+            page.sort.set(k, v ? v.toLocaleLowerCase() as OrderByDirection : 'desc')
         }
     })
     if (page.size < 1) {
@@ -44,9 +46,10 @@ export async function sqlPagination(u: URLSearchParams, tableName: string): Prom
     const p = toPagination(u);
     const {ref} = db.dynamic
     let tx = db.selectFrom(tableName as any);
-    for (const col in p.query) {
-        tx = tx.where(ref(col), "=", p.query[col])
-    }
+
+    p.query.forEach((v, k) => {
+        if (k) tx = tx.where(ref(k), "=", v);
+    });
     const {count} = db.fn
     const res = {...p} as PaginationData
     try {
@@ -56,9 +59,10 @@ export async function sqlPagination(u: URLSearchParams, tableName: string): Prom
         if (total <= 0) {
             return res
         }
-        for (const col in p.sort) {
-            tx = tx.orderBy(ref(col), p.sort[col])
-        }
+        p.sort.forEach((v, k) => {
+            if (!k) return;
+            tx = tx.orderBy(ref(k), v)
+        });
         res.list = await tx.clearSelect().selectAll().limit(p.size).offset((p.page - 1) * p.size).execute()
     } catch (err) {
         const e = err as Error
