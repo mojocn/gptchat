@@ -5,7 +5,16 @@ import {
     ResultReason,
     PronunciationAssessmentConfig, SpeechRecognizer, SpeechRecognitionResult, PronunciationAssessmentResult, PropertyId
 } from "microsoft-cognitiveservices-speech-sdk";
-import {NextResponse} from "next/server";
+
+interface Token {
+    jwt: string
+    region: string
+}
+export async function fetchSpeechToken():Promise<Token> {
+    const res = await fetch("/api/speech-token").then(res => res.json() )
+    return res
+}
+
 
 //https://learn.microsoft.com/en-us/azure/ai-services/speech-service/get-started-text-to-speech?tabs=linux%2Cterminal&pivots=programming-language-javascript
 function tts(jwt: string, region: string, audioFile: string, text: string) {
@@ -52,6 +61,7 @@ function pronunciationAssessment(jwt: string, region: string, text: string) {
 
             // The pronunciation assessment result as a JSON string
             const pronunciationAssessmentResultJson = speechRecognitionResult.properties.getProperty(PropertyId.SpeechServiceResponse_JsonResult);
+            debugger
         },
         console.error);
 
