@@ -82,7 +82,8 @@ export function text2speechMML(jwt: string, region: string, text: string, voiceN
 
 
 function pronunciationAssessment(jwt: string, region: string, text: string) {
-    const cfgJSON = `{"referenceText":${text},"gradingSystem":"HundredMark","granularity":"Phoneme","phonemeAlphabet":"IPA"}`
+    const cfgJSON0 = `{"referenceText":${text},"gradingSystem":"HundredMark","granularity":"Phoneme","phonemeAlphabet":"IPA"}`
+    const cfgJSON = `{"referenceText":${text},"gradingSystem":"HundredMark","granularity":"Syllable","phonemeAlphabet":"IPA"}`
     const pronunciationAssessmentConfig = PronunciationAssessmentConfig.fromJSON(cfgJSON);
     const speechConfig = SpeechConfig.fromAuthorizationToken(jwt, region);
     speechConfig.speechRecognitionLanguage = "en-US";

@@ -12,6 +12,7 @@ import {
 } from "microsoft-cognitiveservices-speech-sdk";
 import {fetchSpeechToken, text2speech, text2speechMML} from "@/pkg/tts";
 import {Recognizer, SpeechRecognitionCanceledEventArgs, SpeechRecognitionEventArgs} from "microsoft-cognitiveservices-speech-sdk/distrib/lib/src/sdk/Exports";
+import {IconEar, IconMicrophone, IconPlayerStop, IconPlayerStopFilled, IconVolume} from "@tabler/icons-react";
 
 const defText = "Former President Donald J. Trump was charged with four counts in connection with his efforts to subvert the will of voters in 2020.  “Despite having lost, the defendant was determined to remain in power,” prosecutors wrote."
 const language = "en-US"
@@ -82,14 +83,15 @@ export default function Tts() {
     }
 
     return (
-        <div>
-            {
-                recognizing ? <CaButton onClick={recognizerStop}> stop</CaButton> : <CaButton onClick={recognizerStart}> start</CaButton>
-            }
-            <CaButton onClick={recognizerStop}> STOP</CaButton>
+        <div className="mx-auto max-w-[24rem]">
+            <p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{speechTxt}</p>
+            <div className="flex align-center items-center gap-4 justify-center">
+                <CaButton onClick={recognizerStart}> <IconMicrophone/></CaButton>
+                <CaButton onClick={recognizerStop}> <IconPlayerStopFilled/></CaButton>
+                <CaButton onClick={doSpeak}> <IconEar/></CaButton>
+                <CaButton onClick={doSpeak}> <IconVolume/></CaButton>
+            </div>
 
-
-            <CaButton onClick={doSpeak}> SPEAK</CaButton>
 
             <pre>
                 {JSON.stringify(result, null, 4)}
