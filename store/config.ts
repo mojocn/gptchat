@@ -8,11 +8,11 @@ export const DEFAULT_CONFIG = {
     modelConfig: {
         model: "gpt-3.5-turbo" as ModelType,
         temperature: 1,
-        max_tokens: 4000,
+        max_tokens: 4096,
         top_p: 1,
         frequency_penalty: 0,
         presence_penalty: 0,
-        max_history: 8,//todo:: deprecated
+        max_history: 8,
     },
 };
 

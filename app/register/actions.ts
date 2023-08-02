@@ -12,14 +12,11 @@ export async function doUserRegister(formData: FormData) {
     if (password !== confirm_password) {
         throw new Error('Password not match')
     }
-    //todo:: handle duplicate error
     let hashedPassword = password && bcryptPasswordHash(password as string);
-
     const user = await findUserByEmail(email)
     if (user && user.id) {
         throw new Error('Email already exists')
     }
-
     const newUser: UserInsert = {
         username,
         email,

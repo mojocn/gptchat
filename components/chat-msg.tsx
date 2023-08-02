@@ -54,9 +54,8 @@ export function ChatMsg({msg}: { msg: Message }) {
     }: ChatState = useChatStore();
     const [isEdit, setIsEdit] = useState(false)
     const [msgContent, setMsgContent] = useState(msg.content)
-    const fontSize = 14;
 
-    function doMsgDrawback(m: Message) {//todo deprecated
+    function doMsgDrawback(m: Message) {
         const session = sessions.find(ss => ss.id === selectedSessionId);
         if (!session) return;
         const idx = session.messages.findIndex(mm => mm.id === m.id);

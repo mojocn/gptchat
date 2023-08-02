@@ -1,14 +1,19 @@
 'use client'
 import React, {useRef, useState} from 'react'
 
-import {Loading, Loading2, showToast, CaSpinner, Toast, CaButton} from "@/components/ui-lib";
+import {CaButton} from "@/components/ui-lib";
 
-import {AudioConfig, PronunciationAssessmentConfig, PronunciationAssessmentResult, SpeechConfig, SpeechRecognitionResult, SpeechRecognizer} from "microsoft-cognitiveservices-speech-sdk";
-import {fetchSpeechToken} from "@/pkg/tts";
+import {
+    AudioConfig,
+    PronunciationAssessmentConfig,
+    PronunciationAssessmentResult,
+    SpeechConfig,
+    SpeechRecognizer
+} from "microsoft-cognitiveservices-speech-sdk";
+import {fetchSpeechToken, text2speech, text2speechMML} from "@/pkg/tts";
 import {Recognizer, SpeechRecognitionCanceledEventArgs, SpeechRecognitionEventArgs} from "microsoft-cognitiveservices-speech-sdk/distrib/lib/src/sdk/Exports";
-import audioRecorder from "@/components/audio-recorder";
 
-const defText = "How are you today?"
+const defText = "Former President Donald J. Trump was charged with four counts in connection with his efforts to subvert the will of voters in 2020.  “Despite having lost, the defendant was determined to remain in power,” prosecutors wrote."
 const language = "en-US"
 
 export default function Tts() {
@@ -18,6 +23,7 @@ export default function Tts() {
     const recognizerRef = useRef<SpeechRecognizer>();
     const speechCfgRef = useRef<SpeechConfig>();
     const audioCfgRef = useRef<AudioConfig>();
+
 
 
     async function init() {
@@ -68,13 +74,23 @@ export default function Tts() {
         recognizerRef.current = undefined;
     }
 
+    async function doSpeak(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+        const {jwt, region} = await fetchSpeechToken();
+
+        text2speechMML(jwt, region, speechTxt, 'en-US-JaneNeural', 'cheerful')
+
+    }
 
     return (
         <div>
             {
                 recognizing ? <CaButton onClick={recognizerStop}> stop</CaButton> : <CaButton onClick={recognizerStart}> start</CaButton>
             }
-            <CaButton onClick={recognizerStop}> stop222</CaButton>
+            <CaButton onClick={recognizerStop}> STOP</CaButton>
+
+
+            <CaButton onClick={doSpeak}> SPEAK</CaButton>
+
             <pre>
                 {JSON.stringify(result, null, 4)}
             </pre>

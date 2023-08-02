@@ -249,7 +249,7 @@ export const useChatStore = create<ChatState>()(persist(
                     isTyping: false,
                     streaming: true,
                 } as Message;
-                get().upsertMessage(msgObj, selectedSessionId);//todo:: start to show blank message
+                get().upsertMessage(msgObj, selectedSessionId);
                 const result = await callAzureChatCompletion(openAiArgs, (msgId: string, deltaMsg: string) => {
                     get().deleteMessageFromSelectedSession(BLANK_LOADING_MSG_ID);
                     msgObj.id = msgId;
