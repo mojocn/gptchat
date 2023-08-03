@@ -11,9 +11,14 @@ import {
     SpeechRecognizer
 } from "microsoft-cognitiveservices-speech-sdk";
 import {fetchSpeechToken, text2speech, text2speechMML} from "@/pkg/tts";
-import {Recognizer, SpeechRecognitionCanceledEventArgs, SpeechRecognitionEventArgs} from "microsoft-cognitiveservices-speech-sdk/distrib/lib/src/sdk/Exports";
+import {
+    Recognizer,
+    SpeechRecognitionCanceledEventArgs,
+    SpeechRecognitionEventArgs
+} from "microsoft-cognitiveservices-speech-sdk/distrib/lib/src/sdk/Exports";
 import {IconEar, IconMicrophone, IconPlayerStop, IconPlayerStopFilled, IconVolume} from "@tabler/icons-react";
 import {toTtsResult, TtsResult, Word} from "@/pkg/tts-model";
+import {PronounceScore} from "@/app/tts/score";
 
 const defText = " This will give you a foundation to build upon."
 const language = "en-US"
@@ -108,12 +113,26 @@ export default function Tts() {
     return (
         <div className="mx-auto max-w-[24rem]">
             <p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{speechTxt}</p>
+            <p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{result?.Lexical}</p>
+            <p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{result?.ITN}</p>
+            <p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{result?.Display}</p>
             <div className="flex align-center items-center gap-4 justify-center">
                 <CaButton onClick={recognizerStart}> <IconMicrophone/></CaButton>
                 <CaButton onClick={recognizerStop}> <IconPlayerStopFilled/></CaButton>
                 <CaButton onClick={doSpeak}> <IconEar/></CaButton>
                 <CaButton onClick={doSpeak}> <IconVolume/></CaButton>
             </div>
+
+            <div className="flex gap-2">
+                <span>AccuracyScore: {result?.PronunciationAssessment?.AccuracyScore}</span>
+                <span>FluencyScore: {result?.PronunciationAssessment?.FluencyScore}</span>
+                <span>CompletenessScore: {result?.PronunciationAssessment?.CompletenessScore}</span>
+                <span>PronScore: {result?.PronunciationAssessment?.PronScore}</span>
+            </div>
+
+            {
+                result && result.PronunciationAssessment && <PronounceScore score={result?.PronunciationAssessment}/>
+            }
 
 
             <div className="flex gap-2">
