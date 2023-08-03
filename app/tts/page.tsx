@@ -25,16 +25,29 @@ const language = "en-US"
 
 
 function WordTag(props: Word) {
+    function scoreColor (n:number):string{
+        n = Math.round(n/10)*100
+        if( n<500) {
+            return ` text-red-${900 - n} `
+        }else if(n<=900){
+            return ` text-green-${n+500} font-semibold `
+
+        }else {
+            return ` text-green-900 font-bold `
+        }
+
+    }
+
     return (<div>
-        <p className="text-orange font-semibold">{props.Word}</p>
-        <div className="flex gap-2 text-indigo">
-            {props.Syllables?.map((s, i) => {
-                return <span key={i}>{s.Syllable}</span>
-            })}
-        </div>
-        <div className="flex gap-2 text-blue">
+        <p className={ `font-semibold ${props.PronunciationAssessment.ErrorType === 'None' ? 'text-indigo-800':'text-red-800'}`} title={`${props.PronunciationAssessment.AccuracyScore}`}>{props.Word}</p>
+        {/*<div className="flex justify-center">*/}
+        {/*    {props.Syllables?.map((s, i) => {*/}
+        {/*        return <span key={i}  className={scoreColor( s.PronunciationAssessment.AccuracyScore)}  title={`${s.PronunciationAssessment.AccuracyScore}`}  >{s.Syllable}</span>*/}
+        {/*    })}*/}
+        {/*</div>*/}
+        <div className="flex justify-around">
             {props.Phonemes?.map((s, i) => {
-                return <span key={i}>{s.Phoneme}</span>
+                return <span key={i}   className={scoreColor( s.PronunciationAssessment.AccuracyScore)}  title={`${s.PronunciationAssessment.AccuracyScore}`}  >{s.Phoneme}</span>
             })}
         </div>
 
@@ -114,8 +127,8 @@ export default function Tts() {
         <div className="mx-auto max-w-[24rem]">
             <p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{speechTxt}</p>
             <p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{result?.Lexical}</p>
-            <p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{result?.ITN}</p>
-            <p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{result?.Display}</p>
+            {/*<p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{result?.ITN}</p>*/}
+            {/*<p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{result?.Display}</p>*/}
             <div className="flex align-center items-center gap-4 justify-center">
                 <CaButton onClick={recognizerStart}> <IconMicrophone/></CaButton>
                 <CaButton onClick={recognizerStop}> <IconPlayerStopFilled/></CaButton>
@@ -123,12 +136,6 @@ export default function Tts() {
                 <CaButton onClick={doSpeak}> <IconVolume/></CaButton>
             </div>
 
-            <div className="flex gap-2">
-                <span>AccuracyScore: {result?.PronunciationAssessment?.AccuracyScore}</span>
-                <span>FluencyScore: {result?.PronunciationAssessment?.FluencyScore}</span>
-                <span>CompletenessScore: {result?.PronunciationAssessment?.CompletenessScore}</span>
-                <span>PronScore: {result?.PronunciationAssessment?.PronScore}</span>
-            </div>
 
             {
                 result && result.PronunciationAssessment && <PronounceScore score={result?.PronunciationAssessment}/>
