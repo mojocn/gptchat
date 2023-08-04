@@ -11,9 +11,35 @@ interface Token {
     region: string
 }
 
+
+
+function parseJwt(token: string) {
+    let base64Url = token.split('.')[1];
+    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    let jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    return JSON.parse(jsonPayload);
+}
+
+let cachedToken: Token = {
+    jwt: "",
+    region: ""
+}
+
 export async function fetchSpeechToken(): Promise<Token> {
-    const res = await fetch("/api/speech-token").then(res => res.json())
-    return res
+    try {
+        let obj = parseJwt(cachedToken.jwt)
+        debugger
+        if (obj.exp * 1000 > Date.now()) {
+            return Promise.resolve(cachedToken)
+        }
+    } catch (e) {
+        console.error(e)
+
+    }
+    cachedToken = await fetch("/api/speech-token").then(res => res.json())
+    return cachedToken
 }
 
 // character voice https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=tts#prebuilt-neural-voices
@@ -31,7 +57,7 @@ export function text2speech(jwt: string, region: string, text: string) {
     const speechConfig = SpeechConfig.fromAuthorizationToken(jwt, region);
     const audioConfig = AudioConfig.fromDefaultSpeakerOutput();
     // The language of the voice that speaks.
-    speechConfig.speechSynthesisVoiceName = "en-US-JennyNeural";
+    speechConfig.speechSynthesisVoiceName =  "zh-CN-XiaoxiaoNeural"//"en-US-JennyNeural";
     // Create the speech synthesizer.
     let synthesizer = new SpeechSynthesizer(speechConfig, audioConfig);
 
@@ -121,7 +147,6 @@ function pronunciationAssessment(jwt: string, region: string, text: string) {
 
             // The pronunciation assessment result as a JSON string
             const pronunciationAssessmentResultJson = speechRecognitionResult.properties.getProperty(PropertyId.SpeechServiceResponse_JsonResult);
-            debugger
         },
         console.error);
 

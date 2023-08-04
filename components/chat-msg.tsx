@@ -3,10 +3,11 @@ import React, {useRef, useState} from "react";
 import {Markdown} from "@/components/markdown";
 import {ChatState, Message, useChatStore} from "@/store/chat";
 import {showToast} from "./ui-lib";
-import {IconCheck, IconRobot, IconX} from "@tabler/icons-react";
+import {IconCheck, IconRobot, IconSpeakerphone, IconX} from "@tabler/icons-react";
 import {UiStore, useUiStore} from "@/store/ui";
 import {useUserStore} from "@/store/user";
 import {useLocal} from "@/store/local";
+import {fetchSpeechToken, text2speech} from "@/pkg/tts";
 
 async function copyToClipboard(text: string) {
     const success = "已写入剪切板"
@@ -28,6 +29,13 @@ async function copyToClipboard(text: string) {
         }
         document.body.removeChild(textArea);
     }
+}
+
+async function doText2Speech(markdownCode: string) {
+    //markdown code to plain text
+    const text = markdownCode.replace(/<[^>]+>/g, '');
+    const {jwt, region} = await fetchSpeechToken()
+    text2speech(jwt,region,text)
 }
 
 
@@ -167,6 +175,14 @@ export function ChatMsg({msg}: { msg: Message }) {
                             }}
                         >
                             {t.Copy}
+                        </button>
+
+                        <button
+                            onClick={async () => {
+                                await doText2Speech(msg.content);
+                            }}
+                        >
+                            Speech
                         </button>
                     </div>
                 </div>

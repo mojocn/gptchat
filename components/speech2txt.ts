@@ -10,22 +10,20 @@ import {
     Recognizer, SpeechRecognitionCanceledEventArgs,
     SpeechRecognitionEventArgs
 } from "microsoft-cognitiveservices-speech-sdk/distrib/lib/src/sdk/Exports";
-import {toTtsResult} from "@/pkg/tts-model";
 
 
 export function useSpeech2txt() {
     const [loading, setLoading] = useState(false)
     const [recognizing, setRecognizing] = useState(false)
-    const [recTxt, setRecText] = useState("");
     const recognizerRef = useRef<SpeechRecognizer>();
     const speechCfgRef = useRef<SpeechConfig>();
     const audioCfgRef = useRef<AudioConfig>();
 
-    async function init() {
+    async function init(cb?: (text: string) => void) {
         setLoading(true)
         const {jwt, region} = await fetchSpeechToken();
         const speechConfig = SpeechConfig.fromAuthorizationToken(jwt, region)
-        const audioConfig = AudioConfig.fromDefaultSpeakerOutput()
+        const audioConfig = AudioConfig.fromDefaultMicrophoneInput();
         // The language of the voice that speaks.
         speechConfig.speechRecognitionLanguage = "zh-CN";//"en-US"; todo
         let rec = new SpeechRecognizer(speechConfig, audioConfig);
@@ -35,11 +33,13 @@ export function useSpeech2txt() {
         setRecognizing(true)
         rec.recognized = (sender: Recognizer, e: SpeechRecognitionEventArgs) => {
             if (e.result.reason == ResultReason.RecognizedSpeech) {
-                console.log(`RECOGNIZED: Text=${e.result.text}`);
-                setRecText(e.result.text)
+                console.error(`RECOGNIZED: Text=${e.result.text}`);
+                cb && cb(e.result.text)
+
             } else if (e.result.reason == ResultReason.NoMatch) {
                 console.log("NOMATCH: Speech could not be recognized.");
             }
+            setLoading(false)
             setRecognizing(false)
         }
         rec.recognizing = (sender: Recognizer, e: SpeechRecognitionEventArgs) => {
@@ -62,8 +62,8 @@ export function useSpeech2txt() {
         audioCfgRef.current = audioConfig;
     }
 
-    async function recognizerStart() {
-        await init();
+    async function recognizerStart(cb?: (text: string) => void) {
+        await init(cb);
         setRecognizing(true)
         recognizerRef.current?.startContinuousRecognitionAsync();
     }
@@ -79,5 +79,5 @@ export function useSpeech2txt() {
         recognizerRef.current = undefined;
     }
 
-    return {recognizerStart, recognizerStop, loading, recognizing, recTxt}
+    return {recognizerStart, recognizerStop, loading, recognizing}
 }

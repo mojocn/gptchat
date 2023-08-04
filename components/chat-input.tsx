@@ -20,7 +20,7 @@ import {sleep2} from "@/pkg/util";
 
 const MSG_DRAFT = "MSG_DRAFT_TO_PREVIEW"
 const ChatInput = () => {
-    const {recognizerStart, recognizerStop, loading, recognizing, recTxt} = useSpeech2txt();
+    const {recognizerStart, recognizerStop, loading, recognizing} = useSpeech2txt();
 
 
     const [session, setSession] = useState<Session>({} as Session);
@@ -228,12 +228,15 @@ const ChatInput = () => {
                         <CaButton onClick={async () => {
                             await recognizerStop();
                             sleep2(100)
-                            setUserInput(recTxt);
-                            await doSubmit(recTxt)
+                            await doSubmit(userInput)
                         }} className='bg-orange-600'> <IconWaveSine
                             className="animate-ping "/></CaButton>
                         :
-                        <CaButton onClick={recognizerStart} isLoading={loading} className="bg-green-600">
+                        <CaButton onClick={async ()=>{
+                            await recognizerStart((txt: string) => {
+                                setUserInput(txt)
+                            })
+                        }} isLoading={loading} className="bg-green-600">
                             <IconMicrophone/></CaButton>
                 }
 
