@@ -59,6 +59,13 @@ export function text2speech(jwt: string, region: string, text: string) {
     const audioConfig = AudioConfig.fromDefaultSpeakerOutput();
     // The language of the voice that speaks.
     speechConfig.speechSynthesisVoiceName = "zh-CN-XiaoxiaoNeural"//"en-US-JennyNeural";
+
+    if(text.match(/[\u3400-\u9FBF]/)){
+        speechConfig.speechSynthesisVoiceName = "zh-CN-XiaoxiaoNeural"//"en-US-JennyNeural";
+    }else{
+        speechConfig.speechSynthesisVoiceName = "en-US-JennyNeural";
+    }
+
     // Create the speech synthesizer.
     let synthesizer = new SpeechSynthesizer(speechConfig, audioConfig);
 
