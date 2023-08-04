@@ -103,18 +103,18 @@ export default function Tts() {
 
                 {
                     recognizing ?
-                        <CaButton onClick={recognizerStop} className='bg-orange-600'> <IconWaveSine
+                        <CaButton onClick={recognizerStop} type="danger"> <IconWaveSine
                             className="animate-ping "/></CaButton>
                         :
-                        <CaButton onClick={recognizerStart} isLoading={loading} className="bg-green-600">
+                        <CaButton onClick={recognizerStart} isLoading={loading} type="success">
                             <IconMicrophone/></CaButton>
                 }
                 <CaButton onClick={() => {
                     alert('todo')
                 }}
-                          className="bg-amber-600"
+                          type="warning"
                 > <IconEar/></CaButton>
-                <CaButton onClick={doSpeak} isLoading={loading} className="bg-emerald-600"> <IconVolume/></CaButton>
+                <CaButton onClick={doSpeak} isLoading={loading} type="primary"> <IconVolume/></CaButton>
             </div>
 
 

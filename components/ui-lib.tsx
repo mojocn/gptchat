@@ -161,7 +161,7 @@ export function CaInput(props: {
 
 export function CaButton(props: {
     children?: ReactNode | ReactNode[];
-    type?: 'primary' | 'success' | 'danger';
+    type?: 'primary' | 'success' | 'danger' | 'warning';
     onClick?: MouseEventHandler<HTMLButtonElement>;
     className?: string;
     isLoading?: boolean;
