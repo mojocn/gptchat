@@ -18,6 +18,7 @@ function parseJwt(token: string) {
         return null;
     }
     let base64Url = token.split('.')[1];
+    if (!base64Url) return null;
     let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     let jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
@@ -28,7 +29,7 @@ function parseJwt(token: string) {
 
 export async function fetchSpeechToken(): Promise<Token> {
     const TTS_TOKEN_REGION_KEY = "TTS_TOKEN_REGION_KEY"
-    let cachedToken: Token = JSON.parse(localStorage.getItem(TTS_TOKEN_REGION_KEY) || "{jwt:'',region:''}")
+    let cachedToken: Token = JSON.parse(localStorage.getItem(TTS_TOKEN_REGION_KEY) || `{"jwt":"","region":""}`)
     try {
         let obj = parseJwt(cachedToken.jwt)
         if (obj && obj.exp && obj.exp * 1000 > Date.now()) {

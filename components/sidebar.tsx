@@ -59,7 +59,7 @@ export default function SideBar() {
     const REPO_URL = 'https://github.com/mojocn/gptchat/issues'
     return (
         <div
-            className="flex flex-col border-gray-200 border-r relative ease-in-out  py-2 px-3 w-80"
+            className=" w-80 hidden sm:flex sm:flex-col border-gray-200 border-r relative ease-in-out  py-2 px-3"
         >
             {
                 isShowConfig && <DialogConfig onClose={

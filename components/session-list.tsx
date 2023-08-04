@@ -8,7 +8,7 @@ export function SessionList() {
 
     return (
 
-        <div className="flex-1 overflow-x-hidden overflow-y-auto">
+        <div className="flex-1 overflow-x-hidden overflow-y-auto w-full">
             {sessions.map((item, i) => (
                 <SessionItem session={item} key={item.id}/>
             ))}
