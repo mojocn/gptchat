@@ -12,8 +12,11 @@ interface Token {
 }
 
 
-
 function parseJwt(token: string) {
+    let parts = token.split('.');
+    if (parts.length !== 3) {
+        return null;
+    }
     let base64Url = token.split('.')[1];
     let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     let jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
@@ -22,23 +25,20 @@ function parseJwt(token: string) {
     return JSON.parse(jsonPayload);
 }
 
-let cachedToken: Token = {
-    jwt: "",
-    region: ""
-}
 
 export async function fetchSpeechToken(): Promise<Token> {
+    const TTS_TOKEN_REGION_KEY = "TTS_TOKEN_REGION_KEY"
+    let cachedToken: Token = JSON.parse(localStorage.getItem(TTS_TOKEN_REGION_KEY) || "{jwt:'',region:''}")
     try {
         let obj = parseJwt(cachedToken.jwt)
-        debugger
-        if (obj.exp * 1000 > Date.now()) {
+        if (obj && obj.exp && obj.exp * 1000 > Date.now()) {
             return Promise.resolve(cachedToken)
         }
     } catch (e) {
         console.error(e)
-
     }
     cachedToken = await fetch("/api/speech-token").then(res => res.json())
+    localStorage.setItem(TTS_TOKEN_REGION_KEY, JSON.stringify(cachedToken))
     return cachedToken
 }
 
@@ -57,7 +57,7 @@ export function text2speech(jwt: string, region: string, text: string) {
     const speechConfig = SpeechConfig.fromAuthorizationToken(jwt, region);
     const audioConfig = AudioConfig.fromDefaultSpeakerOutput();
     // The language of the voice that speaks.
-    speechConfig.speechSynthesisVoiceName =  "zh-CN-XiaoxiaoNeural"//"en-US-JennyNeural";
+    speechConfig.speechSynthesisVoiceName = "zh-CN-XiaoxiaoNeural"//"en-US-JennyNeural";
     // Create the speech synthesizer.
     let synthesizer = new SpeechSynthesizer(speechConfig, audioConfig);
 
