@@ -8,16 +8,21 @@ import {
     IconArrowsDown,
     IconArrowsUp,
     IconBackspace,
-    IconMenu2,
-    IconSend,
+    IconMenu2, IconMicrophone,
+    IconSend, IconWaveSine,
 } from "@tabler/icons-react";
 import {usePromptStore} from "@/store/prompt";
 import {showToast} from "@/components/ui-lib";
 import {useLocal} from "@/store/local";
 import {DialogSession} from "@/components/dialog-session";
+import {useSpeech2txt} from "@/components/speech2txt";
+import {sleep2} from "@/pkg/util";
 
 const MSG_DRAFT = "MSG_DRAFT_TO_PREVIEW"
 const ChatInput = () => {
+    const {recognizerStart, recognizerStop, loading, recognizing, recTxt} = useSpeech2txt();
+
+
     const [session, setSession] = useState<Session>({} as Session);
     const [isDialogVisible, setIsDialogVisible] = useState(false);
 
@@ -216,6 +221,21 @@ const ChatInput = () => {
                 >
                     <IconAdjustments/>
                 </CaButton>
+
+
+                {
+                    recognizing ?
+                        <CaButton onClick={async () => {
+                            await recognizerStop();
+                            sleep2(100)
+                            setUserInput(recTxt);
+                            await doSubmit(recTxt)
+                        }} className='bg-orange-600'> <IconWaveSine
+                            className="animate-ping "/></CaButton>
+                        :
+                        <CaButton onClick={recognizerStart} isLoading={loading} className="bg-green-600">
+                            <IconMicrophone/></CaButton>
+                }
 
             </div>
 

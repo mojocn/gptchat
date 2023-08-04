@@ -49,6 +49,24 @@ export function text2speech(jwt: string, region: string, text: string) {
 
 }
 
+export function speech2text(jwt: string, region: string, text: string) {
+    // This example requires environment variables named "SPEECH_KEY" and "SPEECH_REGION"
+    const speechConfig = SpeechConfig.fromAuthorizationToken(jwt, region);
+    const audioConfig = AudioConfig.fromDefaultSpeakerOutput()
+    // The language of the voice that speaks.
+    speechConfig.speechRecognitionLanguage = "zh-CN";//"en-US";
+    // Create the speech rec.
+    let rec = new SpeechRecognizer(speechConfig, audioConfig);
+
+    // Start the rec and wait for a result.
+    rec.recognizeOnceAsync(result => {
+        console.log(`RECOGNIZED: Text=${result.text}`);
+        rec.close();
+    });
+
+}
+
+
 export function text2speechMML(jwt: string, region: string, text: string, voiceName: VoiceName, voiceStyle: VoiceStyle) {
 
     const mmt = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="en-US">
