@@ -1,6 +1,6 @@
 'use client'
 import React, {useRef, useState} from 'react'
-
+import {WordTag} from "./word";
 import {CaButton} from "@/components/ui-lib";
 
 import {
@@ -16,48 +16,17 @@ import {
     SpeechRecognitionCanceledEventArgs,
     SpeechRecognitionEventArgs
 } from "microsoft-cognitiveservices-speech-sdk/distrib/lib/src/sdk/Exports";
-import {IconEar, IconMicrophone, IconPlayerStop, IconPlayerStopFilled, IconVolume} from "@tabler/icons-react";
+import {IconEar, IconMicrophone, IconPlayerStopFilled, IconVolume} from "@tabler/icons-react";
 import {toTtsResult, TtsResult, Word} from "@/pkg/tts-model";
-import {PronounceScore} from "@/app/tts/score";
+import {PronounceScore} from "./score";
 
 const defText = " This will give you a foundation to build upon."
 const language = "en-US"
 
 
-function WordTag(props: Word) {
-    function scoreColor (n:number):string{
-        n = Math.round(n/10)*100
-        if( n<500) {
-            return ` text-red-${900 - n} `
-        }else if(n<=900){
-            return ` text-green-${n+500} font-semibold `
-
-        }else {
-            return ` text-green-900 font-bold `
-        }
-
-    }
-
-    return (<div>
-        <p className={ `font-semibold ${props.PronunciationAssessment.ErrorType === 'None' ? 'text-indigo-800':'text-red-800'}`} title={`${props.PronunciationAssessment.AccuracyScore}`}>{props.Word}</p>
-        {/*<div className="flex justify-center">*/}
-        {/*    {props.Syllables?.map((s, i) => {*/}
-        {/*        return <span key={i}  className={scoreColor( s.PronunciationAssessment.AccuracyScore)}  title={`${s.PronunciationAssessment.AccuracyScore}`}  >{s.Syllable}</span>*/}
-        {/*    })}*/}
-        {/*</div>*/}
-        <div className="flex justify-around">
-            {props.Phonemes?.map((s, i) => {
-                return <span key={i}   className={scoreColor( s.PronunciationAssessment.AccuracyScore)}  title={`${s.PronunciationAssessment.AccuracyScore}`}  >{s.Phoneme}</span>
-            })}
-        </div>
-
-    </div>)
-}
-
-
 export default function Tts() {
     const [speechTxt, setSpeechTxt] = useState(defText)
-    const [preparing, setPreparing] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [recognizing, setRecognizing] = useState(false)
     const [result, setResult] = useState<TtsResult | null>(null)
     const recognizerRef = useRef<SpeechRecognizer>();
@@ -66,7 +35,7 @@ export default function Tts() {
 
 
     async function init() {
-        setPreparing(true)
+        setLoading(true)
         const {jwt, region} = await fetchSpeechToken();
         const speechConfig = SpeechConfig.fromAuthorizationToken(jwt, region)
         speechConfig.speechRecognitionLanguage = language;
@@ -76,7 +45,7 @@ export default function Tts() {
         // setting the recognition language to English.
         // create the speech recognizer.
         const rec = new SpeechRecognizer(speechConfig, audioConfig);
-        setPreparing(false)
+        setLoading(false)
         pronunciationAssessmentConfig.applyTo(rec);
         setRecognizing(true)
         rec.recognized = (sender: Recognizer, event: SpeechRecognitionEventArgs) => {
@@ -117,23 +86,30 @@ export default function Tts() {
     }
 
     async function doSpeak(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+        setLoading(true)
         const {jwt, region} = await fetchSpeechToken();
-
         text2speechMML(jwt, region, speechTxt, 'en-US-JaneNeural', 'cheerful')
+        setRecognizing(false)
 
     }
 
     return (
-        <div className="mx-auto max-w-[24rem]">
+        <div className="mx-auto max-w-[36rem]">
             <p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{speechTxt}</p>
             <p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{result?.Lexical}</p>
             {/*<p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{result?.ITN}</p>*/}
             {/*<p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{result?.Display}</p>*/}
             <div className="flex align-center items-center gap-4 justify-center">
-                <CaButton onClick={recognizerStart}> <IconMicrophone/></CaButton>
-                <CaButton onClick={recognizerStop}> <IconPlayerStopFilled/></CaButton>
-                <CaButton onClick={doSpeak}> <IconEar/></CaButton>
-                <CaButton onClick={doSpeak}> <IconVolume/></CaButton>
+                {
+                    recognizing ?
+                        <CaButton onClick={recognizerStop}> <IconPlayerStopFilled/></CaButton>
+                        :
+                        <CaButton onClick={recognizerStart} isLoading={loading}> <IconMicrophone/></CaButton>
+                }
+                <CaButton onClick={() => {
+                    alert('todo')
+                }}> <IconEar/></CaButton>
+                <CaButton onClick={doSpeak} isLoading={loading}> <IconVolume/></CaButton>
             </div>
 
 

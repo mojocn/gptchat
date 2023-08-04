@@ -2,7 +2,6 @@
 import React from 'react'
 
 import {useTheme} from "@/app/use-theme";
-import {Loading, Loading2, showToast, CaSpinner, Toast} from "@/components/ui-lib";
 import {useConfigStore} from "@/store/config";
 import {Theme} from "@/types/const";
 import AudioRecorder from "@/components/audio-recorder";
