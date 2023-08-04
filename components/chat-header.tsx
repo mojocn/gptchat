@@ -18,7 +18,6 @@ export default function ChatHeader(props: {
     disabled?: boolean;
 }) {
     const [session, setSession] = useState<Session>({} as Session);
-    const [isDialogVisible, setIsDialogVisible] = useState(false);
     const {selectedSessionId, sessions}: ChatState = useChatStore();
     const {t} = useLocal();
 
@@ -30,17 +29,8 @@ export default function ChatHeader(props: {
 
     return (
         <div className="flex align-center justify-between px-4 py-3 border-b border-gray-200">
-            {
-                isDialogVisible && (
-                    <DialogSession
-                        session={session}
-                        onClose={() => {
-                            setIsDialogVisible(false);
-                        }}
-                    />
-                )
-            }
-            <div className="">
+
+        <div className="">
                 <h2
                     className="text-lg font-bold"
                 >
@@ -50,16 +40,7 @@ export default function ChatHeader(props: {
                     {t.SubTitle(session.messages?.length)}
                 </h4>
             </div>
-            <CaButton
-                onClick={(e: any) => {
-                    e.stopPropagation()
-                    e.preventDefault()
-                    setIsDialogVisible(true);
-                }
-                }
-            >
-                <IconAdjustments/>
-            </CaButton>
+
         </div>
     );
 }

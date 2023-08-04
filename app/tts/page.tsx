@@ -16,7 +16,7 @@ import {
     SpeechRecognitionCanceledEventArgs,
     SpeechRecognitionEventArgs
 } from "microsoft-cognitiveservices-speech-sdk/distrib/lib/src/sdk/Exports";
-import {IconEar, IconMicrophone, IconPlayerStopFilled, IconVolume} from "@tabler/icons-react";
+import {IconEar, IconMicrophone, IconPlayerStopFilled, IconVolume, IconWaveSine} from "@tabler/icons-react";
 import {toTtsResult, TtsResult, Word} from "@/pkg/tts-model";
 import {PronounceScore} from "./score";
 
@@ -100,16 +100,21 @@ export default function Tts() {
             {/*<p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{result?.ITN}</p>*/}
             {/*<p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{result?.Display}</p>*/}
             <div className="flex align-center items-center gap-4 justify-center">
+
                 {
                     recognizing ?
-                        <CaButton onClick={recognizerStop}> <IconPlayerStopFilled/></CaButton>
+                        <CaButton onClick={recognizerStop} className='bg-orange-600'> <IconWaveSine
+                            className="animate-ping "/></CaButton>
                         :
-                        <CaButton onClick={recognizerStart} isLoading={loading}> <IconMicrophone/></CaButton>
+                        <CaButton onClick={recognizerStart} isLoading={loading} className="bg-green-600">
+                            <IconMicrophone/></CaButton>
                 }
                 <CaButton onClick={() => {
                     alert('todo')
-                }}> <IconEar/></CaButton>
-                <CaButton onClick={doSpeak} isLoading={loading}> <IconVolume/></CaButton>
+                }}
+                          className="bg-amber-600"
+                > <IconEar/></CaButton>
+                <CaButton onClick={doSpeak} isLoading={loading} className="bg-emerald-600"> <IconVolume/></CaButton>
             </div>
 
 
