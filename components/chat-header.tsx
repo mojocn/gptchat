@@ -1,9 +1,6 @@
 import * as React from "react";
 import {useEffect, useState} from "react";
 import {ChatState, Session, useChatStore} from "@/store/chat";
-import {IconAdjustments} from "@tabler/icons-react";
-import {DialogSession} from "@/components/dialog-session";
-import {CaButton} from "@/components/ui-lib";
 import {useLocal} from "@/store/local";
 
 export default function ChatHeader(props: {
@@ -28,9 +25,8 @@ export default function ChatHeader(props: {
 
 
     return (
-        <div className="flex align-center justify-between px-4 py-3 border-b border-gray-200">
-
-        <div className="">
+        <div className="flex align-center justify-between px-4 py-3 border-b border-gray-200 h-18">
+            <section>
                 <h2
                     className="text-lg font-bold"
                 >
@@ -39,8 +35,7 @@ export default function ChatHeader(props: {
                 <h4 className="text-sm font-medium">
                     {t.SubTitle(session.messages?.length)}
                 </h4>
-            </div>
-
+            </section>
         </div>
     );
 }
