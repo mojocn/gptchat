@@ -16,7 +16,7 @@
 
 [license-image]: https://img.shields.io/badge/license-GNU-blue.svg
 
-[license-url]: https://github.com/mojocn/gptchat/blob/main/LICENSE
+[license-url]: https://github.com/mojocn/gptchat/blob/run_migrate/LICENSE
 
 [release-image]: https://img.shields.io/github/v/release/mojocn/gptchat?color=blue
 
@@ -51,14 +51,14 @@
 
 ## 💰 Cha-Ching
 
-- [Lemonsqueezy Webhook code](https://github.com/mojocn/gptchat/blob/main/app/api/webhook/lemon/route.tsx)
+- [Lemonsqueezy Webhook code](https://github.com/mojocn/gptchat/blob/run_migrate/app/api/webhook/lemon/route.tsx)
 - [Lemonsqueezy Product](https://mojoai.lemonsqueezy.com/checkout?cart=a34be65a-10d2-48dc-b1e7-6ed70d7bacc4)
 
 ## 🔨 Build from Source
 
 - Clone the source code
 - `npm install`
-- `cp .env.example .env`  [.env.example](https://github.com/mojocn/gptchat/blob/main/.env.example)
+- `cp .env.example .env`  [.env.example](https://github.com/mojocn/gptchat/blob/run_migrate/.env.example)
 - create postgresSQL database in vercel storage
 - update .env file
 - `npm dev`

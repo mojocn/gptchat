@@ -1,4 +1,4 @@
-import {db} from "@/model/pgdb";
+import {database} from "@/model/database";
 import {OrderByDirection} from "kysely/dist/esm/parser/order-by-parser";
 
 //https://kysely-org.github.io/kysely/index.html#select-queries
@@ -44,13 +44,13 @@ function toPagination(u: URLSearchParams): Pagination {
 
 export async function sqlPagination(u: URLSearchParams, tableName: string): Promise<PaginationData> {
     const p = toPagination(u);
-    const {ref} = db.dynamic
-    let tx = db.selectFrom(tableName as any);
+    const {ref} = database.dynamic
+    let tx = database.selectFrom(tableName as any);
 
     p.query.forEach((v, k) => {
         if (k) tx = tx.where(ref(k), "=", v);
     });
-    const {count} = db.fn
+    const {count} = database.fn
     const res = {...p} as PaginationData
     try {
         res.list = []

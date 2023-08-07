@@ -27,6 +27,7 @@ import {
 import {toTtsResult, TtsResult, Word} from "@/pkg/tts-model";
 import {PronounceScore} from "./score";
 import {create} from 'zustand'
+import {persist} from 'zustand/middleware'
 
 const language = "en-US"
 
@@ -63,7 +64,7 @@ Describe a typical day in your life.
 Do you think learning a second language is important? Why or why not?
 `
 
-const useTextStore = create<TextStore>()(
+const useTextStore = create<TextStore>()(persist(
     (set, get) => ({
             result: undefined,
             resultAll: [],
@@ -93,7 +94,10 @@ const useTextStore = create<TextStore>()(
             recognizing: false,
             setRecognizing: (v: boolean) => set({recognizing: v}),
         } as TextStore
-    )
+    ),{
+        name: 'tts-data', // name of the item in the storage (must be unique)
+
+    })
 )
 
 

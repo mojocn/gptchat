@@ -16,7 +16,7 @@
 
 
 import {ColumnType, Generated, Insertable, Selectable, Updateable} from "kysely/dist/esm";
-import {db} from "@/model/pgdb";
+import {database} from "@/model/database";
 
 export interface TokenTable {
     id: Generated<number>
@@ -33,27 +33,27 @@ export type TokenUpdate = Updateable<TokenTable>
 
 
 export async function doTokenInsert(token: TokenInsert) {
-    return await db.insertInto('tokens')
+    return await database.insertInto('tokens')
         .values(token)
         .returningAll()
         .executeTakeFirstOrThrow()
 }
 export async function findTokenById(uid: number) {
-    return await db.selectFrom('tokens')
+    return await database.selectFrom('tokens')
         .where('user_id', '=', uid)
         .selectAll()
         .executeTakeFirstOrThrow()
 }
 
 export async function findTokenByIdToken(userId: number, token: string): Promise<Token | undefined> {
-    return await db.selectFrom('tokens')
+    return await database.selectFrom('tokens')
         .where('user_id', '=', userId)
         .where('token', '=', token.trim())
         .selectAll()
         .executeTakeFirst()
 }
 export async function deleteTokenByIdToken(token:string) {
-    return await db.deleteFrom('tokens').where('token', '=', token.trim())
+    return await database.deleteFrom('tokens').where('token', '=', token.trim())
         .returningAll()
         .execute()
 }

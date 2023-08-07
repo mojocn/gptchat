@@ -1,5 +1,5 @@
 import {ColumnType, Generated, Insertable, Selectable, Updateable} from 'kysely'
-import {db} from "@/model/pgdb";
+import {database} from "@/model/database";
 import {sql} from "@vercel/postgres";
 
 /*
@@ -42,14 +42,14 @@ export async function UserVisitInc(userId: number) {
 
 
 export async function findUserByEmail(email: string) {
-    return await db.selectFrom('users')
+    return await database.selectFrom('users')
         .where('email', '=', email.trim())
         .selectAll()
         .executeTakeFirst()
 }
 
 export async function findPeople(criteria: Partial<User>) {
-    let query = db.selectFrom('users')
+    let query = database.selectFrom('users')
 
     if (criteria.id) {
         query = query.where('id', '=', criteria.id) // Kysely is immutable, you must re-assign!
@@ -79,22 +79,22 @@ export async function findPeople(criteria: Partial<User>) {
 }
 
 export async function doUpdatePerson(id: number, updateWith: UserUpdate) {
-    await db.updateTable('users').set(updateWith).where('id', '=', id).execute()
+    await database.updateTable('users').set(updateWith).where('id', '=', id).execute()
 }
 
 export async function doUpdateUserByEmail(email: string, user: UserUpdate) {
-    return await db.updateTable('users').set(user).where('email', '=', email).executeTakeFirstOrThrow()
+    return await database.updateTable('users').set(user).where('email', '=', email).executeTakeFirstOrThrow()
 }
 
 export async function doUserInsert(user: UserInsert) {
-    return await db.insertInto('users')
+    return await database.insertInto('users')
         .values(user)
         .returningAll()
         .executeTakeFirstOrThrow()
 }
 
 export async function deleteUser(id: number) {
-    return await db.deleteFrom('users').where('id', '=', id)
+    return await database.deleteFrom('users').where('id', '=', id)
         .returningAll()
         .executeTakeFirst()
 }
