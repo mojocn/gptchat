@@ -1,5 +1,5 @@
 'use client'
-import React, {useRef, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {WordTag} from "./word";
 import {CaButton} from "@/components/ui-lib";
 
@@ -16,22 +16,109 @@ import {
     SpeechRecognitionCanceledEventArgs,
     SpeechRecognitionEventArgs
 } from "microsoft-cognitiveservices-speech-sdk/distrib/lib/src/sdk/Exports";
-import {IconEar, IconMicrophone, IconPlayerStopFilled, IconVolume, IconWaveSine} from "@tabler/icons-react";
+import {
+    IconChevronLeft,
+    IconChevronRight,
+    IconEar,
+    IconMicrophone,
+    IconVolume,
+    IconWaveSine
+} from "@tabler/icons-react";
 import {toTtsResult, TtsResult, Word} from "@/pkg/tts-model";
 import {PronounceScore} from "./score";
+import {create} from 'zustand'
 
-const defText = " This will give you a foundation to build upon."
 const language = "en-US"
+
+interface TextStore {
+    result?: TtsResult,
+    resultAll: TtsResult[],
+    setResult: (v: TtsResult) => void
+
+    lines: string[]
+    setLines: (v: string[]) => void
+    idx: number
+    idxInc: () => void
+    idxDec: () => void
+    speechTxt: () => string
+    loading: boolean
+    setLoading: (v: boolean) => void
+    recognizing: boolean
+    setRecognizing: (v: boolean) => void
+
+}
+
+const rawText = `
+What kind of music do you enjoy listening to?
+Can you tell me about your favorite movie and why you like it?
+If you could travel anywhere in the world, where would you go and why?
+What do you like to do in your free time?
+How is the weather in your country during different seasons?
+What are some traditional dishes from your culture?
+Could you describe a memorable trip or vacation you have taken?
+What are your hobbies and how did you develop an interest in them?
+Tell me about a book you recently read and what you found interesting about it.
+What are some popular tourist attractions in your city or country?
+Describe a typical day in your life.
+Do you think learning a second language is important? Why or why not?
+`
+
+const useTextStore = create<TextStore>()(
+    (set, get) => ({
+            result: undefined,
+            resultAll: [],
+            setResult: (v: TtsResult) => set({resultAll: [...get().resultAll, v], result: v}),
+
+            lines: rawText.split("\n").map(s => s.trim()).filter(s => s.length > 0),
+            setLines: (v: string[]) => set({lines: v}),
+            idx: 0,
+            idxInc: () => {
+                if (get().idx >= get().lines.length - 1) {
+                    set({idx: 0})
+                } else {
+                    set({idx: get().idx + 1})
+                }
+            }
+            ,
+            idxDec: () => {
+                if (get().idx <= 0) {
+                    set({idx: get().lines.length - 1})
+                } else {
+                    set({idx: get().idx - 1})
+                }
+            },
+            speechTxt: () => get().lines[get().idx],
+            loading: false,
+            setLoading: (v: boolean) => set({loading: v}),
+            recognizing: false,
+            setRecognizing: (v: boolean) => set({recognizing: v}),
+        } as TextStore
+    )
+)
 
 
 export default function Tts() {
-    const [speechTxt, setSpeechTxt] = useState(defText)
-    const [loading, setLoading] = useState(false)
-    const [recognizing, setRecognizing] = useState(false)
-    const [result, setResult] = useState<TtsResult | null>(null)
+    const {
+        lines, idx, speechTxt, idxInc, idxDec,
+        result, resultAll, setResult,
+        loading, setLoading, recognizing, setRecognizing
+    } = useTextStore();
+
+
     const recognizerRef = useRef<SpeechRecognizer>();
     const speechCfgRef = useRef<SpeechConfig>();
     const audioCfgRef = useRef<AudioConfig>();
+
+
+    async function doIndxInc() {
+        idxInc()
+        await doSpeak()
+    }
+
+    async function doIndxDesc() {
+        idxDec()
+        await doSpeak()
+    }
 
 
     async function init() {
@@ -40,7 +127,7 @@ export default function Tts() {
         const speechConfig = SpeechConfig.fromAuthorizationToken(jwt, region)
         speechConfig.speechRecognitionLanguage = language;
         const audioConfig = AudioConfig.fromDefaultMicrophoneInput();
-        const cfgJSON = `{"referenceText":"${speechTxt}","gradingSystem":"HundredMark","granularity":"Phoneme","phonemeAlphabet":"IPA"}`
+        const cfgJSON = `{"referenceText":"${speechTxt()}","gradingSystem":"HundredMark","granularity":"Phoneme","phonemeAlphabet":"IPA"}`
         const pronunciationAssessmentConfig = PronunciationAssessmentConfig.fromJSON(cfgJSON);
         // setting the recognition language to English.
         // create the speech recognizer.
@@ -85,37 +172,23 @@ export default function Tts() {
         recognizerRef.current = undefined;
     }
 
-    async function doSpeak(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    async function doSpeak() {
         setLoading(true)
         const {jwt, region} = await fetchSpeechToken();
-        text2speechMML(jwt, region, speechTxt, 'en-US-JaneNeural', 'cheerful')
+        setLoading(false)
+        text2speechMML(jwt, region, speechTxt(), 'en-US-JaneNeural', 'cheerful')
         setRecognizing(false)
 
     }
 
     return (
         <div className="mx-auto max-w-[36rem]">
-            <p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{speechTxt}</p>
+            <h3 className="text-center my-2">{`${idx + 1}/${lines.length}`}</h3>
+            <p className="my-4 text-gray-400 dark:text-gray-200 font-mono text-center">{speechTxt()}</p>
             <p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{result?.Lexical}</p>
             {/*<p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{result?.ITN}</p>*/}
             {/*<p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{result?.Display}</p>*/}
-            <div className="flex align-center items-center gap-4 justify-center">
 
-                {
-                    recognizing ?
-                        <CaButton onClick={recognizerStop} type="danger"> <IconWaveSine
-                            className="animate-ping "/></CaButton>
-                        :
-                        <CaButton onClick={recognizerStart} isLoading={loading} type="success">
-                            <IconMicrophone/></CaButton>
-                }
-                <CaButton onClick={() => {
-                    alert('todo')
-                }}
-                          type="warning"
-                > <IconEar/></CaButton>
-                <CaButton onClick={doSpeak} isLoading={loading} type="primary"> <IconVolume/></CaButton>
-            </div>
 
 
             {
@@ -132,6 +205,30 @@ export default function Tts() {
                     })
 
                 }
+            </div>
+
+            <div className="absolute left-0 bottom-0 right-0 m-4  flex align-center items-center gap-4 justify-center">
+
+                <CaButton onClick={doIndxDesc} isLoading={loading} type="primary"> <IconChevronLeft/></CaButton>
+
+                {
+                    recognizing ?
+                        <CaButton onClick={recognizerStop} type="danger"> <IconWaveSine
+                            className="animate-ping "/></CaButton>
+                        :
+                        <CaButton onClick={recognizerStart} isLoading={loading} type="success">
+                            <IconMicrophone/></CaButton>
+                }
+                <CaButton onClick={() => {
+                    alert('todo')
+                }}
+                          type="warning"
+                > <IconEar/></CaButton>
+                <CaButton onClick={doSpeak} isLoading={loading} type="primary"> <IconVolume/></CaButton>
+
+
+                <CaButton onClick={doIndxInc} isLoading={loading} type="primary"> <IconChevronRight/></CaButton>
+
             </div>
         </div>
     )

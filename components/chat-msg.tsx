@@ -116,7 +116,7 @@ export function ChatMsg({msg}: { msg: Message }) {
             }
         >
 
-            <section className={"mt-8 group " + (isUser ? "min-w-[180px] lg:max-w-1/2  sm:min-w-3/4  " : "min-w-1/2 max-w-3/4")}>
+            <section className={"mt-8 group " + (isUser ? "min-w-4/5 md:min-w-1/2" : "min-w-1/2 max-w-3/4")}>
                 <div
                     className={"flex justify-between items-center align-center " + (isUser ? "flex-row-reverse" : "flex-row")}>
                     <div className="flex space-x-2">

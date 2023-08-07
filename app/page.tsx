@@ -26,7 +26,7 @@ export default function Home() {
             className={"bg-white text-black dark:text-white dark:bg-gray-800 rounded-lg flex overflow-hidden box-border w-screen h-screen"}
         >
             <SideBar/>
-            <div className="h-full w-full flex flex-col flex-1">
+            <div className="h-full w-full flex flex-col grow">
                 <ChatHeader/>
                 <ChatMsgList/>
                 <PromptList/>
