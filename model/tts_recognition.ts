@@ -17,9 +17,8 @@ export type TtsRecognitionInsert = Insertable<TtsRecognitionTable>
 export type TtsRecognitionUpdate = Updateable<TtsRecognitionTable>
 
 
-export async function doTtsRecognitionInsert(row: TtsRecognitionInsert) {
+export async function doTtsRecognitionInsert(rows: TtsRecognitionInsert[]) {
     return await database.insertInto('tts_recognitions')
-        .values(row)
-        .returningAll()
-        .executeTakeFirst()
+        .values(rows)
+        .execute()
 }
