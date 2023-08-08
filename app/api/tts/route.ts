@@ -1,18 +1,19 @@
 import {NextResponse, NextRequest} from "next/server";
-import {checkAdmin, checkAuth, jsonData} from "@/app/api/check-auth";
-import {sqlPagination} from "@/model/pagination";
+import {checkAuth, jsonData} from "@/app/api/check-auth";
 import {TtsResult} from "@/pkg/tts-model";
 import {doTtsRecognitionInsert} from "@/model/tts_recognition";
+
 export async function POST(req: NextRequest): Promise<Response> {
     try {
-        const ttsItems = await req.json() as TtsResult[];
+        const ttsItems: TtsResult[] = await req.json()
         const user_id = await checkAuth();
-        if (user_id<1) {
+        if (user_id < 1) {
             return NextResponse.json({error: 'Unauthorized'}, {status: 401})
         }
+        console.error(ttsItems)
         for (const tts of ttsItems) {
             for (const word of tts.Words) {
-                const wt = await  doTtsRecognitionInsert({
+                const wt = await doTtsRecognitionInsert({
                     content: word.Word,
                     category: 'word',
                     user_id: user_id,
@@ -20,8 +21,8 @@ export async function POST(req: NextRequest): Promise<Response> {
                 })
                 console.log(wt)
                 for (const syllable of word.Syllables) {
-                    if (!syllable.Syllable|| !syllable.PronunciationAssessment) continue;
-                    const st = await  doTtsRecognitionInsert({
+                    if (!syllable.Syllable || !syllable.PronunciationAssessment) continue;
+                    const st = await doTtsRecognitionInsert({
                         content: syllable.Syllable,
                         category: 'syllable',
                         user_id: user_id,
@@ -31,7 +32,7 @@ export async function POST(req: NextRequest): Promise<Response> {
                 }
                 for (const phoneme of word.Phonemes) {
                     if (!phoneme.Phoneme || !phoneme.PronunciationAssessment) continue;
-                    const st = await  doTtsRecognitionInsert({
+                    const st = await doTtsRecognitionInsert({
                         content: phoneme.Phoneme,
                         category: 'phoneme',
                         user_id: user_id,

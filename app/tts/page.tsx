@@ -17,6 +17,7 @@ import {
     SpeechRecognitionEventArgs
 } from "microsoft-cognitiveservices-speech-sdk/distrib/lib/src/sdk/Exports";
 import {
+    IconBrandTelegram,
     IconChevronLeft,
     IconChevronRight,
     IconEar,
@@ -94,7 +95,7 @@ const useTextStore = create<TextStore>()(persist(
             recognizing: false,
             setRecognizing: (v: boolean) => set({recognizing: v}),
         } as TextStore
-    ),{
+    ), {
         name: 'tts-data', // name of the item in the storage (must be unique)
 
     })
@@ -185,14 +186,27 @@ export default function Tts() {
 
     }
 
+    async function doSendResultToCloud() {
+        //do http post request by fetch
+        setLoading(true)
+        const response = await fetch('/api/tts', {
+            method: 'POST',
+            body: JSON.stringify(resultAll),
+        })
+        if (response.status !== 200) {
+            const txt = await response.text()
+            console.error(txt)
+        }
+        setLoading(false)
+    }
+
     return (
-        <div className="mx-auto max-w-[36rem]">
+        <div className="mx-auto max-w-[36rem] overflow-hidden">
             <h3 className="text-center my-2">{`${idx + 1}/${lines.length}`}</h3>
             <p className="my-4 text-gray-400 dark:text-gray-200 font-mono text-center">{speechTxt()}</p>
             <p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{result?.Lexical}</p>
             {/*<p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{result?.ITN}</p>*/}
             {/*<p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{result?.Display}</p>*/}
-
 
 
             {
@@ -223,13 +237,18 @@ export default function Tts() {
                         <CaButton onClick={recognizerStart} isLoading={loading} type="success">
                             <IconMicrophone/></CaButton>
                 }
-                <CaButton onClick={() => {
-                    alert('todo')
-                }}
-                          type="warning"
-                > <IconEar/></CaButton>
+                {/*<CaButton onClick={() => {*/}
+                {/*    alert('todo')*/}
+                {/*}}*/}
+                {/*          type="warning"*/}
+                {/*> <IconEar/></CaButton>*/}
                 <CaButton onClick={doSpeak} isLoading={loading} type="primary"> <IconVolume/></CaButton>
 
+
+                <CaButton onClick={doSendResultToCloud}
+                          title="send recognition score to cloud"
+                          type="warning"
+                > <IconBrandTelegram/></CaButton>
 
                 <CaButton onClick={doIndxInc} isLoading={loading} type="primary"> <IconChevronRight/></CaButton>
 
