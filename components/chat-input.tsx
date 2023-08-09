@@ -180,6 +180,7 @@ const ChatInput = () => {
 
             <div className="flex gap-2 mb-2">
                 <CaButton
+                    loading={false}
                     onClick={doScrollToTop}
                     title="scroll to top"
                 >
@@ -188,6 +189,7 @@ const ChatInput = () => {
                 </CaButton>
 
                 <CaButton
+                    loading={false}
                     onClick={doScrollToBottom}
                     title="scroll to bottom"
                 >
@@ -196,6 +198,7 @@ const ChatInput = () => {
                 </CaButton>
 
                 <CaButton
+                    loading={false}
                     onClick={doShowPromptList}
                     title='use prompt template'
                 >
@@ -205,6 +208,8 @@ const ChatInput = () => {
 
 
                 <CaButton
+                    loading={false}
+
                     onClick={doClearMessages}
                     title="empty all messages"
                 >
@@ -212,6 +217,8 @@ const ChatInput = () => {
 
                 </CaButton>
                 <CaButton
+                    loading={false}
+
                     onClick={(e: any) => {
                         e.stopPropagation()
                         e.preventDefault()
@@ -225,7 +232,9 @@ const ChatInput = () => {
 
                 {
                     recognizing ?
-                        <CaButton onClick={async () => {
+                        <CaButton
+                            loading={false}
+                            onClick={async () => {
                             await recognizerStop();
                             sleep2(100)
                             await doSubmit(userInput)
@@ -236,7 +245,7 @@ const ChatInput = () => {
                             await recognizerStart((txt: string) => {
                                 setUserInput(txt)
                             })
-                        }} isLoading={loading} className="bg-green-600">
+                        }} loading={loading} className="bg-green-600">
                             <IconMicrophone/></CaButton>
                 }
 
@@ -272,6 +281,7 @@ const ChatInput = () => {
                       dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
                       placeholder={t.inputPlaceholder} required></textarea>
                 <CaButton
+                    loading={false}
                     onClick={async () => await doSubmit(userInput)}
                     className="absolute right-2 bottom-4"
                     title="send"

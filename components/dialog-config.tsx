@@ -1,4 +1,4 @@
-import {FC, KeyboardEvent, useEffect, useRef, useState} from 'react';
+import {FC, KeyboardEvent, useEffect, useRef} from 'react';
 import {useConfigStore} from "@/store/config";
 import {CaButton, CaInput, CaSelect} from "@/components/ui-lib";
 import {ALL_LANG, useLocal} from "@/store/local";
@@ -156,13 +156,17 @@ export const DialogConfig: FC<Props> = ({
                 />
 
                 <div className="flex justify-end gap-x-1">
-                    <CaButton type={'primary'}
+                    <CaButton theme={'primary'}
+                              loading={false}
                               onClick={onClose}
                     >Close</CaButton>
-                    <CaButton type={'primary'}
+                    <CaButton theme={'primary'}
+                              loading={false}
+
                               onClick={doClearCache}
                     >Clear Cache</CaButton>
-                    <CaButton type={'primary'}
+                    <CaButton theme={'primary'}
+                              loading={false}
                               onClick={handleSubmit}
                     >Submit</CaButton>
                 </div>

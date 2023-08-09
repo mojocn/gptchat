@@ -1,6 +1,8 @@
 import {createRoot} from "react-dom/client";
-import React, {MouseEventHandler, ReactNode, useEffect,} from "react";
+import React, {ButtonHTMLAttributes,  } from "react";
 import {OptionItem} from "@/types/item";
+import { twMerge } from 'tailwind-merge'
+
 
 
 export function Loading() {
@@ -158,41 +160,37 @@ export function CaInput(props: {
     );
 }
 
+type CaButtonProps = {
+    theme?: 'primary' | 'success' | 'danger' | 'warning'|'info';
+    loading: boolean;
+} & ButtonHTMLAttributes<HTMLButtonElement>
 
-export function CaButton(props: {
-    children?: ReactNode | ReactNode[];
-    type?: 'primary' | 'success' | 'danger' | 'warning';
-    onClick?: MouseEventHandler<HTMLButtonElement>;
-    className?: string;
-    isLoading?: boolean;
-    title?: string;
-    disabled?: boolean;
-}) {
-    let className = ` inline-flex items-center justify-center py-0.5 px-2 mb-2 mr-2 overflow-hidden 
-    text-sm font-medium rounded-lg hover:text-gray-500 dark:text-white ${props.className || ''} `;
-    switch (props.type) {
-        case 'primary':
-            className += ' text-blue-700 bg-blue-100 hover:bg-blue-200 dark:bg-blue-800 dark:hover:bg-blue-700'
-            break;
+export function CaButton(props:CaButtonProps) {
+    // w-full  px-5 py-2.5 
+    let className =`py-[2px] px-[6px] text-sm text-center font-medium text-white bg-blue-400 rounded-lg    flex justify-center justify-items-center content-center
+     hover:bg-blue-700      focus:ring-4 focus:outline-none focus:ring-blue-300     
+      dark:bg-blue-400 dark:hover:bg-blue-700 dark:focus:ring-blue-800`
+    switch (props.theme) {
         case 'success':
-            className += ' text-green-700 bg-green-100 hover:bg-green-200 dark:bg-green-800 dark:hover:bg-green-700'
+            className = className.replace('-blue-', '-green-')
             break;
         case 'danger':
-            className += ' text-red-700 bg-red-100 hover:bg-red-200 dark:bg-red-800 dark:hover:bg-red-700'
+            className = className.replace('-blue-', '-red-')
+            break;
+        case 'warning':
+            className = className.replace('-blue-', '-orange-')
             break;
         default:
-            className += ' text-gray-700 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700'
+            
             break;
-
     }
     return (
         <button
-            type="button" className={`${className} ${props.className || ''}`}
-            onClick={props.onClick}
-            title={props.title}
-            disabled={props.isLoading || props.disabled}
+            {...props}
+            className={twMerge(className, props.className || '')}
+            disabled={props.loading || props.disabled}
         >
-            {props.isLoading ? <LoadingIcon/> : props.children}
+            {props.loading ? <LoadingIcon/> : props.children}
         </button>
     );
 }

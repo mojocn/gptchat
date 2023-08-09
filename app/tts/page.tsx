@@ -1,5 +1,5 @@
 'use client'
-import React, {useEffect, useRef, useState} from 'react'
+import React, { useRef} from 'react'
 import {WordTag} from "./word";
 import {CaButton} from "@/components/ui-lib";
 
@@ -10,7 +10,7 @@ import {
     SpeechConfig,
     SpeechRecognizer
 } from "microsoft-cognitiveservices-speech-sdk";
-import {fetchSpeechToken, text2speech, text2speechMML} from "@/pkg/tts";
+import {fetchSpeechToken,  text2speechMML} from "@/pkg/tts";
 import {
     Recognizer,
     SpeechRecognitionCanceledEventArgs,
@@ -231,14 +231,14 @@ export default function Tts() {
 
             <div className="absolute left-0 bottom-0 right-0 m-4  flex align-center items-center gap-4 justify-center">
 
-                <CaButton onClick={doIndxDesc} isLoading={loading} type="primary"> <IconChevronLeft/></CaButton>
+                <CaButton onClick={doIndxDesc} loading={loading} theme="primary"> <IconChevronLeft/></CaButton>
 
                 {
                     recognizing ?
-                        <CaButton onClick={recognizerStop} type="danger"> <IconWaveSine
+                        <CaButton onClick={recognizerStop} theme="danger" loading={false}> <IconWaveSine
                             className="animate-ping "/></CaButton>
                         :
-                        <CaButton onClick={recognizerStart} isLoading={loading} type="success">
+                        <CaButton onClick={recognizerStart} loading={loading} theme="success">
                             <IconMicrophone/></CaButton>
                 }
                 {/*<CaButton onClick={() => {*/}
@@ -246,15 +246,16 @@ export default function Tts() {
                 {/*}}*/}
                 {/*          type="warning"*/}
                 {/*> <IconEar/></CaButton>*/}
-                <CaButton onClick={doSpeak} isLoading={loading} type="primary"> <IconVolume/></CaButton>
+                <CaButton onClick={doSpeak} loading={loading} theme="primary"> <IconVolume/></CaButton>
 
 
                 <CaButton onClick={doSendResultToCloud}
+                          loading={loading}
                           title="send recognition score to cloud"
-                          type="warning"
+                          theme="warning"
                 > <IconBrandTelegram/></CaButton>
 
-                <CaButton onClick={doIndxInc} isLoading={loading} type="primary"> <IconChevronRight/></CaButton>
+                <CaButton onClick={doIndxInc} loading={loading} theme="primary"> <IconChevronRight/></CaButton>
 
             </div>
         </div>

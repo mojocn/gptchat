@@ -148,8 +148,8 @@ export const DialogSession: FC<Props> = ({
                 />
 
                 <div className="flex justify-end gap-x-4 mt-4">
-                    <CaButton onClick={onClose}>Close</CaButton>
-                    <CaButton onClick={handleSubmit}>Submit</CaButton>
+                    <CaButton loading={false} onClick={onClose}>Close</CaButton>
+                    <CaButton loading={false} onClick={handleSubmit}>Submit</CaButton>
                 </div>
 
 

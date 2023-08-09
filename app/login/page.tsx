@@ -2,7 +2,7 @@
 import {useTransition} from "react";
 import React from 'react';
 import {useRouter} from "next/navigation";
-import {showToast, Toast} from "@/components/ui-lib";
+import {CaButton, showToast, Toast} from "@/components/ui-lib";
 import {doUserLogin} from "@/app/login/actions";
 import {UserModel, UserState, useUserStore} from "@/store/user";
 import Image from 'next/image'
@@ -65,6 +65,7 @@ export default function Login() {
                                 <div className="flex items-start">
                                     <div className="flex items-center h-5">
                                         <input id="terms" aria-describedby="terms" type="checkbox"
+                                                required
                                                className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3
                                                 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"/>
                                     </div>
@@ -75,11 +76,9 @@ export default function Login() {
                                                 href="#">Terms and Conditions</a></label>
                                     </div>
                                 </div>
-                                <button type="submit" className=" text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300
-                                                                    w-full
-                                font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-400 dark:hover:bg-blue-700 dark:focus:ring-primary-800">Login
-                                    In
-                                </button>
+                                <CaButton type="submit"
+                                    loading={isPending}
+                                 className=" w-full px-5 py-2.5">Login </CaButton>
                                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                                     Does not have an account? <a href="/register"
                                                                  className="font-medium text-primary-600 hover:underline dark:text-primary-500 mr-4">Register

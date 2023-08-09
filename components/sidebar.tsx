@@ -84,6 +84,7 @@ export default function SideBar() {
 
             <div className="flex justify-between my-4 align-center  w-full">
                 <CaButton
+                    loading={false}
                     title='Report bug'
                     className={''}
                     onClick={() => {
@@ -93,6 +94,7 @@ export default function SideBar() {
                 ><IconBugOff/></CaButton>
 
                 <CaButton
+                    loading={false}
                     title='Settings'
                     className={''}
                     onClick={e => {
@@ -103,6 +105,7 @@ export default function SideBar() {
                 ><IconSettings2/></CaButton>
 
                 <CaButton
+                    loading={false}
                     title='Buy Membership'
                     className={''}
                     onClick={e => {
@@ -114,12 +117,14 @@ export default function SideBar() {
                 ><IconBrandAppstore/></CaButton>
 
                 <CaButton
+                    loading={false}
                     title='Login or logout'
                     onClick={doLoginOrLogout}
                     className={''}
                 ><IconUserBolt/></CaButton>
 
                 <CaButton
+                    loading={false}
                     title='add new session'
                     onClick={doCreateNewSession}
                     className={''}

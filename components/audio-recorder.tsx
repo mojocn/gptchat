@@ -7,9 +7,6 @@ import {sleep} from "@/pkg/util";
 const constraints = {audio: true, video: false};
 
 
-
-
-
 const AudioRecorder = () => {
     const [audioURL, setAudioURL] = useState<string>("");
     const [recorderState, setRecorderState] = useState<RecordingState>("inactive")
@@ -93,6 +90,7 @@ const AudioRecorder = () => {
     return (
         <div className="flex-row gap-x-4">
             <CaButton
+                loading={recorderState === 'inactive'}
                 className="text-gray-200 bg-green-800"
                 onClick={startRecording}>
                 {recorderState === 'inactive' ?
@@ -101,6 +99,7 @@ const AudioRecorder = () => {
             </CaButton>
             {
                 recorderState === 'recording' && <CaButton
+                    loading={recorderState === 'recording'}
                     className="text-gray-200 bg-red-800"
                     onClick={stopRecording}><IconPlayerStop/></CaButton>
             }
