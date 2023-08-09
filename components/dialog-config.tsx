@@ -72,6 +72,13 @@ export const DialogConfig: FC<Props> = ({
                     onChange={v => {
                         config.updateFn(config => {
                             config.modelConfig.model = v as ModelType;
+                            if (config.modelConfig.model === 'gpt-3.5-turbo') {
+                                config.modelConfig.max_tokens = 1500
+                            } else if (config.modelConfig.model === 'gpt-3.5-16k') {
+                                config.modelConfig.max_tokens = 4000
+                            } else {
+                                config.modelConfig.max_tokens = 1000
+                            }
                             return config
                         })
                     }

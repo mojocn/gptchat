@@ -163,18 +163,22 @@ export default function Tts() {
 
     async function recognizerStart(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         await init();
-        recognizerRef.current?.startContinuousRecognitionAsync();
+        recognizerRef.current?.startContinuousRecognitionAsync(() => {
+            setRecognizing(true)
+
+        }, console.error);
         setRecognizing(true)
     }
 
     async function recognizerStop(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         setRecognizing(false)
         audioCfgRef.current?.close();
-        recognizerRef.current?.stopContinuousRecognitionAsync();
-        console.info("stop")
-        recognizerRef.current?.close()
-        audioCfgRef.current = undefined;
-        recognizerRef.current = undefined;
+        recognizerRef.current?.stopContinuousRecognitionAsync(() => {
+            setRecognizing(false)
+            recognizerRef.current?.close()
+            audioCfgRef.current = undefined;
+            recognizerRef.current = undefined;
+        }, console.error);
     }
 
     async function doSpeak() {

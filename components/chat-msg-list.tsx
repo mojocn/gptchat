@@ -79,7 +79,7 @@ export default function ChatMsgList(props: {}) {
             //     setAutoScroll(false);
             // }}
         >
-            {messages.map((message: Message) => {
+            {messages.filter(e => e.role != 'system').map((message: Message) => {
                 //console.log(message)
                 return (
                     <ChatMsg key={message.id} msg={message}/>

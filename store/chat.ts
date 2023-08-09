@@ -17,7 +17,7 @@ const defaultSystemMsg = (): Message => {
     return {
         id: 'system',
         role: 'system',
-        content: 'You are ChatGPT, a large language model trained by OpenAI. Follow the user\'s instructions carefully. Respond using markdown.',
+        content: '',
         time: new Date().toLocaleString()
     } as Message
 }

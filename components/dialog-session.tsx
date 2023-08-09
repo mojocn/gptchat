@@ -93,6 +93,7 @@ export const DialogSession: FC<Props> = ({
                 />
 
 
+
                 <CaInput name={'top_p'}
                          value={form.modelConfig.top_p}
                          onChange={e => {
@@ -102,6 +103,18 @@ export const DialogSession: FC<Props> = ({
                          placeholder={'top_p'}
                          type={'number'}
                          min={0} max={1} step={0.1}
+                />
+
+
+                <CaInput name={'max_tokens'}
+                         value={form.modelConfig.max_tokens}
+                         onChange={e => {
+                             setForm({...form, modelConfig: {...form.modelConfig, max_tokens: parseFloat(e)}})
+                         }
+                         }
+                         placeholder={'max tokens of the response'}
+                         type={'number'}
+                         min={400} max={16000} step={10}
                 />
 
                 <CaInput name={t.Temperature}

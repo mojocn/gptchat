@@ -22,7 +22,12 @@ export async function POST(req: NextRequest): Promise<Response> {
 
     let url = `${OPENAI_API_HOST}/v1/chat/completions`;
     if (OPENAI_API_TYPE === 'azure') {
-        url = `${AZURE_API_HOST}/openai/deployments/${AZURE_DEPLOYMENT_ID}/chat/completions?api-version=${AZURE_API_VERSION}`;
+        let modelID = AZURE_DEPLOYMENT_ID;
+        if (payload.model) {
+            // remove modelID's '.' to ''
+            modelID = payload.model.replace(/\./g, '');
+        }
+        url = `${AZURE_API_HOST}/openai/deployments/${modelID}/chat/completions?api-version=${AZURE_API_VERSION}`;
     }
     try {
         return await fetch(url, {
