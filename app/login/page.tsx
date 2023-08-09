@@ -24,25 +24,22 @@ export default function Login() {
             showToast('登录失败:' + e?.message)
         });
     })
-
-
     return (
-        <div className="bg-grey-lighter min-h-screen flex flex-col">
-            <section className="bg-gray-50 dark:bg-gray-900">
-                <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <div className="bg-grey-lighter h-screen w-screen flex flex-col overflow-hidden">
+            <section className="bg-gray-50 h-full dark:bg-gray-900">
+                <div className="flex flex-col items-center justify-center  py-8 mx-auto">
                     <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
                         <Image width={36} height={36} className="w-8 h-8 mr-2"
                                src={logoPng} alt="logo"/>
                         MojoAI
                     </a>
                     <div
-                        className=" bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-                        <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                        className=" bg-white rounded-lg shadow dark:border mx-auto dark:bg-gray-800 dark:border-gray-700">
+                        <div className="p-6 space-y-4 sm:space-y-4 sm:p-4 mx-auto">
+                            <h1 className=" text-center text-xl font-bold leading-tight tracking-tight text-gray-900 sm:text-2xl dark:text-white">
                                 Sign In to Your Account
                             </h1>
-                            <form className="space-y-4 md:space-y-3 w-96 " action={doAction}>
-
+                            <form className="space-y-4 sm:space-y-3  sm:w-96 w-full" action={doAction}>
                                 <div>
                                     <label htmlFor="email"
                                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
@@ -60,7 +57,6 @@ export default function Login() {
                                     <input type="password" name="password" id="password" placeholder="••••••••"
                                            className="bg-gray-50 border border-gray-300
                                                                         w-full
-
                                     text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-700 dark:border-gray-600
                                     dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
                                            required/>
@@ -81,7 +77,6 @@ export default function Login() {
                                 </div>
                                 <button type="submit" className=" text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300
                                                                     w-full
-
                                 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-400 dark:hover:bg-blue-700 dark:focus:ring-primary-800">Login
                                     In
                                 </button>
