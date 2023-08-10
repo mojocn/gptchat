@@ -207,7 +207,7 @@ export default function Tts() {
     return (
         <div className="mx-auto max-w-[36rem] overflow-hidden">
             <h3 className="text-center my-2">{`${idx + 1}/${lines.length}`}</h3>
-            <p className="text-center my-4 text-gray-400 dark:text-gray-200 font-mono text-center">{speechTxt()}</p>
+            <p className="text-center my-4 text-gray-400 dark:text-gray-200 font-mono ">{speechTxt()}</p>
             <p className="text-center my-4 text-gray-400 dark:text-gray-200 font-mono">{result?.Lexical}</p>
             {/*<p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{result?.ITN}</p>*/}
             {/*<p className="my-4 text-gray-400 dark:text-gray-200 font-mono">{result?.Display}</p>*/}
@@ -235,7 +235,7 @@ export default function Tts() {
 
                 {
                     recognizing ?
-                        <CaButton onClick={recognizerStop} theme="danger" loading={false}> <IconWaveSine
+                        <CaButton onClick={recognizerStop} theme="danger"> <IconWaveSine
                             className="animate-ping "/></CaButton>
                         :
                         <CaButton onClick={recognizerStart} loading={loading} theme="success">
