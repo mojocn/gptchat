@@ -1,5 +1,5 @@
 'use client'
-import React, { useRef} from 'react'
+import React, {useRef} from 'react'
 import {WordTag} from "./word";
 import {CaButton} from "@/components/ui-lib";
 
@@ -10,7 +10,7 @@ import {
     SpeechConfig,
     SpeechRecognizer
 } from "microsoft-cognitiveservices-speech-sdk";
-import {fetchSpeechToken,  text2speechMML} from "@/pkg/tts";
+import {fetchSpeechToken, text2speechMML} from "@/pkg/tts";
 import {
     Recognizer,
     SpeechRecognitionCanceledEventArgs,
@@ -21,7 +21,7 @@ import {
     IconChevronLeft,
     IconChevronRight,
     IconEar,
-    IconMicrophone,
+    IconMicrophone, IconTrash,
     IconVolume,
     IconWaveSine
 } from "@tabler/icons-react";
@@ -36,7 +36,7 @@ interface TextStore {
     result?: TtsResult,
     resultAll: TtsResult[],
     setResult: (v: TtsResult) => void
-
+    clearResult: () => void
     lines: string[]
     setLines: (v: string[]) => void
     idx: number
@@ -80,7 +80,8 @@ const useTextStore = create<TextStore>()(persist(
                 } else {
                     set({idx: get().idx + 1})
                 }
-            }
+            },
+            clearResult: () => set({result: undefined, resultAll: []})
             ,
             idxDec: () => {
                 if (get().idx <= 0) {
@@ -104,7 +105,7 @@ const useTextStore = create<TextStore>()(persist(
 
 export default function Tts() {
     const {
-        lines, idx, speechTxt, idxInc, idxDec,
+        lines, idx, speechTxt, idxInc, idxDec,clearResult,
         result, resultAll, setResult,
         loading, setLoading, recognizing, setRecognizing
     } = useTextStore();
@@ -255,6 +256,7 @@ export default function Tts() {
                           theme="warning"
                 > <IconBrandTelegram/></CaButton>
 
+                <CaButton onClick={clearResult} loading={loading} theme="primary"> <IconTrash/></CaButton>
                 <CaButton onClick={doIndxInc} loading={loading} theme="primary"> <IconChevronRight/></CaButton>
 
             </div>
