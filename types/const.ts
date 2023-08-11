@@ -1,11 +1,6 @@
 import {OptionItem} from "@/types/item";
 
 
-export enum Theme {
-    Auto = "auto",
-    Dark = "dark",
-    Light = "light",
-}
 
 export const ALL_MODELS = [
     {

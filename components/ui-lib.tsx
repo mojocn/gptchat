@@ -2,6 +2,7 @@ import {createRoot} from "react-dom/client";
 import React, {ButtonHTMLAttributes,} from "react";
 import {OptionItem} from "@/types/item";
 import {twMerge} from 'tailwind-merge'
+import {Button, ButtonProps} from "@/components/ui/button";
 
 
 export function Loading() {
@@ -96,7 +97,7 @@ export function CaSpinner({size}: { size?: number }) {
 
 export function CaSelect(props: {
     name: string,
-    value: string,
+    value?: string,
     onChange: (value: string) => void,
     placeholder: string
     options: OptionItem[]
@@ -162,10 +163,25 @@ export function CaInput(props: {
 type CaButtonProps = {
     theme?: 'primary' | 'success' | 'danger' | 'warning' | 'info';
     loading?: boolean;
-} & ButtonHTMLAttributes<HTMLButtonElement>
+} & ButtonProps
 
 export function CaButton({theme, loading = false, ...props}: CaButtonProps) {
-    // w-full  px-5 py-2.5 
+    // w-full  px-5 py-2.5
+    let isDisabled = props.disabled || loading
+    return (
+        <Button
+            {...props}
+            className={props.className || ''}
+            disabled={isDisabled}
+            variant="ghost"
+        >
+            {loading ? <LoadingIcon/> : props.children}
+        </Button>
+    );
+}
+
+export function CaButton0000({theme, loading = false, ...props}: CaButtonProps) {
+    // w-full  px-5 py-2.5
     let className = `py-[2px] px-[6px] text-sm text-center font-medium text-white bg-blue-400 rounded-lg    flex justify-center justify-items-center content-center
      hover:bg-blue-700      focus:ring-4 focus:outline-none focus:ring-blue-300     
       dark:bg-blue-400 dark:hover:bg-blue-700 dark:focus:ring-blue-800`
@@ -185,13 +201,13 @@ export function CaButton({theme, loading = false, ...props}: CaButtonProps) {
     }
     let isDisabled = props.disabled || loading
     return (
-        <button
+        <Button
             {...props}
             className={twMerge(className, props.className || '')}
             disabled={isDisabled}
         >
             {loading ? <LoadingIcon/> : props.children}
-        </button>
+        </Button>
     );
 }
 

@@ -10,7 +10,6 @@ import {
     IconBugOff,
     IconMessageChatbot,
     IconRobot,
-    IconSettings2,
     IconUserBolt
 } from "@tabler/icons-react";
 import {DialogConfig} from "@/components/dialog-config";
@@ -21,7 +20,6 @@ export default function SideBar() {
     const {addSession} = useChatStore();
     const {modelConfig} = useConfigStore();
     const {isAuthed, user} = useUserStore();
-    const [isShowConfig, setIsShowConfig] = useState(false);
     const [userEmail, setUserEmail] = useState('')
 
     useEffect(() => {
@@ -61,13 +59,7 @@ export default function SideBar() {
         <div
             className=" w-80 hidden sm:flex sm:flex-col border-gray-200 border-r relative ease-in-out  py-2 px-3"
         >
-            {
-                isShowConfig && <DialogConfig onClose={
-                    () => {
-                        setIsShowConfig(false)
-                    }
-                }/>
-            }
+
             <div className="relative py-4 w-full">
                 <div className="text-lg font-bold animate-bounce">MojoAI</div>
                 <p className="text-sm">
@@ -92,15 +84,8 @@ export default function SideBar() {
                     }
                 ><IconBugOff/></CaButton>
 
-                <CaButton
-                    title='Settings'
-                    className={''}
-                    onClick={e => {
-                        e.stopPropagation();
-                        setIsShowConfig(true)
-                    }
-                    }
-                ><IconSettings2/></CaButton>
+
+                <DialogConfig/>
 
                 <CaButton
                     title='Buy Membership'

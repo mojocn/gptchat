@@ -2,19 +2,17 @@
 import {useTransition} from "react";
 import React from 'react';
 import {useRouter} from "next/navigation";
-import {CaButton, showToast, Toast} from "@/components/ui-lib";
+import {CaButton, showToast} from "@/components/ui-lib";
 import {doUserLogin} from "@/app/login/actions";
 import {UserModel, UserState, useUserStore} from "@/store/user";
 import Image from 'next/image'
 
 import logoPng from "../apple-touch-icon.png"
-import {useTheme} from "@/app/use-theme";
 
 export default function Login() {
     const {setUser}: UserState = useUserStore();
     let [isPending, startTransition] = useTransition()
     const router = useRouter();
-    useTheme();
 
     const doAction = async (formData: FormData) => startTransition(() => {
         doUserLogin(formData).then(res => {

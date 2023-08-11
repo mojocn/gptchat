@@ -7,14 +7,12 @@ import {doPasswordReset} from "./actions";
 import {UserState, useUserStore} from "@/store/user";
 import Image from 'next/image'
 import logoPng from "../apple-touch-icon.png"
-import {useTheme} from "@/app/use-theme";
 
 
 export default function Login() {
     const {setUser}: UserState = useUserStore();
     let [isPending, startTransition] = useTransition()
     const router = useRouter();
-    useTheme();
 
     const doAction = async (formData: FormData) => startTransition(() => {
         doPasswordReset(formData).then(res => {

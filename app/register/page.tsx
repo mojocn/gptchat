@@ -5,12 +5,10 @@ import { useRouter } from 'next/navigation'
 import { CaButton, showToast } from "@/components/ui-lib";
 import Image from 'next/image'
 import logoPng from "@/app/apple-touch-icon.png";
-import { useTheme } from "@/app/use-theme";
 
 export default function Register() {
     let [isPending, startTransition] = useTransition()
     const router = useRouter();
-    useTheme();
 
     const doAction = async (formData: FormData) => startTransition(() => {
         doUserRegister(formData).then(res => {
