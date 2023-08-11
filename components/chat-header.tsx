@@ -1,7 +1,6 @@
 import * as React from "react";
 import {useEffect, useState} from "react";
 import {ChatState, Session, useChatStore} from "@/store/chat";
-import {useLocal} from "@/store/local";
 import {useTheme} from "next-themes"
 import {Button} from "@/components/ui/button"
 import {
@@ -11,18 +10,9 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {Moon, Sun} from "lucide-react"
+import {useLocal} from "@/store/local";
 
-export default function ChatHeader(props: {
-    onClick?: any;
-    icon?: string;
-    type?: "primary" | "danger";
-    text?: string;
-    bordered?: boolean;
-    shadow?: boolean;
-    className?: string;
-    title?: string;
-    disabled?: boolean;
-}) {
+export default function ChatHeader() {
     const [session, setSession] = useState<Session>({} as Session);
     const {selectedSessionId, sessions}: ChatState = useChatStore();
     const {t} = useLocal();
@@ -39,10 +29,12 @@ export default function ChatHeader(props: {
                 <h2
                     className="text-lg font-bold"
                 >
-                    {session.title}
+                    {`${session.title} / ${session.modelConfig?.model}`}
                 </h2>
                 <h4 className="text-sm font-medium">
-                    {t.SubTitle(session.messages?.length)}
+                    {t.SubTitle && t.SubTitle(session.messages?.length)}
+                {/*    todo:fix this*/}
+
                 </h4>
             </section>
             <ThemeToggle/>

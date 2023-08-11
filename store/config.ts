@@ -37,10 +37,12 @@ export const useConfigStore = create<ConfigStore>()(
                 updater(config);
                 set(() => config);
             },
+
         }),
         {
             name: 'config',
         },
+
     ),
 );
 

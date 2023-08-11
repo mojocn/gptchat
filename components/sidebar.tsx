@@ -17,7 +17,7 @@ import {lemonCheckoutURL} from "@/types/lemon";
 
 export default function SideBar() {
     const router = useRouter();
-    const {addSession} = useChatStore();
+    const {addSession,sessions} = useChatStore();
     const {modelConfig} = useConfigStore();
     const {isAuthed, user} = useUserStore();
     const [userEmail, setUserEmail] = useState('')
@@ -36,7 +36,8 @@ export default function SideBar() {
     // const navigate = useNavigate();
 
     function doCreateNewSession() {
-        addSession(modelConfig, 'New Session', []);
+        const n = sessions.length + 1;
+        addSession(modelConfig, 'New Session '+n, []);
         // navigate(Path.Chat);
     }
 

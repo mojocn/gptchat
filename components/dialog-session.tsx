@@ -1,160 +1,192 @@
-import {FC, KeyboardEvent, useEffect, useRef, useState} from 'react';
-import {Session, useChatStore} from "@/store/chat";
-import {CaButton, CaInput, CaSelect} from "@/components/ui-lib";
-import {ALL_MODELS, ModelType} from "@/types/const";
+import {useEffect, useState} from 'react';
+import {ChatState, Session, useChatStore} from "@/store/chat";
+import {ALL_MODELS} from "@/types/const";
 import {useLocal} from "@/store/local";
+import * as z from "zod";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {toast} from "@/components/ui/use-toast";
+import {Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
+import {Button} from "@/components/ui/button";
+import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import {Input} from "@/components/ui/input";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {ModelConfig} from "@/store/config";
+import {IconAdjustments} from "@tabler/icons-react";
+import {useForm} from "react-hook-form";
 
 
-interface Props {
-    session: Session;
-    onClose: () => void;
-}
+const formSchemaSessionModel = z.object({
+    model: z.string(),
+    top_p: z.coerce.number(),
+    temperature: z.coerce.number(),
+    frequency_penalty: z.number(),
+    presence_penalty: z.coerce.number(),
+    max_tokens: z.coerce.number(),
+    max_history: z.coerce.number(),
 
-export const DialogSession: FC<Props> = ({
-                                             session,
-                                             onClose,
-                                         }) => {
-    const modalRef = useRef<HTMLFormElement>(null);
-    const [form, setForm] = useState({...session});
-    const {upsertSession} = useChatStore();
+
+})
+
+export function DialogSession({session}:{session:Session}) {
+    const {
+        upsertSession,
+        getSelectedSession
+    }: ChatState = useChatStore();
+    const [open, setOpen] = useState(false);
     const {t} = useLocal()
+    // const session = getSelectedSession() || {modelConfig: {}} as Session
 
-    const handleSubmit = () => {
-        upsertSession(form);
-        onClose();
-    };
+    const formData = useForm<z.infer<typeof formSchemaSessionModel>>({
+        resolver: zodResolver(formSchemaSessionModel),
+        defaultValues: {...session.modelConfig},
+    })
 
-    const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            handleSubmit();
-        } else if (e.key === 'Escape') {
-            onClose();
-        }
-    };
 
-    useEffect(() => {
-        const handleOutsideClick = (e: MouseEvent) => {
-            if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-                onClose();
-            }
-        };
+    // 2. Define a submit handler.
+    function onSubmit(values: z.infer<typeof formSchemaSessionModel>) {
+        setOpen(false)
+        upsertSession({...session, modelConfig: values})
+    }
 
-        window.addEventListener('click', handleOutsideClick);
-
-        return () => {
-            window.removeEventListener('click', handleOutsideClick);
-        };
-    }, [onClose]);
-
-    useEffect(() => {
-
-    }, []);
+    function onErrors(errors: any) {
+        console.log(errors)
+        debugger
+    }
 
     return (
-        <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-            onKeyDown={handleKeyDown}
-        >
-            <form
-                ref={modalRef}
-                className="dark:border-netural-400
-                inline-block max-h-[400px] transform overflow-y-auto rounded-lg
-                border border-gray-300 bg-white px-4 pt-5 pb-4 text-left align-bottom shadow-xl
-                max-w-[600px]
-                transition-all dark:bg-[#202123] sm:my-8 sm:max-h-[600px] sm:w-full sm:max-w-lg sm:p-6 sm:align-middle"
-                role="dialog"
-            >
-                <div className="flex my-2 justify-between">
-                    <label htmlFor="title"
-                           className="mr-3 text-sm text-gray-900 dark:text-white align-middle">{t.SessionTitle}</label>
-                    <input type="text" name="title" id="title"
-                           value={form.title}
-                           onChange={e => {
-                               e.stopPropagation()
-                               setForm({...form, title: e.target.value})
-                           }}
-                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
-                           focus:ring-primary-600 focus:border-primary-600 block w-64 p-1 dark:bg-gray-700 dark:border-gray-600
-                           dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                           placeholder={t.SessionTitlePh}/>
-                </div>
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+                {/* eslint-disable-next-line react/jsx-no-undef */}
+                <Button title='Settings' variant="ghost"><IconAdjustments/></Button>
+            </DialogTrigger>
+            <DialogContent className="md:max-w-[825px]">
+                <DialogHeader>
+                    <DialogTitle>Set Session configuration</DialogTitle>
+                    <DialogDescription>
+                        Set Session configuration
+                    </DialogDescription>
+                </DialogHeader>
+
+                <Form {...formData}>
+                    <form onSubmit={formData.handleSubmit(onSubmit, onErrors)} className="space-y-6">
+
+                        <FormField
+                            control={formData.control}
+                            name="model"
+                            render={({field}) => (
+                                <FormItem>
+                                    <FormLabel>model</FormLabel>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select a verified model to display"/>
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {ALL_MODELS.map(m => <SelectItem key={m.value} value={m.value}
+                                                                             disabled={m.disabled}>{m.label}</SelectItem>)}
+                                        </SelectContent>
+                                    </Select>
+
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={formData.control}
+                            name="max_history"
+                            render={({field}) => (
+                                <FormItem>
+                                    <FormLabel>max_history</FormLabel>
+                                    <FormControl>
+                                        <Input type="number" placeholder="max_history" {...field} min={4} max={16}
+                                               step={2}/>
+                                    </FormControl>
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={formData.control}
+                            name="max_tokens"
+                            render={({field}) => (
+                                <FormItem>
+                                    <FormLabel>max_tokens</FormLabel>
+                                    <FormControl>
+                                        <Input type="number" placeholder="max_tokens" {...field} min={400} max={40000}
+                                               step={200}/>
+                                    </FormControl>
+
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={formData.control}
+                            name="top_p"
+                            render={({field}) => (
+                                <FormItem>
+                                    <FormLabel>top_p</FormLabel>
+                                    <FormControl>
+                                        <Input type="number" placeholder="top_p" {...field} min={0} max={1} step={0.1}/>
+                                    </FormControl>
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={formData.control}
+                            name="frequency_penalty"
+                            render={({field}) => (
+                                <FormItem>
+                                    <FormLabel>frequency_penalty</FormLabel>
+                                    <FormControl>
+                                        <Input type="number" placeholder="frequency_penalty" {...field} min={0} max={1}
+                                               step={0.1}/>
+                                    </FormControl>
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={formData.control}
+                            name="presence_penalty"
+                            render={({field}) => (
+                                <FormItem>
+                                    <FormLabel>presence_penalty</FormLabel>
+                                    <FormControl>
+                                        <Input type="number" placeholder="presence_penalty" {...field} min={0} max={1}
+                                               step={0.1}/>
+                                    </FormControl>
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={formData.control}
+                            name="temperature"
+                            render={({field}) => (
+                                <FormItem>
+                                    <FormLabel>temperature</FormLabel>
+                                    <FormControl>
+                                        <Input type="number" placeholder="temperature" {...field} min={0} max={1}
+                                               step={0.1}/>
+                                    </FormControl>
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />
 
 
-                <CaSelect
-                    name={t.OpenAiModel}
-                    value={form.modelConfig.model}
-                    onChange={v => {
-                        setForm({...form, modelConfig: {...form.modelConfig, model: v as ModelType}})
-                    }
-                    }
-                    placeholder={t.OpenAiModel}
-                    options={ALL_MODELS}
-                />
-
-
-
-                <CaInput name={'top_p'}
-                         value={form.modelConfig.top_p}
-                         onChange={e => {
-                             setForm({...form, modelConfig: {...form.modelConfig, top_p: parseFloat(e)}})
-                         }
-                         }
-                         placeholder={'top_p'}
-                         type={'number'}
-                         min={0} max={1} step={0.1}
-                />
-
-
-                <CaInput name={'max_tokens'}
-                         value={form.modelConfig.max_tokens}
-                         onChange={e => {
-                             setForm({...form, modelConfig: {...form.modelConfig, max_tokens: parseFloat(e)}})
-                         }
-                         }
-                         placeholder={'max tokens of the response'}
-                         type={'number'}
-                         min={400} max={16000} step={10}
-                />
-
-                <CaInput name={t.Temperature}
-                         value={form.modelConfig.temperature}
-                         onChange={e => {
-                             setForm({
-                                 ...form,
-                                 modelConfig: {...form.modelConfig, temperature: parseFloat(e)}
-                             })
-                         }
-                         }
-                         placeholder={t.Temperature}
-                         type={'number'}
-                         min={0} max={1} step={0.1}
-                />
-
-
-                <CaInput name={t.MaxHistoryMsg}
-                         value={form.modelConfig.max_history}
-                         onChange={e => {
-                             setForm({
-                                 ...form,
-                                 modelConfig: {...form.modelConfig, max_history: parseInt(e)}
-                             })
-
-                         }
-                         }
-                         placeholder={t.MaxHistoryMsg}
-                         type={'number'}
-                         min={4} max={32} step={2}
-                />
-
-                <div className="flex justify-end gap-x-4 mt-4">
-                    <CaButton loading={false} onClick={onClose}>Close</CaButton>
-                    <CaButton loading={false} onClick={handleSubmit}>Submit</CaButton>
-                </div>
-
-
-            </form>
-        </div>
+                        <DialogFooter>
+                            <Button type="submit">Submit</Button>
+                        </DialogFooter>
+                    </form>
+                </Form>
+            </DialogContent>
+        </Dialog>
     );
-};
+}
+
 

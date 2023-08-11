@@ -1,37 +1,15 @@
 "use client"
 
-import React, {useEffect} from 'react';
+import  {useState} from 'react';
 import {useConfigStore} from "@/store/config";
 import {ALL_LANG, useLocal} from "@/store/local";
-import {ALL_MODELS, ModelType} from "@/types/const";
+import {ALL_MODELS} from "@/types/const";
 import {Button} from "@/components/ui/button"
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
+import {Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger,} from "@/components/ui/dialog"
 import {Input} from "@/components/ui/input"
 import {IconSettings2} from "@tabler/icons-react";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form"
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select"
+import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage,} from "@/components/ui/form"
 import * as z from "zod"
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -40,37 +18,37 @@ import {toast} from "@/components/ui/use-toast";
 
 const formSchema = z.object({
     model: z.string().nonempty(),
-    top_p: z.coerce.number().min(0).max(1).positive(),
-    temperature: z.coerce.number().min(0).max(1).positive(),
-    frequency_penalty: z.coerce.number().min(0).max(1).positive(),
-    presence_penalty: z.coerce.number().min(0).max(1).positive(),
-    max_tokens: z.coerce.number().min(400).max(160000).positive(),
-    max_history: z.coerce.number().min(4).max(16).positive(),
-
-
+    top_p: z.coerce.number(),
+    temperature: z.coerce.number(),
+    frequency_penalty: z.coerce.number(),
+    presence_penalty: z.coerce.number(),
+    max_tokens: z.coerce.number(),
+    max_history: z.coerce.number(),
     lang: z.string().nonempty(),
 })
 
 
 export function DialogConfig() {
     const config = useConfigStore();
-    const {lang, setLang} = useLocal();
-
+    const {lang,setLang} = useLocal();
+    const [open, setOpen] = useState(false);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            ...config.modelConfig,
+            ...config.modelConfig ,
+            lang: lang,
         },
     })
 
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
-        debugger
-        // Do something with the form values.
         // ✅ This will be type-safe and validated.
-        console.log(values)
-
+        config.updateFn(config=>{
+            config.modelConfig = {...config.modelConfig,...values}
+        })
+        setLang(values.lang)
+        setOpen(false)
         toast({
             title: "You submitted the following values:",
             description: (
@@ -81,13 +59,8 @@ export function DialogConfig() {
         })
     }
 
-
-    useEffect(() => {
-
-    }, []);
-
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button title='Settings' variant="ghost"><IconSettings2/></Button>
             </DialogTrigger>
