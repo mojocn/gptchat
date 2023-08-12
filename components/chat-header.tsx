@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import {Moon, Sun} from "lucide-react"
 import {useLocal} from "@/store/local";
+import {UserNav} from "@/components/user-nav";
 
 export default function ChatHeader() {
     const [session, setSession] = useState<Session>({} as Session);
@@ -37,7 +38,11 @@ export default function ChatHeader() {
 
                 </h4>
             </section>
-            <ThemeToggle/>
+            <div className="flex justify-center align-center items-center gap-x-4 mr-3">
+                <ThemeToggle/>
+                <UserNav/>
+            </div>
+
         </div>
     );
 }

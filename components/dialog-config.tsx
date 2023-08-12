@@ -58,6 +58,15 @@ export function DialogConfig() {
             ),
         })
     }
+    function onReset() {
+        // ✅ This will be type-safe and validated.
+        config.resetFn()
+        setOpen(false)
+        toast({
+            title: "You submitted the following values:",
+            description:"aa",
+        })
+    }
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -181,6 +190,7 @@ export function DialogConfig() {
 
                         <DialogFooter>
                             <Button type="submit">Submit</Button>
+                            <Button type={"button"} variant={"destructive"} onClick={onReset}>Reset</Button>
                         </DialogFooter>
                     </form>
                 </Form>
