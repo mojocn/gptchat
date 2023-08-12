@@ -4,7 +4,6 @@ import {useUserStore} from "@/store/user";
 import {useRouter} from "next/navigation";
 import ChatInput from "@/components/chat-input";
 import dynamic from 'next/dynamic'
-import {useTheme} from "@/app/use-theme";
 
 
 const SideBar = dynamic(() => import('../components/sidebar'), {ssr: false,});
@@ -14,8 +13,6 @@ const PromptList = dynamic(() => import('../components/prompt-list'), {ssr: fals
 export default function Home() {
     const router = useRouter();
     const {isAuthed} = useUserStore();
-    useTheme();
-
     useEffect(() => {
         !isAuthed && router.push('/login')
     }, [isAuthed, router])

@@ -1,10 +1,9 @@
 import {create} from "zustand";
 import {persist} from "zustand/middleware";
-import {ModelType, Theme} from "@/types/const";
+import {ModelType} from "@/types/const";
 
 export const DEFAULT_CONFIG = {
     fontSize: 14,
-    theme: Theme.Dark as Theme,
     modelConfig: {
         model: "gpt-3.5-turbo" as ModelType,
         temperature: 1,
@@ -38,10 +37,12 @@ export const useConfigStore = create<ConfigStore>()(
                 updater(config);
                 set(() => config);
             },
+
         }),
         {
             name: 'config',
         },
+
     ),
 );
 

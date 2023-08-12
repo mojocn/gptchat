@@ -4,7 +4,6 @@ import React, {useEffect, useRef, useState} from "react";
 import {UiStore, useUiStore} from "@/store/ui";
 import {useUserStore} from "@/store/user";
 import {
-    IconAdjustments,
     IconArrowsDown,
     IconArrowsUp,
     IconBackspace,
@@ -13,19 +12,14 @@ import {
 } from "@tabler/icons-react";
 import {usePromptStore} from "@/store/prompt";
 import {showToast} from "@/components/ui-lib";
-import {useLocal} from "@/store/local";
 import {DialogSession} from "@/components/dialog-session";
 import {useSpeech2txt} from "@/components/speech2txt";
 import {sleep2} from "@/pkg/util";
+import {useLocal} from "@/store/local";
 
 const MSG_DRAFT = "MSG_DRAFT_TO_PREVIEW"
 const ChatInput = () => {
-    const {recognizerStart, recognizerStop, loading, recognizing} = useSpeech2txt();
-
-
-    const [session, setSession] = useState<Session>({} as Session);
-    const [isDialogVisible, setIsDialogVisible] = useState(false);
-
+    const {recognizerStart, recognizerStop, recognizing} = useSpeech2txt();
     const {user} = useUserStore();
     const {t} = useLocal();
 
@@ -33,9 +27,9 @@ const ChatInput = () => {
     const {
         userInput,
         setUserInput,
-        sessions,
         doCallOpenAiCompletion,
         userInputFocus,
+        getSelectedSession,
         setUserInputFocus,
         lastUserInput,
         setLastUserInput,
@@ -46,11 +40,8 @@ const ChatInput = () => {
     }: ChatState = useChatStore();
     const {setIsScrollBottom, setIsScrollTop, setIsScrollAuto}: UiStore = useUiStore();
     let {prompts, setPrompts, rawPrompts} = usePromptStore();
+    const session = getSelectedSession() || {} as Session;
 
-    useEffect(() => {
-        const ss = sessions.find(s => s.id === selectedSessionId);
-        ss && setSession(ss!);
-    }, [selectedSessionId, sessions]);
 
     const doClearMessages = () => {
         setPrompts([]);
@@ -166,17 +157,6 @@ const ChatInput = () => {
     return (
         <div className="relative w-full px-2 py-3  border-t border-gray-200">
 
-            {
-                isDialogVisible && (
-                    <DialogSession
-                        session={session}
-                        onClose={() => {
-                            setIsDialogVisible(false);
-                        }}
-                    />
-                )
-            }
-
 
             <div className="flex gap-2 mb-2">
                 <CaButton
@@ -211,30 +191,21 @@ const ChatInput = () => {
                     <IconBackspace/>
 
                 </CaButton>
-                <CaButton
 
-                    onClick={(e: any) => {
-                        e.stopPropagation()
-                        e.preventDefault()
-                        setIsDialogVisible(true);
-                    }
-                    }
-                >
-                    <IconAdjustments/>
-                </CaButton>
+                <DialogSession session={session}/>
 
 
                 {
                     recognizing ?
                         <CaButton
                             onClick={async () => {
-                            await recognizerStop();
-                            sleep2(100)
-                            await doSubmit(userInput)
-                        }} className='bg-orange-600'> <IconWaveSine
+                                await recognizerStop();
+                                sleep2(100)
+                                await doSubmit(userInput)
+                            }} className='bg-orange-600'> <IconWaveSine
                             className="animate-ping "/></CaButton>
                         :
-                        <CaButton onClick={async ()=>{
+                        <CaButton onClick={async () => {
                             await recognizerStart((txt: string) => {
                                 setUserInput(txt)
                             })

@@ -44,7 +44,7 @@ export interface ChatState {
     editMessageFromSelectedSession: (_: string, _1: string) => void
 
     selectedSessionId: string
-
+    getSelectedSession: () => Session | undefined
     sessionById: (id: string) => Session | undefined,
 
     renameSession: (sessionId: string, title: string) => void
@@ -102,6 +102,10 @@ export const useChatStore = create<ChatState>()(persist(
 
             setSelectedSessionId: (id: string): void => {
                 set({selectedSessionId: id})
+            },
+            getSelectedSession() {
+                let id = get().selectedSessionId;
+                return get().sessions.find(e => e.id === id);
             },
             upsertSession: (s: Session) => {
                 let isNotExist = true;

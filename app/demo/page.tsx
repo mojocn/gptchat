@@ -1,15 +1,12 @@
 'use client'
 import React from 'react'
 
-import {useTheme} from "@/app/use-theme";
 import {useConfigStore} from "@/store/config";
-import {Theme} from "@/types/const";
 import AudioRecorder from "@/components/audio-recorder";
 
 export default function Home() {
-    const {theme, updateFn} = useConfigStore()
+    const {updateFn} = useConfigStore()
 
-    useTheme();
 
 
     return (

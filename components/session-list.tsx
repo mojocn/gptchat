@@ -1,18 +1,26 @@
 import {ChatState, Session, useChatStore} from "@/store/chat";
 import {IconCheck, IconDatabaseExport, IconPencilMinus, IconTrash, IconX} from "@tabler/icons-react";
 import {useEffect, useState} from "react";
-
+import {Card} from "./ui/card";
+import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
+import {Label} from "@/components/ui/label";
+import {Input} from "@/components/ui/input";
 
 export function SessionList() {
-    const {sessions}: ChatState = useChatStore();
+    //https://github.com/shadcn-ui/ui/blob/main/apps/www/app/examples/cards/components/payment-method.tsx
+    const {sessions, selectedSessionId}: ChatState = useChatStore();
 
     return (
-
         <div className="flex-1 overflow-x-hidden overflow-y-auto w-full">
-            {sessions.map((item, i) => (
-                <SessionItem session={item} key={item.id}/>
-            ))}
+            <RadioGroup value={selectedSessionId}>
+
+                {sessions.map((item, i) => (
+                    <SessionItem session={item} key={item.id}/>
+                ))}
+            </RadioGroup>
+
         </div>
+
 
     );
 }
@@ -20,7 +28,7 @@ export function SessionList() {
 
 function SessionItem({session}: { session: Session }) {
     // const navigate = useNavigate();
-    const {deleteSession, setSelectedSessionId, selectedSessionId, renameSession} = useChatStore();
+    const {deleteSession, setSelectedSessionId, selectedSessionId, renameSession, getSelectedSession} = useChatStore();
     const [title, setTitle] = useState(session.title);
     const [isRename, setIsRename] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
@@ -47,6 +55,7 @@ function SessionItem({session}: { session: Session }) {
 
     function doSelectSession() {
         setSelectedSessionId(session.id);
+        getSelectedSession();
         // setTimeout(() => {
         //     navigate(Path.Chat);
         // }, 50)
@@ -54,13 +63,12 @@ function SessionItem({session}: { session: Session }) {
 
 
     return (
-        <div
-            onClick={doSelectSession}
-            className={"max-w-sm p-4 border  border-gray-200 cursor-pointer shadow mt-4 relative group/session  w-full rounded-lg    " +
-                "hover:bg-gray-100  hover:text-blue-700 " +
-                "dark:hover:bg-gray-700  dark:hover:text-blue-200 " +
-                (selectedSessionId === session.id ? "bg-gray-100 border-blue-400 dark:bg-gray-600 dark:border-blue-400 border-[2px] " : "bg-gray-200 border-blue-100 dark:bg-gray-700 dark:border-blue-100 border-[1px] ")}
+        <Label onClick={doSelectSession}
+               className={"max-w-sm p-4 cursor-pointer mt-2 relative group/session  w-full h-24 " +
+                   "rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary "
+               }
         >
+            <RadioGroupItem value={session.id} id={session.id} className="sr-only"/>
 
 
             {
@@ -70,6 +78,13 @@ function SessionItem({session}: { session: Session }) {
                     <div className="flex space-x-2 h-5 items-center ">
                         <input
                             className="text-sm flex-1"
+                            onKeyDown={e => {
+                                e.stopPropagation();
+                                if (e.key === 'Enter') {
+                                    renameSession(session.id, title);
+                                    setIsRename(false)
+                                }
+                            }}
                             placeholder="change the session name"
                             onInput={e => {
                                 e.stopPropagation();
@@ -175,7 +190,7 @@ function SessionItem({session}: { session: Session }) {
             </div>
 
 
-        </div>
+        </Label>
 
 
     );

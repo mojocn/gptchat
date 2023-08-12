@@ -3,11 +3,11 @@ import React, {useRef, useState} from "react";
 import {Markdown} from "@/components/markdown";
 import {ChatState, Message, useChatStore} from "@/store/chat";
 import {showToast} from "./ui-lib";
-import {IconCheck, IconRobot, IconSpeakerphone, IconX} from "@tabler/icons-react";
+import {IconCheck, IconRobot,  IconX} from "@tabler/icons-react";
 import {UiStore, useUiStore} from "@/store/ui";
 import {useUserStore} from "@/store/user";
-import {useLocal} from "@/store/local";
 import {fetchSpeechToken, text2speech} from "@/pkg/tts";
+import {useLocal} from "@/store/local";
 
 async function copyToClipboard(text: string) {
     const success = "已写入剪切板"
@@ -43,7 +43,6 @@ export function ChatMsg({msg}: { msg: Message }) {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     //ref textarea
-    const ref = useRef()
     //let message = {content: 'sssss', date: '', streaming: false, id: '', role: 'user', preview: false}
     const isUser = msg.role === "user";
     const {setIsScrollAuto}: UiStore = useUiStore();
