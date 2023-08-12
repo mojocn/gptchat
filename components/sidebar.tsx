@@ -58,7 +58,7 @@ export default function SideBar() {
     const REPO_URL = 'https://github.com/mojocn/gptchat/issues'
     return (
         <div
-            className=" w-80 hidden sm:flex sm:flex-col border-gray-200 border-r relative ease-in-out  py-2 px-3"
+            className=" w-80 hidden sm:flex sm:flex-col relative ease-in-out  py-2 px-3"
         >
 
             <div className="relative py-4 w-full">

@@ -16,6 +16,9 @@ import {DialogSession} from "@/components/dialog-session";
 import {useSpeech2txt} from "@/components/speech2txt";
 import {sleep2} from "@/pkg/util";
 import {useLocal} from "@/store/local";
+import {Button} from "@/components/ui/button";
+import {Textarea } from "@/components/ui/textarea";
+import {Send} from "lucide-react";
 
 const MSG_DRAFT = "MSG_DRAFT_TO_PREVIEW"
 const ChatInput = () => {
@@ -155,7 +158,7 @@ const ChatInput = () => {
     }, [userInputFocus])
 
     return (
-        <div className="relative w-full px-2 py-3  border-t border-gray-200">
+        <div className="relative w-full px-2 py-3 border-t">
 
 
             <div className="flex gap-2 mb-2">
@@ -215,41 +218,46 @@ const ChatInput = () => {
 
             </div>
 
-            <div className="flex flex-1 relative">
-            <textarea id="user-input"
-                      rows={5}
-                      value={userInput}
-                      ref={textareaRef}
-                      onKeyDown={onInputKeyDown}
-                      onChange={handleInputChange}
-                      onCompositionStart={() => {
-                      }}
-                      onCompositionEnd={() => {
-                      }}
-                      onBlur={() => {
-                          setIsScrollTop(false)
-                          setIsScrollBottom(false)
-                          setIsScrollAuto(false)
-                      }
-                      }
-                      onFocus={() => {
-                          setPrompts([])
-                          setIsScrollTop(false)
-                          setIsScrollBottom(false)
-                          setIsScrollAuto(true)
-                      }
-                      }
-                      className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-200 shadow-sm
-                      outline-none
-                      focus:border-blue-400 focus:ring-blue-400 focus:ring-1 focus:outline-none focus-within:ring-1 focus-within:ring-blue-400
-                      dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
-                      placeholder={t.inputPlaceholder} required></textarea>
-                <CaButton
-                    onClick={async () => await doSubmit(userInput)}
-                    className="absolute right-2 bottom-4"
+            <form className="relative flex w-full items-center space-x-4 mx-2"
+                onSubmit={async (e) => {
+                    e.preventDefault();
+                    await doSubmit(userInput);
+                }}
+            >
+                <Textarea id="user-input"
+                          rows={5}
+                          value={userInput}
+                          ref={textareaRef}
+                          onKeyDown={onInputKeyDown}
+                          onChange={handleInputChange}
+                          onCompositionStart={() => {
+                          }}
+                          onCompositionEnd={() => {
+                          }}
+                          onBlur={() => {
+                              setIsScrollTop(false)
+                              setIsScrollBottom(false)
+                              setIsScrollAuto(false)
+                          }
+                          }
+                          onFocus={() => {
+                              setPrompts([])
+                              setIsScrollTop(false)
+                              setIsScrollBottom(false)
+                              setIsScrollAuto(true)
+                          }
+                          }
+                          className=""
+                          placeholder={t.inputPlaceholder} required/>
+                <Button
+                    type="submit"
+                    size="icon"
                     title="send"
-                ><IconSend></IconSend></CaButton>
-            </div>
+                >
+                    <Send className="h-4 w-4"/>
+                    <span className="sr-only">Send</span>
+                </Button>
+            </form>
         </div>
 
     )

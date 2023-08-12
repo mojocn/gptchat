@@ -4,6 +4,7 @@ import {useUserStore} from "@/store/user";
 import {useRouter} from "next/navigation";
 import ChatInput from "@/components/chat-input";
 import dynamic from 'next/dynamic'
+import {Card, CardContent, CardFooter, CardHeader} from "@/components/ui/card";
 
 
 const SideBar = dynamic(() => import('../components/sidebar'), {ssr: false,});
@@ -20,15 +21,21 @@ export default function Home() {
     return (
 
         <div
-            className={"bg-white text-black dark:text-white dark:bg-gray-800 rounded-lg flex overflow-hidden box-border w-screen h-screen"}
+            className={"flex overflow-hidden box-border w-screen h-screen"}
         >
             <SideBar/>
-            <div className="h-full w-full flex flex-col grow">
-                <ChatHeader/>
-                <ChatMsgList/>
-                <PromptList/>
-                <ChatInput/>
-            </div>
+            <Card className="h-full w-full flex flex-col grow">
+                <CardHeader>
+                    <ChatHeader/>
+                </CardHeader>
+                <CardContent>
+                    <ChatMsgList/>
+                    <PromptList/>
+                </CardContent>
+                <CardFooter>
+                    <ChatInput/>
+                </CardFooter>
+            </Card>
         </div>
     )
 }

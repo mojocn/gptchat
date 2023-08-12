@@ -12,6 +12,7 @@ import {
 import {Moon, Sun} from "lucide-react"
 import {useLocal} from "@/store/local";
 import {UserNav} from "@/components/user-nav";
+import {CardHeader} from "@/components/ui/card";
 
 export default function ChatHeader() {
     const [session, setSession] = useState<Session>({} as Session);
@@ -25,7 +26,7 @@ export default function ChatHeader() {
 
 
     return (
-        <div className="flex align-center justify-between px-4 py-3 border-b border-gray-200 h-18">
+        <div className="flex align-center justify-between pb-4 border-b">
             <section>
                 <h2
                     className="text-lg font-bold"

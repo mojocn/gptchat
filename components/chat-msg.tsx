@@ -8,6 +8,8 @@ import {UiStore, useUiStore} from "@/store/ui";
 import {useUserStore} from "@/store/user";
 import {fetchSpeechToken, text2speech} from "@/pkg/tts";
 import {useLocal} from "@/store/local";
+import {Textarea} from "@/components/ui/textarea";
+import {cn} from "@/lib/utils";
 
 async function copyToClipboard(text: string) {
     const success = "已写入剪切板"
@@ -186,22 +188,20 @@ export function ChatMsg({msg}: { msg: Message }) {
                     </div>
                 </div>
                 <div
-                    className={"border border-gray-200 shadow rounded-md p-3  select-text   w-full " + (isUser ? "bg-blue-100 dark:bg-blue-600" : " bg-gray-100 dark:bg-gray-600")}
+                    className={cn("rounded-lg  p-3  select-text   w-full " , isUser ? "bg-primary text-primary-foreground" : "bg-muted")}
                 >
                     {
                         isEdit ?
                             (
                                 <div className="w-full">
-                                    <textarea
+                                    <Textarea
                                         ref={textareaRef}
-                                        className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-200 shadow-sm outline-none
-                      focus:border-blue-400 focus:ring-blue-400 focus:ring-1 focus:outline-none focus-within:ring-1 focus-within:ring-blue-400
-                      dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
+                                        className=""
                                         rows={msg.content.split('\n').length + 1}
                                         onInput={(e) => {
                                             setMsgContent((e.target as HTMLTextAreaElement).value)
                                         }}
-                                        value={msgContent}></textarea>
+                                        value={msgContent}></Textarea>
                                     <div className="flex flex-row-reverse gap-4 mt-3">
                                         <IconCheck className="cursor-pointer text-green-600"
                                                    onClick={() => {
