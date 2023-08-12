@@ -1,24 +1,23 @@
 import {type ChatState, Message, Session, useChatStore} from "@/store/chat";
-import {CaButton} from "@/components/ui-lib";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef} from "react";
 import {UiStore, useUiStore} from "@/store/ui";
 import {useUserStore} from "@/store/user";
 import {
     IconArrowsDown,
     IconArrowsUp,
     IconBackspace,
-    IconMenu2, IconMicrophone,
-    IconSend, IconWaveSine,
+     IconMicrophone,
+     IconWaveSine,
 } from "@tabler/icons-react";
-import {usePromptStore} from "@/store/prompt";
 import {showToast} from "@/components/ui-lib";
 import {DialogSession} from "@/components/dialog-session";
 import {useSpeech2txt} from "@/components/speech2txt";
 import {sleep2} from "@/pkg/util";
 import {useLocal} from "@/store/local";
 import {Button} from "@/components/ui/button";
-import {Textarea } from "@/components/ui/textarea";
+import {Textarea} from "@/components/ui/textarea";
 import {Send} from "lucide-react";
+import {CardFooter} from "@/components/ui/card";
 
 const MSG_DRAFT = "MSG_DRAFT_TO_PREVIEW"
 const ChatInput = () => {
@@ -33,7 +32,6 @@ const ChatInput = () => {
         doCallOpenAiCompletion,
         userInputFocus,
         getSelectedSession,
-        setUserInputFocus,
         lastUserInput,
         setLastUserInput,
         upsertMessage,
@@ -42,30 +40,19 @@ const ChatInput = () => {
         selectedSessionId
     }: ChatState = useChatStore();
     const {setIsScrollBottom, setIsScrollTop, setIsScrollAuto}: UiStore = useUiStore();
-    let {prompts, setPrompts, rawPrompts} = usePromptStore();
     const session = getSelectedSession() || {} as Session;
 
 
     const doClearMessages = () => {
-        setPrompts([]);
         selectedSessionId && deleteMessagesBySessionId(selectedSessionId);
     }
 
 
-    function doShowPromptList() {
-        if (prompts.length > 0) {
-            setPrompts([]);
-            return
-        } else {
-            setPrompts(rawPrompts);
-            setUserInputFocus(true);
-        }
-    }
+
 
 
     function doScrollToBottom() {
         console.info("doScrollToBottom")
-        setPrompts([]);
         setIsScrollAuto(true);
         setIsScrollAuto(false);
         setIsScrollBottom(true);
@@ -74,7 +61,6 @@ const ChatInput = () => {
 
     function doScrollToTop() {
         console.info("doScrollToTop")
-        setPrompts([]);
         setIsScrollAuto(undefined);
         setIsScrollBottom(undefined);
         setIsScrollTop(true);
@@ -158,107 +144,103 @@ const ChatInput = () => {
     }, [userInputFocus])
 
     return (
-        <div className="relative w-full px-2 py-3 border-t">
+        <CardFooter className="flex-col items-start p-4 border-t">
 
 
-            <div className="flex gap-2 mb-2">
-                <CaButton
+            <div className="flex w-full gap-x-2 my-2 justify-start">
+                <Button
+                    variant="ghost"
                     onClick={doScrollToTop}
                     title="scroll to top"
                 >
                     <IconArrowsUp/>
 
-                </CaButton>
+                </Button>
 
-                <CaButton
+                <Button
+                    variant="ghost"
                     onClick={doScrollToBottom}
                     title="scroll to bottom"
                 >
                     <IconArrowsDown/>
 
-                </CaButton>
-
-                <CaButton
-                    onClick={doShowPromptList}
-                    title='use prompt template'
-                >
-                    <IconMenu2/>
-
-                </CaButton>
+                </Button>
 
 
-                <CaButton
+
+                <Button
+                    variant="ghost"
                     onClick={doClearMessages}
                     title="empty all messages"
                 >
                     <IconBackspace/>
 
-                </CaButton>
+                </Button>
 
                 <DialogSession session={session}/>
 
 
                 {
                     recognizing ?
-                        <CaButton
+                        <Button
+                            variant="ghost"
                             onClick={async () => {
                                 await recognizerStop();
                                 sleep2(100)
                                 await doSubmit(userInput)
                             }} className='bg-orange-600'> <IconWaveSine
-                            className="animate-ping "/></CaButton>
+                            className="animate-ping "/></Button>
                         :
-                        <CaButton onClick={async () => {
+                        <Button variant="ghost" onClick={async () => {
                             await recognizerStart((txt: string) => {
                                 setUserInput(txt)
                             })
-                        }} className="bg-green-600">
-                            <IconMicrophone/></CaButton>
+                        }} className="">
+                            <IconMicrophone/></Button>
                 }
 
             </div>
 
-            <form className="relative flex w-full items-center space-x-4 mx-2"
-                onSubmit={async (e) => {
+            <Textarea id="user-input"
+                      rows={5}
+                      value={userInput}
+                      ref={textareaRef}
+                      onKeyDown={onInputKeyDown}
+                      onChange={handleInputChange}
+                      onCompositionStart={() => {
+                      }}
+                      onCompositionEnd={() => {
+                      }}
+                      onBlur={() => {
+                          setIsScrollTop(false)
+                          setIsScrollBottom(false)
+                          setIsScrollAuto(false)
+                      }
+                      }
+                      onFocus={() => {
+                          setIsScrollTop(false)
+                          setIsScrollBottom(false)
+                          setIsScrollAuto(true)
+                      }
+                      }
+                      className="w-full flex-1 resize-none"
+                      placeholder={t.inputPlaceholder} required/>
+            <Button
+                type="submit"
+                size="icon"
+                className="absolute right-8 bottom-8"
+                title="send"
+                onClick={async (e) => {
                     e.preventDefault();
+                    e.stopPropagation();
                     await doSubmit(userInput);
                 }}
+
             >
-                <Textarea id="user-input"
-                          rows={5}
-                          value={userInput}
-                          ref={textareaRef}
-                          onKeyDown={onInputKeyDown}
-                          onChange={handleInputChange}
-                          onCompositionStart={() => {
-                          }}
-                          onCompositionEnd={() => {
-                          }}
-                          onBlur={() => {
-                              setIsScrollTop(false)
-                              setIsScrollBottom(false)
-                              setIsScrollAuto(false)
-                          }
-                          }
-                          onFocus={() => {
-                              setPrompts([])
-                              setIsScrollTop(false)
-                              setIsScrollBottom(false)
-                              setIsScrollAuto(true)
-                          }
-                          }
-                          className=""
-                          placeholder={t.inputPlaceholder} required/>
-                <Button
-                    type="submit"
-                    size="icon"
-                    title="send"
-                >
-                    <Send className="h-4 w-4"/>
-                    <span className="sr-only">Send</span>
-                </Button>
-            </form>
-        </div>
+                <Send className="h-4 w-4"/>
+                <span className="sr-only">Send</span>
+            </Button>
+        </CardFooter>
 
     )
 

@@ -71,4 +71,16 @@
 - Support copy message text
 - Improve setting page form element style
 
+## development plan
 
+- [ ] email verify
+- [ ] usage limit
+- [ ] user profile
+- [ ] custom service
+- [ ] ai blog
+- [ ] free music
+- [ ] paid faq
+- [ ] mobile ui
+- [ ] usage paid alert
+- [ ] user management
+- [ ] langchain of javascript

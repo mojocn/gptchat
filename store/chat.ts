@@ -206,7 +206,6 @@ export const useChatStore = create<ChatState>()(persist(
                 const newSessions = get().sessions.map(e => {
                     if (e.id === get().selectedSessionId) {
                         const newMessages = e.messages.map(e => {
-                            debugger
                             if (e.id === msgID) {
                                 e.content = content
                             }

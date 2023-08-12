@@ -5,10 +5,10 @@ import RemarkBreaks from "remark-breaks";
 import RehypeKatex from "rehype-katex";
 import RemarkGfm from "remark-gfm";
 import RehypeHighlight from "rehype-highlight";
-import {useRef, useState, RefObject, useEffect} from "react";
+import React, {RefObject, useEffect, useRef, useState} from "react";
 import mermaid from "mermaid";
-import React from "react";
 import {IconCopy, IconFileCheck} from '@tabler/icons-react';
+import {cn} from "@/lib/utils";
 
 export function Mermaid(props: { code: string; onError: () => void }) {
     const ref = useRef<HTMLDivElement>(null);
@@ -146,6 +146,7 @@ export function Markdown(
         fontSize?: number;
         parentRef?: RefObject<HTMLDivElement>;
         defaultShow?: boolean;
+        className?: string;
     } & React.DOMAttributes<HTMLDivElement>,
 ) {
     const mdRef = useRef<HTMLDivElement>(null);
@@ -175,10 +176,7 @@ export function Markdown(
             const mdBounds = md.getBoundingClientRect();
             const parentTop = parentBounds.top - twoScreenHeight;
             const parentBottom = parentBounds.bottom + twoScreenHeight;
-            const isOverlap =
-                Math.max(parentTop, mdBounds.top) <=
-                Math.min(parentBottom, mdBounds.bottom);
-            inView.current = isOverlap;
+            inView.current = Math.max(parentTop, mdBounds.top) <= Math.min(parentBottom, mdBounds.bottom);
         }
 
         if (inView.current && md) {
@@ -193,7 +191,7 @@ export function Markdown(
 
     return (
         <div
-            className="markdown-body text-gray-900 dark:text-gray-200"
+            className={cn("markdown-body text-gray-900 dark:text-gray-200", props.className || "")}
             style={{
                 minWidth: props.miniWidth,
                 fontSize: `${props.fontSize ?? 14}px`,

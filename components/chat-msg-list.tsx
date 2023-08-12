@@ -3,9 +3,10 @@ import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
 import {shallow} from 'zustand/shallow'
 import {Message, useChatStore} from "@/store/chat";
 import {UiStore, useUiStore} from "@/store/ui";
+import { CardContent} from "@/components/ui/card";
 
 
-export default function ChatMsgList(props: {}) {
+export default  function ChatMsgList() {
     const scrollRef = useRef<HTMLDivElement>(null);
     const [messages, setMessages] = useState<Message[]>([]);
     const [selectedSessionId, sessions] = useChatStore(
@@ -63,13 +64,14 @@ export default function ChatMsgList(props: {}) {
 
     // @ts-ignore
     return (
-        <div
+        <CardContent
             className="overflow-y-scroll overflow-x-hidden
             flex-1
             relative
             overscroll-none
             px-4
             py-8
+            space-y-4
             "
             ref={scrollRef}
             onScroll={(e) => onChatBodyScroll(e.currentTarget)}
@@ -79,12 +81,16 @@ export default function ChatMsgList(props: {}) {
             //     setAutoScroll(false);
             // }}
         >
+
             {messages.filter(e => e.role != 'system').map((message: Message) => {
                 //console.log(message)
                 return (
                     <ChatMsg key={message.id} msg={message}/>
                 );
             })}
-        </div>
+        </CardContent>
     );
 }
+
+
+
