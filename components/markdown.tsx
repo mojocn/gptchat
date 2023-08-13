@@ -191,7 +191,7 @@ export function Markdown(
 
     return (
         <div
-            className={cn("markdown-body text-gray-900 dark:text-gray-200", props.className || "")}
+            className={cn("markdown-body ", props.className || "")}
             style={{
                 minWidth: props.miniWidth,
                 fontSize: `${props.fontSize ?? 14}px`,
