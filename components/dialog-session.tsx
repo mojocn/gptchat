@@ -28,7 +28,6 @@ const formSchemaSessionModel = z.object({
 export function DialogSession({session}:{session:Session}) {
     const {
         upsertSession,
-        getSelectedSession
     }: ChatState = useChatStore();
     const [open, setOpen] = useState(false);
     const {t} = useLocal()
@@ -57,7 +56,7 @@ export function DialogSession({session}:{session:Session}) {
                 {/* eslint-disable-next-line react/jsx-no-undef */}
                 <Button title='Settings' variant="ghost"><IconAdjustments/></Button>
             </DialogTrigger>
-            <DialogContent className="md:max-w-[825px]">
+            <DialogContent className="max-w-[95%] sm:max-w-[75%]">
                 <DialogHeader>
                     <DialogTitle>Set Session configuration</DialogTitle>
                     <DialogDescription>

@@ -7,13 +7,13 @@ import {ALL_MODELS} from "@/types/const";
 import {Button} from "@/components/ui/button"
 import {Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger,} from "@/components/ui/dialog"
 import {Input} from "@/components/ui/input"
-import {IconSettings2} from "@tabler/icons-react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select"
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage,} from "@/components/ui/form"
 import * as z from "zod"
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {toast} from "@/components/ui/use-toast";
+import {Settings} from "lucide-react";
 
 
 const formSchema = z.object({
@@ -71,9 +71,9 @@ export function DialogConfig() {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button title='Settings' variant="ghost"><IconSettings2/></Button>
+                <Button title='Settings' variant="ghost"><Settings/></Button>
             </DialogTrigger>
-            <DialogContent className="md:max-w-[825px]">
+            <DialogContent className="max-w-[95%] sm:max-w-[75%]">
                 <DialogHeader>
                     <DialogTitle>Set global configuration</DialogTitle>
                     <DialogDescription>

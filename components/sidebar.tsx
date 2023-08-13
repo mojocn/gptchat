@@ -1,30 +1,17 @@
-import React, {useEffect, useState} from "react";
-import {CaButton, showToast} from "./ui-lib";
+import React from "react";
 import {SessionList} from "./session-list";
 import {useChatStore} from "@/store/chat";
 import {useConfigStore} from "@/store/config";
-import {useUserStore} from "@/store/user";
-import {useRouter} from "next/navigation";
-import {
-    IconBrandAppstore,
-    IconBugOff,
-    IconMessageChatbot,
-    IconRobot,
-    IconUserBolt
-} from "@tabler/icons-react";
+import {IconMessageChatbot, IconRobot} from "@tabler/icons-react";
 import {DialogConfig} from "@/components/dialog-config";
-import {lemonCheckoutURL} from "@/types/lemon";
+import {ShoppingCart} from "lucide-react";
+import {Button} from "@/components/ui/button";
 
 export default function SideBar() {
-    const router = useRouter();
-    const {addSession,sessions} = useChatStore();
+    const {addSession, sessions} = useChatStore();
     const {modelConfig} = useConfigStore();
-    const {isAuthed, user} = useUserStore();
-    const [userEmail, setUserEmail] = useState('')
 
-    useEffect(() => {
-        setUserEmail(user.email)
-    }, [user])
+
 
     //
 
@@ -41,31 +28,18 @@ export default function SideBar() {
         // navigate(Path.Chat);
     }
 
-    async function doLoginOrLogout() {
-        if (isAuthed) {
-            const res = await fetch('/api/logout');
-            if (res.ok) {
-                //remove local storage
-                localStorage.clear();
-                showToast('Clear local cache')
-            }
-        }
-        // doLogin();
-        router.push('/login')
-    }
+
 
     // useHotKey();
-    const REPO_URL = 'https://github.com/mojocn/gptchat/issues'
     return (
         <div
             className=" w-80 hidden sm:flex sm:flex-col relative ease-in-out  py-2 px-3"
         >
 
             <div className="relative py-4 w-full">
-                <div className="text-lg font-bold animate-bounce">MojoAI</div>
+                <div className="text-lg font-bold ">MojoAI</div>
                 <p className="text-sm">
-                    chatGPT of
-                    <span className="font-bold text-blue-600 mx-2">{userEmail}</span>
+                    Transforming the Possible!
                 </p>
                 <div className="text-orange-600 absolute right-0 bottom-4">
                     <IconRobot size={42}></IconRobot>
@@ -75,42 +49,23 @@ export default function SideBar() {
 
             <SessionList/>
 
-            <div className="flex justify-between my-4 align-center  w-full">
-                <CaButton
-                    title='Report bug'
-                    className={''}
-                    onClick={() => {
-                        window.open(REPO_URL, '_blank')
-                    }
-                    }
-                ><IconBugOff/></CaButton>
+            <div className="flex justify-evenly items-center align-center  w-full my-4">
 
-
-                <DialogConfig/>
-
-                <CaButton
-                    title='Buy Membership'
-                    className={''}
-                    onClick={e => {
-                        e.stopPropagation();
-                        const url = lemonCheckoutURL(user.email, user.id);
-                        window.open(url, '_blank')
-                    }
-                    }
-                ><IconBrandAppstore/></CaButton>
-
-                <CaButton
-                    title='Login or logout'
-                    onClick={doLoginOrLogout}
-                    className={''}
-                ><IconUserBolt/></CaButton>
-
-                <CaButton
+                <Button
+                    variant="ghost"
                     title='add new session'
                     onClick={doCreateNewSession}
                     className={''}
-                ><IconMessageChatbot/></CaButton>
+                ><ShoppingCart/></Button>
 
+                <DialogConfig/>
+
+                <Button
+                    variant="ghost"
+                    title='add new session'
+                    onClick={doCreateNewSession}
+                    className={''}
+                ><IconMessageChatbot/></Button>
 
             </div>
 

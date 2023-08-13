@@ -27,7 +27,7 @@ async function doText2Speech(markdownCode: string) {
 function MsgContent({msg}: { msg: Message }) {
     const isUser = msg.role === "user";
     return (
-        <div className={cn("rounded-lg  p-2 select-text   w-full ", isUser ? "bg-primary text-primary-foreground" : "bg-muted")}>
+        <div className={cn("rounded-lg  p-2 select-text   w-full ", isUser ? "bg-primary text-white" : "bg-muted")}>
             <Markdown
                 miniWidth="75%"
                 content={msg.content || ''}
