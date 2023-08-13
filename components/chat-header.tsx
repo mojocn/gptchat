@@ -3,16 +3,10 @@ import {useEffect, useState} from "react";
 import {ChatState, Session, useChatStore} from "@/store/chat";
 import {useTheme} from "next-themes"
 import {Button} from "@/components/ui/button"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
 import {Moon, Sun} from "lucide-react"
 import {useLocal} from "@/store/local";
 import {UserNav} from "@/components/user-nav";
-import {CardHeader} from "@/components/ui/card";
 
 export default function ChatHeader() {
     const [session, setSession] = useState<Session>({} as Session);
@@ -26,7 +20,7 @@ export default function ChatHeader() {
 
 
     return (
-        <div className="flex align-center justify-between pb-4 border-b">
+        <div className="flex align-center justify-between pb-4 border-b chat-header-height">
             <section>
                 <h2
                     className="text-lg font-bold"
@@ -35,7 +29,7 @@ export default function ChatHeader() {
                 </h2>
                 <h4 className="text-sm font-medium">
                     {t.SubTitle && t.SubTitle(session.messages?.length)}
-                {/*    todo:fix this*/}
+                    {/*    todo:fix this*/}
 
                 </h4>
             </section>

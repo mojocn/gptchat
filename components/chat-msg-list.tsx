@@ -3,7 +3,6 @@ import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
 import {shallow} from 'zustand/shallow'
 import {Message, useChatStore} from "@/store/chat";
 import {UiStore, useUiStore} from "@/store/ui";
-import { CardContent} from "@/components/ui/card";
 
 
 export default  function ChatMsgList() {
@@ -64,8 +63,9 @@ export default  function ChatMsgList() {
 
     // @ts-ignore
     return (
-        <CardContent
+        <section
             className="overflow-y-scroll overflow-x-hidden
+            chat-content-height
             flex-1
             relative
             overscroll-none
@@ -88,7 +88,7 @@ export default  function ChatMsgList() {
                     <ChatMsg key={message.id} msg={message}/>
                 );
             })}
-        </CardContent>
+        </section>
     );
 }
 

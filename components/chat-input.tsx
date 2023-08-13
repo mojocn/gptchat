@@ -2,13 +2,7 @@ import {type ChatState, Message, Session, useChatStore} from "@/store/chat";
 import React, {useEffect, useRef} from "react";
 import {UiStore, useUiStore} from "@/store/ui";
 import {useUserStore} from "@/store/user";
-import {
-    IconArrowsDown,
-    IconArrowsUp,
-    IconBackspace,
-     IconMicrophone,
-     IconWaveSine,
-} from "@tabler/icons-react";
+import {IconArrowsDown, IconArrowsUp, IconBackspace, IconMicrophone, IconWaveSine,} from "@tabler/icons-react";
 import {showToast} from "@/components/ui-lib";
 import {DialogSession} from "@/components/dialog-session";
 import {useSpeech2txt} from "@/components/speech2txt";
@@ -17,7 +11,6 @@ import {useLocal} from "@/store/local";
 import {Button} from "@/components/ui/button";
 import {Textarea} from "@/components/ui/textarea";
 import {Send} from "lucide-react";
-import {CardFooter} from "@/components/ui/card";
 
 const MSG_DRAFT = "MSG_DRAFT_TO_PREVIEW"
 const ChatInput = () => {
@@ -144,10 +137,10 @@ const ChatInput = () => {
     }, [userInputFocus])
 
     return (
-        <CardFooter className="flex-col items-start p-4 border-t">
+        <div className="flex-col items-start p-4 border-t chat-footer-height">
 
 
-            <div className="flex w-full gap-x-2 my-2 justify-start">
+            <div className="flex w-full gap-x-2 mb-3 justify-start">
                 <Button
                     variant="ghost"
                     onClick={doScrollToTop}
@@ -240,7 +233,7 @@ const ChatInput = () => {
                 <Send className="h-4 w-4"/>
                 <span className="sr-only">Send</span>
             </Button>
-        </CardFooter>
+        </div>
 
     )
 

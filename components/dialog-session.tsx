@@ -1,16 +1,14 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {ChatState, Session, useChatStore} from "@/store/chat";
 import {ALL_MODELS} from "@/types/const";
 import {useLocal} from "@/store/local";
 import * as z from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {toast} from "@/components/ui/use-toast";
 import {Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import {Button} from "@/components/ui/button";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {ModelConfig} from "@/store/config";
 import {IconAdjustments} from "@tabler/icons-react";
 import {useForm} from "react-hook-form";
 
@@ -68,7 +66,7 @@ export function DialogSession({session}:{session:Session}) {
                 </DialogHeader>
 
                 <Form {...formData}>
-                    <form onSubmit={formData.handleSubmit(onSubmit, onErrors)} className="space-y-6">
+                    <form onSubmit={formData.handleSubmit(onSubmit, onErrors)} className="grid grid-cols-2 gap-4">
 
                         <FormField
                             control={formData.control}
@@ -179,7 +177,7 @@ export function DialogSession({session}:{session:Session}) {
                         />
 
 
-                        <DialogFooter>
+                        <DialogFooter className="col-span-2">
                             <Button type="submit">Submit</Button>
                         </DialogFooter>
                     </form>

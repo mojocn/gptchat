@@ -1,6 +1,6 @@
 "use client"
 
-import  {useState} from 'react';
+import {useState} from 'react';
 import {useConfigStore} from "@/store/config";
 import {ALL_LANG, useLocal} from "@/store/local";
 import {ALL_MODELS} from "@/types/const";
@@ -82,7 +82,7 @@ export function DialogConfig() {
                 </DialogHeader>
 
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 gap-4">
                         <FormField
                             control={form.control}
                             name="max_history"
@@ -188,7 +188,7 @@ export function DialogConfig() {
                             )}
                         />
 
-                        <DialogFooter>
+                        <DialogFooter className="col-span-2">
                             <Button type="submit">Submit</Button>
                             <Button type={"button"} variant={"destructive"} onClick={onReset}>Reset</Button>
                         </DialogFooter>
