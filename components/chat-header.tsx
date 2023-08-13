@@ -20,7 +20,7 @@ export default function ChatHeader() {
 
 
     return (
-        <div className="flex align-center items-center justify-between border-b chat-header-height p-[8px]">
+        <div className="w-full flex align-center items-center justify-between border-b chat-header-height p-[8px]">
             <section>
                 <h2
                     className="text-lg font-bold"

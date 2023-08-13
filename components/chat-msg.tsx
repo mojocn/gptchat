@@ -40,7 +40,7 @@ function MsgContent({msg}: { msg: Message }) {
 
 export function ChatMsg({msg}: { msg: Message }) {
     const isUser = msg.role === "user";
-    return <section className={cn("w-full  md:w-max md:max-w-[75%] rounded-lg px-3 py-2 text-sm ", isUser ? "ml-auto" : "")}>
+    return <section className={cn("w-full  rounded-lg px-3 py-2 text-sm ", isUser ? "ml-auto sm:max-w-[50%]" : "sm:max-w-[75%]")}>
         <MsgHeader msg={msg}></MsgHeader>
         <MsgContent msg={msg}/>
         <p className={cn("text-gray-400 text-xs mt-2 w-full ", isUser ? "text-left" : "text-right")}>{msg.time}</p>

@@ -137,7 +137,7 @@ const ChatInput = () => {
     }, [userInputFocus])
 
     return (
-        <div className="flex-col items-start p-4 border-t chat-footer-height">
+        <div className="flex-col items-start p-4 border-t chat-footer-height relative">
 
 
             <div className="flex w-full gap-x-2 mb-3 justify-start">

@@ -22,7 +22,7 @@ export default function Home() {
             className={"flex overflow-hidden box-border w-screen h-screen"}
         >
             <SideBar/>
-            <div className="h-screen w-full flex flex-col grow border-l">
+            <div className="h-screen w-full border-l flex-1">
                 <ChatHeader/>
                 <ChatMsgList/>
                 <ChatInput/>

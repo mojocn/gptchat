@@ -65,6 +65,7 @@ export default  function ChatMsgList() {
     return (
         <section
             className="overflow-y-scroll overflow-x-hidden
+            w-full
             chat-content-height
             flex-1
             relative
