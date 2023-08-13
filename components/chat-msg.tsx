@@ -4,7 +4,7 @@ import React, {useState} from "react";
 import {Markdown} from "@/components/markdown";
 import {ChatState, Message, useChatStore} from "@/store/chat";
 import {showToast} from "./ui-lib";
-import {IconRobot, IconUser} from "@tabler/icons-react";
+import {IconLoader, IconRobot, IconUser} from "@tabler/icons-react";
 import {UiStore, useUiStore} from "@/store/ui";
 import {useUserStore} from "@/store/user";
 import {fetchSpeechToken, text2speech} from "@/pkg/tts";
@@ -40,7 +40,7 @@ function MsgContent({msg}: { msg: Message }) {
 
 export function ChatMsg({msg}: { msg: Message }) {
     const isUser = msg.role === "user";
-    return <section className={cn("flex w-full  md:w-max md:max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm ", isUser ? "ml-auto" : "")}>
+    return <section className={cn("w-full  md:w-max md:max-w-[75%] rounded-lg px-3 py-2 text-sm ", isUser ? "ml-auto" : "")}>
         <MsgHeader msg={msg}></MsgHeader>
         <MsgContent msg={msg}/>
         <p className={cn("text-gray-400 text-xs mt-2 w-full ", isUser ? "text-left" : "text-right")}>{msg.time}</p>
@@ -104,14 +104,16 @@ function MsgHeader({msg}: { msg: Message }) {
 
     return (
         <div
-            className={cn("flex align-center items-center justify-between gap-x-2", isUser ? "flex-row-reverse" : "flex-row")}
+            className={cn("flex align-center items-center justify-between gap-x-6 mx-2", isUser ? "flex-row-reverse" : "flex-row")}
         >
             <section className={cn("flex flex-row align-center items-center justify-items-start gap-4", isUser ? "flex-row" : "flex-row-reverse")}>
-                {isUser ? <IconUser/> : <IconRobot/>}
-                {(msg.isTyping || msg.streaming) && (
-                    <p className="text-gray-400 text-xs ">
-                        {t.Typing}
-                    </p>
+                {(msg.isTyping || msg.streaming) ? (
+                    // <p className="text-gray-400 text-xs ">
+                    //     {t.Typing}
+                    // </p>
+                    <IconLoader className="animate-spin" size={18}/>
+                ) : (
+                    isUser ? <IconUser/> : <IconRobot/>
                 )}
             </section>
 

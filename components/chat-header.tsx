@@ -20,7 +20,7 @@ export default function ChatHeader() {
 
 
     return (
-        <div className="flex align-center justify-between pb-4 border-b chat-header-height">
+        <div className="flex align-center items-center justify-between border-b chat-header-height p-[8px]">
             <section>
                 <h2
                     className="text-lg font-bold"
@@ -33,7 +33,7 @@ export default function ChatHeader() {
 
                 </h4>
             </section>
-            <div className="flex justify-center align-center items-center gap-x-4 mr-3">
+            <div className="flex justify-center align-center items-center gap-x-4">
                 <ThemeToggle/>
                 <UserNav/>
             </div>
@@ -45,7 +45,7 @@ export default function ChatHeader() {
 
 export function ThemeToggle() {
     //https://ui.shadcn.com/docs/dark-mode/next#add-a-mode-toggle
-    const {setTheme, theme} = useTheme()
+    const {setTheme} = useTheme()
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
