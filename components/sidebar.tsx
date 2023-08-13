@@ -4,23 +4,16 @@ import {useChatStore} from "@/store/chat";
 import {useConfigStore} from "@/store/config";
 import {IconMessageChatbot, IconRobot} from "@tabler/icons-react";
 import {DialogConfig} from "@/components/dialog-config";
-import {ShoppingCart} from "lucide-react";
+import {HeartHandshake, ShoppingCart} from "lucide-react";
 import {Button} from "@/components/ui/button";
+import {lemonCheckoutURL} from "@/types/lemon";
+import {useUserStore} from "@/store/user";
 
 export default function SideBar() {
     const {addSession, sessions} = useChatStore();
     const {modelConfig} = useConfigStore();
+    const {isAuthed, user} = useUserStore();
 
-
-
-    //
-
-    // // drag side bar
-    // const { onDragMouseDown, shouldNarrow } = useDragSideBar();
-    // const navigate = useNavigate();
-    // const config = useAppConfig();
-
-    // const navigate = useNavigate();
 
     function doCreateNewSession() {
         const n = sessions.length + 1;
@@ -54,7 +47,18 @@ export default function SideBar() {
                 <Button
                     variant="ghost"
                     title='add new session'
-                    onClick={doCreateNewSession}
+                    className={''}
+                ><HeartHandshake/></Button>
+
+                <Button
+                    variant="ghost"
+                    title='add new session'
+                    onClick={e => {
+                        e.stopPropagation();
+                        const url = lemonCheckoutURL(user.email, user.id);
+                        window.open(url, '_blank')
+                    }
+                    }
                     className={''}
                 ><ShoppingCart/></Button>
 
