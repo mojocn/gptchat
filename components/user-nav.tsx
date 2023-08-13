@@ -8,6 +8,7 @@ import {useTheme} from "next-themes";
 import {lemonCheckoutURL} from "@/types/lemon";
 import {showToast} from "@/components/ui-lib";
 import {useRouter} from "next/navigation";
+import {useLocal} from "@/store/local";
 
 const REPO_URL = 'https://github.com/mojocn/gptchat/issues'
 
@@ -15,6 +16,7 @@ export function UserNav() {
     const {isAuthed, user} = useUserStore();
     const {setTheme} = useTheme()
     const router = useRouter();
+    const {t, setLang} = useLocal();
 
 
     async function doLogout() {
@@ -81,11 +83,11 @@ export function UserNav() {
                     </DropdownMenuSubTrigger>
                     <DropdownMenuPortal>
                         <DropdownMenuSubContent>
-                            <DropdownMenuItem onClick={() => setTheme("dark")}>
+                            <DropdownMenuItem onClick={() => setLang('en')}>
                                 <span className="mr-2 h-4 w-4">🇺🇸</span>
                                 <span>English</span>
                             </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => setTheme("light")}>
+                            <DropdownMenuItem onClick={() => setLang('zh')}>
                                 <span className="mr-2 h-4 w-4">🇨🇳</span>
                                 <span>Chinese</span>
                             </DropdownMenuItem>
