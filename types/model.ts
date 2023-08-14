@@ -1,4 +1,4 @@
-import {Result, success, error} from "./result";
+import { Result, success, error } from "./result";
 
 /**
  * Represents a AI language model that can complete prompts. TypeChat uses an implementation of this
@@ -7,20 +7,20 @@ import {Result, success, error} from "./result";
  * and `createAzureOpenAILanguageModel` functions create instances of this interface.
  */
 export interface TypeChatLanguageModel {
-    /**
-     * Optional property that specifies the maximum number of retry attempts (the default is 3).
-     */
-    retryMaxAttempts?: number;
-    /**
-     * Optional property that specifies the delay before retrying in milliseconds (the default is 1000ms).
-     */
-    retryPauseMs?: number;
+  /**
+   * Optional property that specifies the maximum number of retry attempts (the default is 3).
+   */
+  retryMaxAttempts?: number;
+  /**
+   * Optional property that specifies the delay before retrying in milliseconds (the default is 1000ms).
+   */
+  retryPauseMs?: number;
 
-    /**
-     * Obtains a completion from the language model for the given prompt.
-     * @param prompt The prompt string.
-     */
-    complete(prompt: string): Promise<Result<string>>;
+  /**
+   * Obtains a completion from the language model for the given prompt.
+   * @param prompt The prompt string.
+   */
+  complete(prompt: string): Promise<Result<string>>;
 }
 
 /**
@@ -38,20 +38,29 @@ export interface TypeChatLanguageModel {
  * If none of these key variables are defined, an exception is thrown.
  * @returns An instance of `TypeChatLanguageModel`.
  */
-export function createLanguageModel(env: Record<string, string | undefined>): TypeChatLanguageModel {
-    if (env.OPENAI_API_KEY) {
-        const apiKey = env.OPENAI_API_KEY ?? missingEnvironmentVariable("OPENAI_API_KEY");
-        const model = env.OPENAI_MODEL ?? missingEnvironmentVariable("OPENAI_MODEL");
-        const endPoint = env.OPENAI_ENDPOINT ?? "https://api.openai.com/v1/chat/completions";
-        const org = env.OPENAI_ORGANIZATION ?? "";
-        return createOpenAILanguageModel(apiKey, model, endPoint, org);
-    }
-    if (env.AZURE_OPENAI_API_KEY) {
-        const apiKey = env.AZURE_OPENAI_API_KEY ?? missingEnvironmentVariable("AZURE_OPENAI_API_KEY");
-        const endPoint = env.AZURE_OPENAI_ENDPOINT ?? missingEnvironmentVariable("AZURE_OPENAI_ENDPOINT");
-        return createAzureOpenAILanguageModel(apiKey, endPoint);
-    }
-    missingEnvironmentVariable("OPENAI_API_KEY or AZURE_OPENAI_API_KEY");
+export function createLanguageModel(
+  env: Record<string, string | undefined>,
+): TypeChatLanguageModel {
+  if (env.OPENAI_API_KEY) {
+    const apiKey =
+      env.OPENAI_API_KEY ?? missingEnvironmentVariable("OPENAI_API_KEY");
+    const model =
+      env.OPENAI_MODEL ?? missingEnvironmentVariable("OPENAI_MODEL");
+    const endPoint =
+      env.OPENAI_ENDPOINT ?? "https://api.openai.com/v1/chat/completions";
+    const org = env.OPENAI_ORGANIZATION ?? "";
+    return createOpenAILanguageModel(apiKey, model, endPoint, org);
+  }
+  if (env.AZURE_OPENAI_API_KEY) {
+    const apiKey =
+      env.AZURE_OPENAI_API_KEY ??
+      missingEnvironmentVariable("AZURE_OPENAI_API_KEY");
+    const endPoint =
+      env.AZURE_OPENAI_ENDPOINT ??
+      missingEnvironmentVariable("AZURE_OPENAI_ENDPOINT");
+    return createAzureOpenAILanguageModel(apiKey, endPoint);
+  }
+  missingEnvironmentVariable("OPENAI_API_KEY or AZURE_OPENAI_API_KEY");
 }
 
 /**
@@ -62,13 +71,22 @@ export function createLanguageModel(env: Record<string, string | undefined>): Ty
  * @param org The OpenAI organization id.
  * @returns An instance of `TypeChatLanguageModel`.
  */
-export function createOpenAILanguageModel(apiKey: string, model: string, endPoint = "https://api.openai.com/v1/chat/completions", org = ""): TypeChatLanguageModel {
-    return createAxiosLanguageModel(endPoint, {
-        headers: {
-            Authorization: `Bearer ${apiKey}`,
-            "OpenAI-Organization": org
-        }
-    }, {model});
+export function createOpenAILanguageModel(
+  apiKey: string,
+  model: string,
+  endPoint = "https://api.openai.com/v1/chat/completions",
+  org = "",
+): TypeChatLanguageModel {
+  return createAxiosLanguageModel(
+    endPoint,
+    {
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "OpenAI-Organization": org,
+      },
+    },
+    { model },
+  );
 }
 
 /**
@@ -79,69 +97,87 @@ export function createOpenAILanguageModel(apiKey: string, model: string, endPoin
  * @param apiKey The Azure OpenAI API key.
  * @returns An instance of `TypeChatLanguageModel`.
  */
-export function createAzureOpenAILanguageModel(apiKey: string, endPoint: string,): TypeChatLanguageModel {
-    return createAxiosLanguageModel(endPoint, {headers: {"api-key": apiKey}}, {});
+export function createAzureOpenAILanguageModel(
+  apiKey: string,
+  endPoint: string,
+): TypeChatLanguageModel {
+  return createAxiosLanguageModel(
+    endPoint,
+    { headers: { "api-key": apiKey } },
+    {},
+  );
 }
 
 /**
  * Common implementation of language model encapsulation of an OpenAI REST API endpoint.
  */
-function createAxiosLanguageModel(url: string, config: object, defaultParams: Record<string, string>) {
-    const model: TypeChatLanguageModel = {
-        complete
-    };
-    return model;
+function createAxiosLanguageModel(
+  url: string,
+  config: object,
+  defaultParams: Record<string, string>,
+) {
+  const model: TypeChatLanguageModel = {
+    complete,
+  };
+  return model;
 
-    async function complete(prompt: string) {
-        let retryCount = 0;
-        const retryMaxAttempts = model.retryMaxAttempts ?? 3;
-        const retryPauseMs = model.retryPauseMs ?? 1000;
-        while (true) {
-            const params = {
-                ...defaultParams,
-                messages: [{role: "user", content: prompt}],
-                temperature: 0,
-                n: 1
-            };
-            const result = await fetch(url, {method: "POST", body: JSON.stringify(params), ...config});
-            if (result.status === 200) {
-                const data = await result.json();
-                return success(data.choices[0].message?.content ?? "");
-            }
-            if (!isTransientHttpError(result.status) || retryCount >= retryMaxAttempts) {
-                return error(`REST API error ${result.status}: ${result.statusText}`);
-            }
-            await sleep(retryPauseMs);
-            retryCount++;
-        }
+  async function complete(prompt: string) {
+    let retryCount = 0;
+    const retryMaxAttempts = model.retryMaxAttempts ?? 3;
+    const retryPauseMs = model.retryPauseMs ?? 1000;
+    while (true) {
+      const params = {
+        ...defaultParams,
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0,
+        n: 1,
+      };
+      const result = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify(params),
+        ...config,
+      });
+      if (result.status === 200) {
+        const data = await result.json();
+        return success(data.choices[0].message?.content ?? "");
+      }
+      if (
+        !isTransientHttpError(result.status) ||
+        retryCount >= retryMaxAttempts
+      ) {
+        return error(`REST API error ${result.status}: ${result.statusText}`);
+      }
+      await sleep(retryPauseMs);
+      retryCount++;
     }
+  }
 }
 
 /**
  * Returns true of the given HTTP status code represents a transient error.
  */
 function isTransientHttpError(code: number): boolean {
-    switch (code) {
-        case 429: // TooManyRequests
-        case 500: // InternalServerError
-        case 502: // BadGateway
-        case 503: // ServiceUnavailable
-        case 504: // GatewayTimeout
-            return true;
-    }
-    return false;
+  switch (code) {
+    case 429: // TooManyRequests
+    case 500: // InternalServerError
+    case 502: // BadGateway
+    case 503: // ServiceUnavailable
+    case 504: // GatewayTimeout
+      return true;
+  }
+  return false;
 }
 
 /**
  * Sleeps for the given number of milliseconds.
  */
 function sleep(ms: number): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /**
  * Throws an exception for a missing environment variable.
  */
 function missingEnvironmentVariable(name: string): never {
-    throw new Error(`Missing environment variable: ${name}`);
+  throw new Error(`Missing environment variable: ${name}`);
 }

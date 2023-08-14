@@ -1,13 +1,13 @@
 export const siteConfig = {
-  name: "shadcn/ui",
-  url: "https://ai.mojotv.cn",
-  ogImage: "https://ui.shadcn.com/og.jpg",
+  name: "Dev",
+  url: "",
+  ogImage: "",
   description:
-      "Beautifully designed components built with Radix UI and Tailwind CSS.",
+    "Beautifully designed components built with Radix UI and Tailwind CSS.",
   links: {
-    twitter: "https://twitter.com/shadcn",
-    github: "https://github.com/shadcn/ui",
+    twitter: "https://twitter.com/neochau",
+    github: "https://github.com/mojocn",
   },
-}
+};
 
-export type SiteConfig = typeof siteConfig
+export type SiteConfig = typeof siteConfig;

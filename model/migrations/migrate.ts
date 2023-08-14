@@ -1,4 +1,4 @@
-import { Kysely, sql } from 'kysely'
+import { Kysely, sql } from "kysely";
 
 //https://kysely.dev/docs/migrations
 // export async function up(db: Kysely<any>): Promise<void> {

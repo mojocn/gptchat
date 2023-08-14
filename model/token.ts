@@ -1,4 +1,3 @@
-
 /*
 *
 * CREATE TABLE public.tokens (
@@ -14,46 +13,59 @@
 *
 * */
 
-
-import {ColumnType, Generated, Insertable, Selectable, Updateable} from "kysely/dist/esm";
-import {database} from "@/model/database";
+import {
+  ColumnType,
+  Generated,
+  Insertable,
+  Selectable,
+  Updateable,
+} from "kysely/dist/esm";
+import { database } from "@/model/database";
 
 export interface TokenTable {
-    id: Generated<number>
-    token: string
-    user_id: number
-    created_at: ColumnType<Date, string | undefined, never>
-    expires_at: ColumnType<Date, string | undefined, never>
-    last_active_at: ColumnType<Date, string | undefined, never>
+  id: Generated<number>;
+  token: string;
+  user_id: number;
+  created_at: ColumnType<Date, string | undefined, never>;
+  expires_at: ColumnType<Date, string | undefined, never>;
+  last_active_at: ColumnType<Date, string | undefined, never>;
 }
 
-export type Token = Selectable<TokenTable>
-export type TokenInsert = Insertable<TokenTable>
-export type TokenUpdate = Updateable<TokenTable>
-
+export type Token = Selectable<TokenTable>;
+export type TokenInsert = Insertable<TokenTable>;
+export type TokenUpdate = Updateable<TokenTable>;
 
 export async function doTokenInsert(token: TokenInsert) {
-    return await database.insertInto('tokens')
-        .values(token)
-        .returningAll()
-        .executeTakeFirstOrThrow()
+  return await database
+    .insertInto("tokens")
+    .values(token)
+    .returningAll()
+    .executeTakeFirstOrThrow();
 }
 export async function findTokenById(uid: number) {
-    return await database.selectFrom('tokens')
-        .where('user_id', '=', uid)
-        .selectAll()
-        .executeTakeFirstOrThrow()
+  return await database
+    .selectFrom("tokens")
+    .where("user_id", "=", uid)
+    .selectAll()
+    .executeTakeFirstOrThrow();
 }
 
-export async function findTokenByIdToken(userId: number, token: string): Promise<Token | undefined> {
-    return await database.selectFrom('tokens')
-        .where('user_id', '=', userId)
-        .where('token', '=', token.trim())
-        .selectAll()
-        .executeTakeFirst()
+export async function findTokenByIdToken(
+  userId: number,
+  token: string,
+): Promise<Token | undefined> {
+  return await database
+    .selectFrom("tokens")
+    .where("user_id", "=", userId)
+    .where("token", "=", token.trim())
+    .selectAll()
+    .executeTakeFirst();
 }
-export async function deleteTokenByIdToken(token:string) {
-    return await database.deleteFrom('tokens').where('token', '=', token.trim())
-        .returningAll()
-        .execute()
+
+export async function deleteTokenByIdToken(token: string) {
+  return await database
+    .deleteFrom("tokens")
+    .where("token", "=", token.trim())
+    .returningAll()
+    .execute();
 }

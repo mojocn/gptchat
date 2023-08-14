@@ -1,0 +1,7 @@
+# Ignore artifacts:
+build
+coverage
+_posts
+.next
+.contentlayer
+.mdx

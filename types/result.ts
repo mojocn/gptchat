@@ -1,12 +1,12 @@
 /**
  * An object representing a successful operation with a result of type `T`.
  */
-export type Success<T> = { success: true, data: T };
+export type Success<T> = { success: true; data: T };
 
 /**
  * An object representing an operation that failed for the reason given in `message`.
  */
-export type Error = { success: false, message: string };
+export type Error = { success: false; message: string };
 
 /**
  * An object representing a successful or failed operation of type `T`.
@@ -19,7 +19,7 @@ export type Result<T> = Success<T> | Error;
  * @returns A `Success<T>` object.
  */
 export function success<T>(data: T): Success<T> {
-    return {success: true, data};
+  return { success: true, data };
 }
 
 /**
@@ -28,7 +28,7 @@ export function success<T>(data: T): Success<T> {
  * @returns An `Error` object.
  */
 export function error(message: string): Error {
-    return {success: false, message};
+  return { success: false, message };
 }
 
 /**
@@ -38,8 +38,8 @@ export function error(message: string): Error {
  * @returns The value of the `data` property.
  */
 export function getData<T>(result: Result<T>) {
-    if (result.success) {
-        return result.data;
-    }
-    throw new Error(result.message);
+  if (result.success) {
+    return result.data;
+  }
+  throw new Error(result.message);
 }

@@ -1,10 +1,9 @@
-import {Generated, ColumnType} from 'kysely';
+import { Generated, ColumnType } from "kysely";
 
 export interface PromptTable {
-    id: Generated<number>
-    remark: string
-    prompt_format: string
-    mode: 'public' | 'private'
-    name: string;
+  id: Generated<number>;
+  remark: string;
+  prompt_format: string;
+  mode: "public" | "private";
+  name: string;
 }
-

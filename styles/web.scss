@@ -1,0 +1,59 @@
+pre {
+  @apply overflow-auto whitespace-pre-line break-words rounded-lg border bg-slate-900 p-3;
+}
+
+p {
+  @apply mb-6;
+}
+
+h1 {
+  @apply my-6 select-auto text-4xl font-extrabold;
+}
+
+h2 {
+  @apply my-6 select-auto text-3xl font-extrabold;
+}
+
+h3 {
+  @apply my-5 select-auto text-2xl font-bold;
+}
+
+h4 {
+  @apply my-4 select-auto text-xl font-semibold;
+}
+
+h5 {
+  @apply my-3 select-auto text-lg font-medium;
+}
+
+$chat-header-height: 64px;
+$chat-footer-height: 200px;
+$chat-content-height: calc(
+  100vh - #{$chat-header-height} - #{$chat-footer-height}
+);
+
+$site-header-height: 60px;
+$site-footer-height: 60px;
+$site-body-height: calc(
+  100vh - #{$site-header-height} - #{$site-footer-height}
+);
+
+.site-header-height {
+  height: $site-header-height;
+}
+
+.site-footer-height {
+  height: $site-footer-height;
+}
+
+.chat-header-height {
+  height: $chat-header-height;
+}
+
+.chat-footer-height {
+  height: $chat-footer-height;
+}
+
+.chat-content-height {
+  height: $chat-content-height;
+}

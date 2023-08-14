@@ -1,89 +1,119 @@
-'use client';
-import {useTransition} from "react";
-import React from 'react';
-import {useRouter} from "next/navigation";
-import {showToast} from "@/components/ui-lib";
-import {doPasswordReset} from "./actions";
-import {UserState, useUserStore} from "@/store/user";
-import Image from 'next/image'
-import logoPng from "../apple-touch-icon.png"
-
+"use client";
+import { useTransition } from "react";
+import React from "react";
+import { useRouter } from "next/navigation";
+import { showToast } from "@/components/ui-lib";
+import { doPasswordReset } from "./actions";
+import { UserState, useUserStore } from "@/store/user";
+import Image from "next/image";
+import logoPng from "../apple-touch-icon.png";
 
 export default function Login() {
-    const {setUser}: UserState = useUserStore();
-    let [isPending, startTransition] = useTransition()
-    const router = useRouter();
+  const { setUser }: UserState = useUserStore();
+  let [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
-    const doAction = async (formData: FormData) => startTransition(() => {
-        doPasswordReset(formData).then(res => {
-            showToast('Your password has been reset. please get your new password in your email.')
-            setTimeout(() => {
-                router.push('/login')
-            }, 100)
-        }).catch(e => {
-            showToast('reset password failed :' + e?.message)
+  const doAction = async (formData: FormData) =>
+    startTransition(() => {
+      doPasswordReset(formData)
+        .then((res) => {
+          showToast(
+            "Your password has been reset. please get your new password in your email.",
+          );
+          setTimeout(() => {
+            router.push("/login");
+          }, 100);
+        })
+        .catch((e) => {
+          showToast("reset password failed :" + e?.message);
         });
-    })
+    });
 
+  return (
+    <div className="bg-grey-lighter flex min-h-screen flex-col">
+      <section className="bg-gray-50 dark:bg-gray-900">
+        <div className="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
+          <a
+            href="#"
+            className="mb-6 flex items-center text-2xl font-semibold text-gray-900 dark:text-white"
+          >
+            <Image
+              width={36}
+              height={36}
+              className="mr-2 h-8 w-8"
+              src={logoPng}
+              alt="logo"
+            />
+            MojoAI
+          </a>
+          <div className=" rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:max-w-md md:mt-0 xl:p-0">
+            <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
+              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
+                Reset your password
+              </h1>
+              <form className="w-96 space-y-4 md:space-y-3 " action={doAction}>
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Your email
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border
+                                                                        border-gray-300
 
-    return (
-        <div className="bg-grey-lighter min-h-screen flex flex-col">
-
-            <section className="bg-gray-50 dark:bg-gray-900">
-                <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-                    <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-                        <Image width={36} height={36} className="w-8 h-8 mr-2" src={logoPng} alt="logo"/>
-                        MojoAI
-                    </a>
-                    <div
-                        className=" bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-                        <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                                Reset your password
-                            </h1>
-                            <form className="space-y-4 md:space-y-3 w-96 " action={doAction}>
-                                <div>
-                                    <label htmlFor="email"
-                                           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
-                                        email</label>
-                                    <input type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg
-                                                                        w-full
-
-                                    focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                                    dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
-                                           placeholder="name@company.com" required/>
-                                </div>
-
-
-
-                                <div className="flex items-start">
-                                    <div className="flex items-center h-5">
-                                        <input id="newsletter" aria-describedby="newsletter" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700
-                                        dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                                               required/>
-                                    </div>
-                                    <div className="ml-3 text-sm">
-                                        <label htmlFor="newsletter"
-                                               className="font-light text-gray-500 dark:text-gray-300">I accept the <a
-                                            className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                                            href="#">Terms and Conditions</a></label>
-                                    </div>
-                                </div>
-
-                                <button type="submit" className=" text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300
-                                                                    w-full
-
-                                font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-400 dark:hover:bg-blue-700 dark:focus:ring-primary-800">
-                                    Send password reset email
-                                </button>
-
-                            </form>
-                        </div>
-                    </div>
+                                    bg-gray-50 p-2.5 text-gray-900  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400
+                                    dark:focus:border-blue-400 dark:focus:ring-blue-400 sm:text-sm"
+                    placeholder="name@company.com"
+                    required
+                  />
                 </div>
-            </section>
+
+                <div className="flex items-start">
+                  <div className="flex h-5 items-center">
+                    <input
+                      id="newsletter"
+                      aria-describedby="newsletter"
+                      type="checkbox"
+                      className="focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 h-4 w-4 rounded border border-gray-300 bg-gray-50
+                                        dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800"
+                      required
+                    />
+                  </div>
+                  <div className="ml-3 text-sm">
+                    <label
+                      htmlFor="newsletter"
+                      className="font-light text-gray-500 dark:text-gray-300"
+                    >
+                      I accept the{" "}
+                      <a
+                        className="text-primary-600 dark:text-primary-500 font-medium hover:underline"
+                        href="#"
+                      >
+                        Terms and Conditions
+                      </a>
+                    </label>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className=" dark:focus:ring-primary-800 w-full rounded-lg bg-blue-400 px-5 py-2.5
+                                                                    text-center
+
+                                text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-400 dark:hover:bg-blue-700"
+                >
+                  Send password reset email
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
-
-    )
+      </section>
+    </div>
+  );
 }
-

@@ -1,45 +1,39 @@
-import {create} from 'zustand'
+import { create } from "zustand";
 
 export interface UiStore {
+  isChatMsgListHitBottom: boolean;
+  setIsChatMsgListHitBottom: (_: boolean) => void;
 
-    isChatMsgListHitBottom: boolean
-    setIsChatMsgListHitBottom: (_: boolean) => void,
+  isChatInputBlur: boolean;
+  setIsChatInputBlur: (_: boolean) => void;
 
+  isScrollTop: boolean;
+  setIsScrollTop: (_: boolean | undefined) => void;
 
-    isChatInputBlur: boolean,
-    setIsChatInputBlur: (_: boolean) => void,
+  isScrollBottom: boolean;
+  setIsScrollBottom: (_: boolean | undefined) => void;
 
-
-    isScrollTop: boolean,
-    setIsScrollTop: (_: boolean | undefined) => void,
-
-    isScrollBottom: boolean,
-    setIsScrollBottom: (_: boolean | undefined) => void,
-
-    isScrollAuto: boolean,
-    setIsScrollAuto: (_: boolean | undefined) => void,
+  isScrollAuto: boolean;
+  setIsScrollAuto: (_: boolean | undefined) => void;
 }
 
-
 export const useUiStore = create<UiStore>()(
-    (set, get) => ({
+  (set, get) =>
+    ({
+      isChatMsgListHitBottom: false,
+      setIsChatMsgListHitBottom: (v: boolean) =>
+        set({ isChatMsgListHitBottom: v }),
 
+      isScrollBottom: true,
+      setIsScrollBottom: (v: boolean) => set({ isScrollBottom: v }),
 
-        isChatMsgListHitBottom: false,
-        setIsChatMsgListHitBottom: (v: boolean) => set({isChatMsgListHitBottom: v}),
+      isScrollAuto: true,
+      setIsScrollAuto: (v: boolean) => set({ isScrollAuto: v }),
 
-        isScrollBottom: true,
-        setIsScrollBottom: (v: boolean) => set({isScrollBottom: v}),
+      isScrollTop: true,
+      setIsScrollTop: (v: boolean) => set({ isScrollTop: v }),
 
-        isScrollAuto: true,
-        setIsScrollAuto: (v: boolean) => set({isScrollAuto: v}),
-
-        isScrollTop: true,
-        setIsScrollTop: (v: boolean) => set({isScrollTop: v}),
-
-        isChatInputBlur: false,
-        setIsChatInputBlur: (v: boolean) => set({isChatInputBlur: v}),
-
-
-    } as UiStore)
-)
+      isChatInputBlur: false,
+      setIsChatInputBlur: (v: boolean) => set({ isChatInputBlur: v }),
+    }) as UiStore,
+);

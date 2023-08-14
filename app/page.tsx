@@ -1,38 +1,22 @@
-'use client';
-import React, {useEffect} from 'react';
-import {useUserStore} from "@/store/user";
-import {useRouter} from "next/navigation";
-import ChatInput from "@/components/chat-input";
-import dynamic from 'next/dynamic'
+"use client";
 
+import { Skeleton } from "@/components/ui/skeleton";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
+import React from "react";
 
-const SideBar = dynamic(() => import('../components/sidebar'), {ssr: false,});
-const ChatHeader = dynamic(() => import('../components/chat-header'), {ssr: false,});
-const ChatMsgList = dynamic(() => import('../components/chat-msg-list'), {ssr: false,});
 export default function Home() {
-    const router = useRouter();
-    const {isAuthed} = useUserStore();
-    useEffect(() => {
-        !isAuthed && router.push('/login')
-    }, [isAuthed, router])
-
-    return (
-
-        <div
-            className={"flex overflow-hidden box-border shadow-sm xl:border"}
-        >
-            <SideBar/>
-            <div className="h-screen w-full border-l flex-1">
-                <ChatHeader/>
-                <ChatMsgList/>
-                <ChatInput/>
-            </div>
+  return (
+    <div className="relative flex w-full flex-col">
+      <SiteHeader />
+      <div className="flex items-center space-x-4 p-36">
+        <Skeleton className="h-12 w-12 rounded-full" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[250px]" />
+          <Skeleton className="h-4 w-[200px]" />
         </div>
-    )
+      </div>
+      <SiteFooter />
+    </div>
+  );
 }
-
-
-
-
-
-
