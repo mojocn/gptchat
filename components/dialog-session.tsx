@@ -56,7 +56,7 @@ export function DialogSession({session}:{session:Session}) {
                 {/* eslint-disable-next-line react/jsx-no-undef */}
                 <Button title='Settings' variant="ghost"><IconAdjustments/></Button>
             </DialogTrigger>
-            <DialogContent className="max-w-[95%] sm:max-w-[75%]">
+            <DialogContent className="max-w-[95%] xl:w-[1000px]">
                 <DialogHeader>
                     <DialogTitle>Set Session configuration</DialogTitle>
                     <DialogDescription>

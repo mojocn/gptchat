@@ -73,7 +73,7 @@ export function DialogConfig() {
             <DialogTrigger asChild>
                 <Button title='Settings' variant="ghost"><Settings/></Button>
             </DialogTrigger>
-            <DialogContent className="max-w-[95%] sm:max-w-[75%]">
+            <DialogContent className="max-w-[95%] xl:w-[1000px]">
                 <DialogHeader>
                     <DialogTitle>Set global configuration</DialogTitle>
                     <DialogDescription>
