@@ -8,6 +8,7 @@
 .env
 # testing
 /coverage
+.contentlayer
 
 # next.js
 /.next/
