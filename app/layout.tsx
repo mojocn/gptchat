@@ -19,7 +19,9 @@ export default function RootLayout({children,}: { children: React.ReactNode }) {
         <html lang="en">
         <body>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-            {children}
+            <main className="select-none w-screen h-screen xl:w-[1200px]  xl:mx-auto ">
+                {children}
+            </main>
         </ThemeProvider>
         <Analytics/>
         </body>

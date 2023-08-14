@@ -19,7 +19,7 @@ export default function Home() {
     return (
 
         <div
-            className={"flex overflow-hidden box-border shadow-sm select-none w-screen h-screen xl:w-[1200px]  xl:mx-auto xl:border"}
+            className={"flex overflow-hidden box-border shadow-sm xl:border"}
         >
             <SideBar/>
             <div className="h-screen w-full border-l flex-1">

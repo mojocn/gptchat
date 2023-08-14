@@ -2,8 +2,32 @@ import {Avatar, AvatarFallback, AvatarImage,} from "./ui/avatar"
 import {Button} from "./ui/button"
 import favcon from "@/app/favicon-16x16.png"
 import {useUserStore} from "@/store/user";
-import {Cloud, CreditCard, Donut, HeartHandshake, Languages, LogOut, Moon, Palette, ShoppingCart, Sun, User,} from "lucide-react"
-import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
+import {
+    Cloud,
+    CreditCard,
+    Donut,
+    HeartHandshake,
+    Languages,
+    LogOut,
+    Moon,
+    Palette,
+    ShoppingCart,
+    Sun,
+    User,
+} from "lucide-react"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuPortal,
+    DropdownMenuSeparator,
+    DropdownMenuShortcut,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import {useTheme} from "next-themes";
 import {lemonCheckoutURL} from "@/types/lemon";
 import {showToast} from "@/components/ui-lib";
@@ -27,6 +51,18 @@ export function UserNav() {
                 localStorage.clear();
                 showToast('Clear local cache')
             }
+        }
+    }
+
+    async function doProfile() {
+        if (isAuthed) {
+            router.push('/profile')
+        }
+    }
+
+    async function doBilling() {
+        if (isAuthed) {
+            router.push('/billing')
         }
     }
 
@@ -101,12 +137,12 @@ export function UserNav() {
                 {
                     isAuthed ? (
                         <>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={doProfile}>
                                 <User className="mr-2 h-4 w-4"/>
                                 <span>Profile</span>
                                 <DropdownMenuShortcut></DropdownMenuShortcut>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={doBilling}>
                                 <CreditCard className="mr-2 h-4 w-4"/>
                                 <span>Billing</span>
                                 <DropdownMenuShortcut></DropdownMenuShortcut>
