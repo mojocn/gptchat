@@ -1,6 +1,6 @@
 import {OpenAiChatCompletionReq} from "@/pkg/openai";
 import {checkAuth} from "../check-auth";
-import {NextResponse, NextRequest} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import {UserVisitInc} from "@/model/user";
 
 const OPENAI_API_TYPE = process.env.OPENAI_API_TYPE || 'openai';// auzre
@@ -11,6 +11,7 @@ const AZURE_API_HOST = process.env.AZURE_API_HOST || 'https://zhouqingai.openai.
 const AZURE_API_VERSION = process.env.AZURE_API_VERSION || '2023-03-15-preview';
 const AZURE_DEPLOYMENT_ID = process.env.AZURE_DEPLOYMENT_ID || 'gpt-35-turbo';
 
+export const dynamic = "force-dynamic"
 
 export async function POST(req: NextRequest): Promise<Response> {
     const userId = await checkAuth();

@@ -1,9 +1,10 @@
-const {withContentlayer} = require('next-contentlayer')
+// const { withContentlayer } = require('next-contentlayer')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 
-    // reactStrictMode: true,
+    reactStrictMode: true,
+    swcMinify: true,
     webpack(config) {
         config.module.rules.push({
             test: /\.svg$/,
@@ -17,5 +18,5 @@ const nextConfig = {
     },
 }
 
-// module.exports = nextConfig
-module.exports = withContentlayer(nextConfig)
+module.exports = nextConfig
+// module.exports = withContentlayer(nextConfig)
