@@ -1,7 +1,7 @@
 "use server";
 
 import { bcryptPasswordHash } from "@/pkg/bcrypt";
-import { UserInsert, doUserInsert, findUserByEmail } from "@/model/user";
+import { doUserInsert, findUserByEmail, UserInsert } from "@/model/user";
 
 export async function doUserRegister(formData: FormData) {
   const username = formData.get("username") as string;

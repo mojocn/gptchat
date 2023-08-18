@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 import { promptData } from "@/store/prompt-data";
 
 export interface Prompt {

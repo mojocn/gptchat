@@ -4,9 +4,7 @@ import favcon from "@/app/favicon-16x16.png";
 import { useUserStore } from "@/store/user";
 import {
   Cloud,
-  Computer,
   CreditCard,
-  Donut,
   HeartHandshake,
   Languages,
   LogOut,
@@ -34,6 +32,7 @@ import { lemonCheckoutURL } from "@/types/lemon";
 import { showToast } from "@/components/ui-lib";
 import { useRouter } from "next/navigation";
 import { useLocal } from "@/store/local";
+import { IconDeviceLaptop } from "@tabler/icons-react";
 
 const REPO_URL = "https://github.com/mojocn/gptchat/issues";
 
@@ -107,7 +106,7 @@ export function UserNav() {
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => setTheme("system")}>
-                <Computer className="mr-2 h-4 w-4" />
+                <IconDeviceLaptop className="mr-2 h-4 w-4" />
                 <span>Auto</span>
               </DropdownMenuItem>
             </DropdownMenuSubContent>

@@ -1,4 +1,4 @@
-import { Generated, ColumnType } from "kysely";
+import { Generated } from "kysely";
 
 export interface PromptTable {
   id: Generated<number>;

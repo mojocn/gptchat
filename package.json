@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build:next": "next build",
     "build": "contentlayer build && next build",
-    "buildmdx": "contentlayer build",
+    "build:mdx": "contentlayer build",
     "start": "next start",
     "lint:fix": "next lint --fix",
     "preview": "next build && next start -p 3001",

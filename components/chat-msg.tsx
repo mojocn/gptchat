@@ -38,11 +38,7 @@ function MsgContent({ msg }: { msg: Message }) {
         isUser ? "bg-primary text-white" : "bg-muted",
       )}
     >
-      <Markdown
-        miniWidth="75%"
-        content={msg.content || ""}
-        defaultShow={true}
-      />
+      <Markdown content={msg.content || ""} defaultShow={true} />
     </div>
   );
 }

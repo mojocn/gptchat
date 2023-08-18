@@ -20,7 +20,6 @@ import {
   IconBrandTelegram,
   IconChevronLeft,
   IconChevronRight,
-  IconEar,
   IconMicrophone,
   IconTrash,
   IconVolume,

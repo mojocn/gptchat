@@ -2,7 +2,7 @@
 import React, { useTransition } from "react";
 import { doUserRegister } from "./actions";
 import { useRouter } from "next/navigation";
-import { CaButton, showToast } from "@/components/ui-lib";
+import { showToast } from "@/components/ui-lib";
 import Image from "next/image";
 import logoPng from "@/app/apple-touch-icon.png";
 import { Button } from "@/components/ui/button";

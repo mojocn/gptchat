@@ -1,10 +1,8 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { fetchSpeechToken } from "@/pkg/tts";
 import {
   AudioConfig,
   CancellationReason,
-  PronunciationAssessmentConfig,
-  PronunciationAssessmentResult,
   ResultReason,
   SpeechConfig,
   SpeechRecognizer,

@@ -1,5 +1,5 @@
-import { NextResponse, NextRequest } from "next/server";
-import { checkAdmin, checkAuth, jsonData } from "@/app/api/check-auth";
+import { NextRequest, NextResponse } from "next/server";
+import { checkAdmin, jsonData } from "@/app/api/check-auth";
 import { sqlPagination } from "@/model/pagination";
 
 export const dynamic = "force-dynamic";

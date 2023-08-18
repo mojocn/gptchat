@@ -18,7 +18,6 @@ import { sleep2 } from "@/pkg/util";
 import { useLocal } from "@/store/local";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Send } from "lucide-react";
 
 const MSG_DRAFT = "MSG_DRAFT_TO_PREVIEW";
 const ChatInput = () => {

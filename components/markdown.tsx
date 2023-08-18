@@ -141,7 +141,6 @@ export const MarkdownContent = React.memo(_MarkDownContent);
 export function Markdown(
   props: {
     content: string;
-    miniWidth: string;
     fontSize?: number;
     parentRef?: RefObject<HTMLDivElement>;
     defaultShow?: boolean;

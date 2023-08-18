@@ -1,6 +1,6 @@
 import * as path from "path";
 import { promises as fs } from "fs";
-import { Migrator, FileMigrationProvider } from "kysely";
+import { FileMigrationProvider, Migrator } from "kysely";
 import { database } from "./database";
 
 async function migrateToLatest() {

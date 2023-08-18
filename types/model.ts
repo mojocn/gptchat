@@ -1,4 +1,4 @@
-import { Result, success, error } from "./result";
+import { error, Result, success } from "./result";
 
 /**
  * Represents a AI language model that can complete prompts. TypeChat uses an implementation of this

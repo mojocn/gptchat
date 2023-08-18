@@ -1,6 +1,5 @@
 "use client";
-import { useTransition } from "react";
-import React from "react";
+import React, { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { showToast } from "@/components/ui-lib";
 import { doPasswordReset } from "./actions";
