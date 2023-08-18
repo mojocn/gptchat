@@ -1,29 +1,26 @@
-"use client";
 import React, { useEffect } from "react";
-import { useUserStore } from "@/store/user";
-import { useRouter } from "next/navigation";
-import ChatInput from "@/components/chat-input";
+import { redirect, useRouter } from "next/navigation";
+import { checkAuth } from "@/app/api/check-auth";
 import dynamic from "next/dynamic";
 
 const SideBar = dynamic(() => import("@/components/sidebar"), { ssr: false });
 const ChatHeader = dynamic(() => import("@/components/chat-header"), {
   ssr: false,
 });
+const ChatInput = dynamic(() => import("@/components/chat-input"), {
+  ssr: false,
+});
 const ChatMsgList = dynamic(() => import("@/components/chat-msg-list"), {
   ssr: false,
 });
-export default function ChatPage() {
-  const router = useRouter();
-  const { isAuthed } = useUserStore();
-  useEffect(() => {
-    document && document.body.style.setProperty("overflow-y", "hidden");
-    return () => {
-      document && document.body.style.setProperty("overflow-y", "auto");
-    };
-  }, []);
-  useEffect(() => {
-    !isAuthed && router.push("/login");
-  }, [isAuthed, router]);
+
+export default async function ChatPage() {
+  const userId = await checkAuth();
+  if (!userId) {
+    redirect("/login");
+    return null;
+  }
+
   return (
     <main
       className={

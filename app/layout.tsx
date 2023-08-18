@@ -9,6 +9,8 @@ import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
+  lang: "en",
+  viewport: "width=device-width, initial-scale=1",
   title: {
     default: siteConfig.name,
     template: `%s - ${siteConfig.name}`,
@@ -18,7 +20,6 @@ export const metadata: Metadata = {
     "Next.js",
     "React",
     "Tailwind CSS",
-    "Server Components",
     "Fullstack",
     "OpenAI",
     "ChatGPT",
@@ -73,7 +74,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn("select-auto bg-background font-sans antialiased")}>
+      <body className="select-auto bg-background font-sans antialiased">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
           <Toaster />

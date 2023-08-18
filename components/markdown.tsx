@@ -142,7 +142,6 @@ export function Markdown(
   props: {
     content: string;
     miniWidth: string;
-    loading?: boolean;
     fontSize?: number;
     parentRef?: RefObject<HTMLDivElement>;
     defaultShow?: boolean;
@@ -192,9 +191,8 @@ export function Markdown(
 
   return (
     <div
-      className={cn("markdown-body ", props.className || "")}
+      className={cn("markdown", props.className || "")}
       style={{
-        minWidth: props.miniWidth,
         fontSize: `${props.fontSize ?? 14}px`,
         height:
           !inView.current && renderedHeight.current > 0
@@ -205,12 +203,7 @@ export function Markdown(
       onContextMenu={props.onContextMenu}
       onDoubleClickCapture={props.onDoubleClickCapture}
     >
-      {inView.current &&
-        (props.loading ? (
-          <span>todo loading</span>
-        ) : (
-          <MarkdownContent content={props.content} />
-        ))}
+      {inView.current && <MarkdownContent content={props.content} />}
     </div>
   );
 }

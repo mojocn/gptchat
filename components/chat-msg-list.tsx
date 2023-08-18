@@ -1,3 +1,5 @@
+"use client";
+
 import { ChatMsg } from "@/components/chat-msg";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { shallow } from "zustand/shallow";

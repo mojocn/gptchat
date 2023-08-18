@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { ChatState, Session, useChatStore } from "@/store/chat";
@@ -10,6 +11,13 @@ export default function ChatHeader() {
   const { t } = useLocal();
 
   useEffect(() => {
+    document && document.body.style.setProperty("overflow-y", "hidden");
+    return () => {
+      document && document.body.style.setProperty("overflow-y", "auto");
+    };
+  }, []);
+
+  useEffect(() => {
     const ss = sessions.find((s) => s.id === selectedSessionId);
     ss && setSession(ss!);
   }, [selectedSessionId, sessions]);
@@ -17,11 +25,11 @@ export default function ChatHeader() {
   return (
     <div className="align-center chat-header-height flex w-full items-center justify-between border-b px-4 py-[8px]">
       <section>
-        <h2 className="text-lg font-bold">{`${session.title} / ${session.modelConfig?.model}`}</h2>
-        <h4 className="text-sm font-medium">
+        <h4 className="text-sm font-bold">{`${session.title} / ${session.modelConfig?.model}`}</h4>
+        <h5 className="text-xs ">
           {t.SubTitle && t.SubTitle(session.messages?.length)}
           {/*    todo:fix this*/}
-        </h4>
+        </h5>
       </section>
       <div className="align-center flex items-center justify-center gap-x-4">
         <UserNav />

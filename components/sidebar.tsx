@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { SessionList } from "@/components/session-list";
 import { useChatStore } from "@/store/chat";

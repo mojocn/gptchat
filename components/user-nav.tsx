@@ -4,6 +4,7 @@ import favcon from "@/app/favicon-16x16.png";
 import { useUserStore } from "@/store/user";
 import {
   Cloud,
+  Computer,
   CreditCard,
   Donut,
   HeartHandshake,
@@ -106,7 +107,7 @@ export function UserNav() {
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => setTheme("system")}>
-                <Donut className="mr-2 h-4 w-4" />
+                <Computer className="mr-2 h-4 w-4" />
                 <span>Auto</span>
               </DropdownMenuItem>
             </DropdownMenuSubContent>

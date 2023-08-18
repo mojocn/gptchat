@@ -1,3 +1,4 @@
+"use client";
 import { type ChatState, Message, Session, useChatStore } from "@/store/chat";
 import React, { useEffect, useRef } from "react";
 import { UiStore, useUiStore } from "@/store/ui";
@@ -7,6 +8,7 @@ import {
   IconArrowsUp,
   IconBackspace,
   IconMicrophone,
+  IconSend,
   IconWaveSine,
 } from "@tabler/icons-react";
 import { showToast } from "@/components/ui-lib";
@@ -218,13 +220,13 @@ const ChatInput = () => {
           setIsScrollBottom(false);
           setIsScrollAuto(true);
         }}
-        className="w-full flex-1 resize-none"
+        className="relative w-full  resize-none"
         placeholder={t.inputPlaceholder}
         required
       />
       <Button
         type="submit"
-        size="icon"
+        variant="ghost"
         className="absolute bottom-8 right-8"
         title="send"
         onClick={async (e) => {
@@ -233,7 +235,7 @@ const ChatInput = () => {
           await doSubmit(userInput);
         }}
       >
-        <Send className="h-4 w-4" />
+        <IconSend size={16} />
         <span className="sr-only">Send</span>
       </Button>
     </div>

@@ -7,23 +7,28 @@ p {
 }
 
 h1 {
-  @apply my-6 select-auto text-4xl font-extrabold;
+  @apply my-5 select-auto text-4xl font-extrabold;
 }
 
 h2 {
-  @apply my-6 select-auto text-3xl font-extrabold;
+  @apply my-4 select-auto text-3xl font-extrabold;
 }
 
 h3 {
-  @apply my-5 select-auto text-2xl font-bold;
+  @apply my-3 select-auto text-2xl font-bold;
 }
 
 h4 {
-  @apply my-4 select-auto text-xl font-semibold;
+  @apply my-2 select-auto text-xl font-semibold;
 }
 
 h5 {
-  @apply my-3 select-auto text-lg font-medium;
+  @apply my-1 select-auto text-lg font-medium;
+}
+
+p {
+  white-space: break-spaces !important;
+  word-break: break-word !important;
 }
 
 $chat-header-height: 64px;
@@ -56,4 +61,30 @@ $site-body-height: calc(
 
 .chat-content-height {
   height: $chat-content-height;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #aaa;
+}
+
+::-webkit-scrollbar-track:hover {
+  background-color: #f2f2f2;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }

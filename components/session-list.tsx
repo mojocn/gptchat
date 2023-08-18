@@ -111,7 +111,7 @@ function SessionItem({ session }: { session: Session }) {
           </button>
         </div>
       ) : (
-        <h3
+        <span
           onClick={doSelectSession}
           className="h-5
                          cursor-pointer
@@ -120,11 +120,10 @@ function SessionItem({ session }: { session: Session }) {
                          whitespace-nowrap
                          text-sm
                          font-semibold
-                         text-gray-900
-                         dark:text-gray-100"
+                         "
         >
           {session.title}
-        </h3>
+        </span>
       )}
 
       <div className="mt-6 flex justify-between text-xs text-gray-900 dark:text-white">
