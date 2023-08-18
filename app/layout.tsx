@@ -9,7 +9,6 @@ import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  lang: "en",
   viewport: "width=device-width, initial-scale=1",
   title: {
     default: siteConfig.name,

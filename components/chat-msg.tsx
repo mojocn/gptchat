@@ -24,7 +24,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 
 async function doText2Speech(markdownCode: string) {
-  //markdown code to plain text
   const text = markdownCode.replace(/<[^>]+>/g, "");
   const { jwt, region } = await fetchSpeechToken();
   text2speech(jwt, region, text);
@@ -42,7 +41,6 @@ function MsgContent({ msg }: { msg: Message }) {
       <Markdown
         miniWidth="75%"
         content={msg.content || ""}
-        loading={false}
         defaultShow={true}
       />
     </div>

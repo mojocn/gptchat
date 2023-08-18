@@ -1,7 +1,8 @@
+"use client";
 import React, { useEffect } from "react";
-import { redirect, useRouter } from "next/navigation";
-import { checkAuth } from "@/app/api/check-auth";
+import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
+import { useUserStore } from "@/store/user";
 
 const SideBar = dynamic(() => import("@/components/sidebar"), { ssr: false });
 const ChatHeader = dynamic(() => import("@/components/chat-header"), {
@@ -14,13 +15,12 @@ const ChatMsgList = dynamic(() => import("@/components/chat-msg-list"), {
   ssr: false,
 });
 
-export default async function ChatPage() {
-  const userId = await checkAuth();
-  if (!userId) {
-    redirect("/login");
-    return null;
-  }
-
+export default function ChatPage() {
+  const router = useRouter();
+  const { isAuthed } = useUserStore();
+  useEffect(() => {
+    !isAuthed && router.push("/login");
+  }, [isAuthed, router]);
   return (
     <main
       className={
