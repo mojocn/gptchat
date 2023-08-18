@@ -4,12 +4,12 @@ import React from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { siteConfig } from "@/store/site";
 import { Metadata } from "next";
-import { cn } from "@/lib/utils";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  viewport: "width=device-width, initial-scale=1",
+  viewport:
+    "width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, target-densityDpi=device-dpi",
   title: {
     default: siteConfig.name,
     template: `%s - ${siteConfig.name}`,
