@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { CaButton, showToast } from "@/components/ui-lib";
 import Image from "next/image";
 import logoPng from "@/app/apple-touch-icon.png";
+import { Button } from "@/components/ui/button";
+import { IconLoader } from "@tabler/icons-react";
 
 export default function Register() {
   let [isPending, startTransition] = useTransition();
@@ -158,13 +160,20 @@ export default function Register() {
                     </label>
                   </div>
                 </div>
-                <CaButton
+                <Button
                   type="submit"
-                  loading={isPending}
-                  className=" w-full px-5 py-2.5 "
+                  disabled={isPending}
+                  className=" w-full px-5 py-2.5 text-foreground "
                 >
-                  Create an account{" "}
-                </CaButton>
+                  {isPending ? (
+                    <IconLoader
+                      size={16}
+                      className="animate-spin stroke-white font-semibold"
+                    />
+                  ) : (
+                    "Create an account"
+                  )}
+                </Button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Already have an account?{" "}
                   <a

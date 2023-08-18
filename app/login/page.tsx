@@ -8,6 +8,8 @@ import { UserModel, UserState, useUserStore } from "@/store/user";
 import Image from "next/image";
 
 import logoPng from "../apple-touch-icon.png";
+import { Button } from "@/components/ui/button";
+import { IconLoader } from "@tabler/icons-react";
 
 export default function Login() {
   const { setUser }: UserState = useUserStore();
@@ -117,13 +119,21 @@ export default function Login() {
                     </label>
                   </div>
                 </div>
-                <CaButton
+                <Button
                   type="submit"
-                  loading={isPending}
-                  className=" w-full px-5 py-2.5"
+                  disabled={isPending}
+                  className=" w-full px-5 py-2.5 text-foreground "
                 >
-                  Login{" "}
-                </CaButton>
+                  {isPending ? (
+                    <IconLoader
+                      size={16}
+                      className="animate-spin stroke-white font-semibold"
+                    />
+                  ) : (
+                    "Login"
+                  )}
+                </Button>
+
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Does not have an account?{" "}
                   <a

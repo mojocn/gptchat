@@ -7,6 +7,8 @@ import { doPasswordReset } from "./actions";
 import { UserState, useUserStore } from "@/store/user";
 import Image from "next/image";
 import logoPng from "../apple-touch-icon.png";
+import { Button } from "@/components/ui/button";
+import { IconLoader } from "@tabler/icons-react";
 
 export default function Login() {
   const { setUser }: UserState = useUserStore();
@@ -100,15 +102,20 @@ export default function Login() {
                   </div>
                 </div>
 
-                <button
+                <Button
                   type="submit"
-                  className=" dark:focus:ring-primary-800 w-full rounded-lg bg-blue-400 px-5 py-2.5
-                                                                    text-center
-
-                                text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-400 dark:hover:bg-blue-700"
+                  disabled={isPending}
+                  className=" w-full px-5 py-2.5 text-foreground "
                 >
-                  Send password reset email
-                </button>
+                  {isPending ? (
+                    <IconLoader
+                      size={16}
+                      className="animate-spin stroke-white font-semibold"
+                    />
+                  ) : (
+                    "Send password reset email"
+                  )}
+                </Button>
               </form>
             </div>
           </div>
