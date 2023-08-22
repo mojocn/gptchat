@@ -20,6 +20,8 @@ export async function doUserRegister(formData: FormData) {
     username,
     email,
     gpt_visit: 0,
+    status: "verify",
+    bio: "",
     password: hashedPassword,
   };
   return await doUserInsert(newUser);

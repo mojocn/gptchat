@@ -14,20 +14,8 @@ const sidebarNavItems = [
     href: "/profile",
   },
   {
-    title: "Account",
-    href: "/profile/account",
-  },
-  {
-    title: "Appearance",
-    href: "/profile/appearance",
-  },
-  {
-    title: "Notifications",
-    href: "/profile/notifications",
-  },
-  {
-    title: "Display",
-    href: "/profile/display",
+    title: "Security",
+    href: "/profile/security",
   },
 ];
 
@@ -37,7 +25,7 @@ interface SettingsLayoutProps {
 
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
-    <>
+    <section className="w-full lg:mx-auto lg:w-[60%]">
       <div className="hidden space-y-6 p-10 pb-16 md:block">
         <div className="space-y-0.5">
           <h2 className="text-2xl font-bold tracking-tight">Settings</h2>
@@ -53,6 +41,6 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
           <div className="flex-1 lg:max-w-2xl">{children}</div>
         </div>
       </div>
-    </>
+    </section>
   );
 }

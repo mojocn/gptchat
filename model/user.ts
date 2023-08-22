@@ -30,6 +30,8 @@ export interface UserTable {
   created_at: ColumnType<Date, string | undefined, never>;
   last_active_at: ColumnType<Date, string | undefined, never>;
   gpt_visit: number;
+  bio: string;
+  status: "verify" | "disabled" | "active" | "banned" | "deleted";
 }
 
 export type User = Selectable<UserTable>;
@@ -49,6 +51,14 @@ export async function findUserByEmail(email: string) {
   return await database
     .selectFrom("users")
     .where("email", "=", email.trim())
+    .selectAll()
+    .executeTakeFirst();
+}
+
+export async function findUserById(userId: number) {
+  return await database
+    .selectFrom("users")
+    .where("id", "=", userId)
     .selectAll()
     .executeTakeFirst();
 }
@@ -83,12 +93,12 @@ export async function findPeople(criteria: Partial<User>) {
   return await query.selectAll().execute();
 }
 
-export async function doUpdatePerson(id: number, updateWith: UserUpdate) {
-  await database
+export async function doUpdateUser(id: number, updateWith: UserUpdate) {
+  return await database
     .updateTable("users")
     .set(updateWith)
     .where("id", "=", id)
-    .execute();
+    .executeTakeFirstOrThrow();
 }
 
 export async function doUpdateUserByEmail(email: string, user: UserUpdate) {

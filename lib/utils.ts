@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 import React from "react";
 import { Post as Doc } from "contentlayer/generated";
 import { TreeNode } from "@/types/TreeNode";
+import { toast } from "@/components/ui/use-toast";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -71,3 +72,19 @@ export const buildDocsTree = (
       ),
     }));
 };
+
+export function toastErr(e: any) {
+  if (!e) return;
+  toast({
+    title: "Error",
+    description: e.message + e.description,
+  });
+}
+
+export function toastTxt(title: string, description?: string) {
+  if (!title) return;
+  toast({
+    title: title,
+    description: description,
+  });
+}

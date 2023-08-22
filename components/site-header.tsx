@@ -1,13 +1,13 @@
+"use client";
 import Link from "next/link";
 
-import { siteConfig } from "@/store/site";
 import { cn } from "@/lib/utils";
 import { NavBarCommandK } from "@/components/nav-bar-command-k";
 import { NavBarMain } from "@/components/nav-bar-main";
 import { NavBarMobile } from "@/components/nav-bar-mobile";
 import { buttonVariants } from "@/components/ui/button";
-import { ModeToggle } from "@/components/mode-toggle";
-import { Github, Twitter } from "lucide-react";
+import { UserNav } from "@/components/user-nav";
+import { IconRobot } from "@tabler/icons-react";
 
 export function SiteHeader() {
   return (
@@ -20,11 +20,7 @@ export function SiteHeader() {
             <NavBarCommandK />
           </div>
           <nav className="flex items-center">
-            <Link
-              href={siteConfig.links.github}
-              target="_blank"
-              rel="noreferrer"
-            >
+            <Link href="/chat" target="_blank" rel="noreferrer">
               <div
                 className={cn(
                   buttonVariants({
@@ -33,28 +29,12 @@ export function SiteHeader() {
                   "w-9 px-0",
                 )}
               >
-                <Github className="h-4 w-4" />
-                <span className="sr-only">GitHub</span>
+                <IconRobot className="h-4 w-4 " size={24} />
+                <span className="sr-only">ChatGPT</span>
               </div>
             </Link>
-            <Link
-              href={siteConfig.links.twitter}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <div
-                className={cn(
-                  buttonVariants({
-                    variant: "ghost",
-                  }),
-                  "w-9 px-0",
-                )}
-              >
-                <Twitter className="h-4 w-4 fill-current" />
-                <span className="sr-only">Twitter</span>
-              </div>
-            </Link>
-            <ModeToggle />
+
+            <UserNav />
           </nav>
         </div>
       </div>

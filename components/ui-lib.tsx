@@ -1,3 +1,4 @@
+"use client";
 import { createRoot } from "react-dom/client";
 import React, { ButtonHTMLAttributes } from "react";
 import { OptionItem } from "@/types/item";
