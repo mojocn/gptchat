@@ -49,7 +49,7 @@ export const docsConfig: DocsConfig = {
       items: [
         {
           title: "OpenAI Chat",
-          href: "/Chat",
+          href: "/chat",
           items: [],
         },
 
