@@ -1,19 +1,19 @@
 "use client";
 
-import * as React from "react";
 import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/navigation";
 import { AlignCenterVertical } from "lucide-react";
 import { docsConfig } from "@/store/docs";
 import { siteConfig } from "@/store/site";
 import { cn } from "@/lib/utils";
-import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Fragment, ReactNode, useState } from "react";
+import { IconStereoGlasses } from "@tabler/icons-react";
 
 export function NavBarMobile() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -32,7 +32,7 @@ export function NavBarMobile() {
           className="flex items-center"
           onOpenChange={setOpen}
         >
-          <Icons.logo className="mr-2 h-4 w-4" />
+          <IconStereoGlasses className="mr-2 h-4 w-4" />
           <span className="font-bold">{siteConfig.name}</span>
         </MobileLink>
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
@@ -56,7 +56,7 @@ export function NavBarMobile() {
                 <h4 className="font-medium">{item.title}</h4>
                 {item?.items?.length &&
                   item.items.map((item) => (
-                    <React.Fragment key={item.href}>
+                    <Fragment key={item.href}>
                       {!item.disabled &&
                         (item.href ? (
                           <MobileLink
@@ -69,7 +69,7 @@ export function NavBarMobile() {
                         ) : (
                           item.title
                         ))}
-                    </React.Fragment>
+                    </Fragment>
                   ))}
               </div>
             ))}
@@ -82,7 +82,7 @@ export function NavBarMobile() {
 
 interface MobileLinkProps extends LinkProps {
   onOpenChange?: (open: boolean) => void;
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
 }
 

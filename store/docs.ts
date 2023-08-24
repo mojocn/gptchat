@@ -12,36 +12,50 @@ export const docsConfig: DocsConfig = {
       href: "https://twitter.com/neochau",
       external: true,
     },
+    {
+      title: "Articles",
+      href: "/posts",
+      external: false,
+    },
   ],
   sidebarNav: [
     {
-      title: "Getting Started",
+      title: "User",
       items: [
         {
-          title: "Introduction",
-          href: "/docs",
+          title: "Profile",
+          href: "/profile",
           items: [],
         },
-
         {
-          title: "About",
-          href: "/docs/about",
+          title: "Login",
+          href: "/login",
+          items: [],
+        },
+        {
+          title: "Register",
+          href: "/register",
+          items: [],
+        },
+        {
+          title: "Reset Password",
+          href: "/password-reset",
           items: [],
         },
       ],
     },
     {
-      title: "Installation",
+      title: "Chat GPT",
       items: [
         {
-          title: "Next.js",
-          href: "/docs/installation/next",
+          title: "OpenAI Chat",
+          href: "/Chat",
           items: [],
         },
 
         {
-          title: "Manual",
-          href: "/docs/installation/manual",
+          title: "Speech English",
+          href: "/tts",
           items: [],
         },
       ],
