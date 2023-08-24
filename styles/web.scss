@@ -91,18 +91,6 @@ $site-body-height: calc(
 
 // animated card
 
-div:has(.card[data-color="blue"]:hover) {
-  @apply bg-blue-300;
-}
-
-body:has(.card[data-color="green"]:hover) {
-  @apply bg-green-300;
-}
-
-body:has(.card[data-color="brown"]:hover) {
-  @apply bg-orange-600;
-}
-
 .card {
   background-size: cover;
   background-position: center;
