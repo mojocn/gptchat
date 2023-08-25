@@ -160,6 +160,18 @@ export const Card: FC<
   );
 };
 
+const H1: FC<PropsWithChildren<{}>> = ({ children }) => {
+  const slug = sluggifyTitle(getNodeText(children));
+  return (
+    <h1 id={slug} className="group cursor-pointer scroll-mt-32">
+      <span className="absolute left-8 hidden text-slate-400 dark:text-slate-600 lg:group-hover:inline">
+        #
+      </span>
+      <Link href={`#${slug}`}>{children}</Link>
+    </h1>
+  );
+};
+
 const H2: FC<PropsWithChildren<{}>> = ({ children }) => {
   const slug = sluggifyTitle(getNodeText(children));
   return (
@@ -195,6 +207,17 @@ const H4: FC<PropsWithChildren<{}>> = ({ children }) => {
     </h4>
   );
 };
+const H5: FC<PropsWithChildren<{}>> = ({ children }) => {
+  const slug = sluggifyTitle(getNodeText(children));
+  return (
+    <h5 id={slug} className="group cursor-pointer  scroll-mt-32">
+      <span className="absolute left-8 hidden text-slate-400 dark:text-slate-600 lg:group-hover:inline">
+        #
+      </span>
+      {children}
+    </h5>
+  );
+};
 
 function HR() {
   return <hr className="my-4" />;
@@ -208,9 +231,12 @@ export const mdxComponents = {
   Link,
   ChevronLink,
   Label,
+  h1: H1,
   h2: H2,
   h3: H3,
   h4: H4,
+  h5: H5,
+
   a: NextLink,
   OptionsTable,
   OptionTitle,
