@@ -228,7 +228,7 @@ export const ArticleNav: FC<{ headings: DocHeading[] }> = ({ headings }) => {
   if ((headingsToRender ?? []).length === 0) return null;
 
   return (
-    <div className="text-sm">
+    <div className="mt-8 text-sm">
       <h4 className="mb-4 font-medium text-slate-600">On this page</h4>
       <ul className="space-y-2">
         {headingsToRender.map(({ title, level }, index) => (

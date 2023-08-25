@@ -60,31 +60,32 @@ import wuhan from "@/images/wuhan.png";
 import guangzhou from "@/images/guangzhou.jpg";
 import gelihaian from "@/images/gelihaian.jpeg";
 import zhuhai2 from "@/images/zhuhai2.jpg";
+import { PlusCircle } from "lucide-react";
 
 const listenNowAlbums: Album[] = [
   {
     name: "Qichun",
-    artist: "Ethan Byte",
+    artist: "Where I grew up",
     cover: qichun.src,
   },
   {
     name: "Wuhan",
-    artist: "Nina Netcode",
+    artist: "Where I studied",
     cover: wuhan.src,
   },
   {
     name: "Guangzhou",
-    artist: "Lena Logic",
+    artist: "Where I worked",
     cover: guangzhou.src,
   },
   {
     name: "Zhuhai",
-    artist: "Beth Binary",
+    artist: "Where my son loves",
     cover: zhuhai2.src,
   },
   {
     name: "Gree Coast",
-    artist: "Beth Binary",
+    artist: "Where My family lives",
     cover: gelihaian.src,
   },
 ];
@@ -619,7 +620,7 @@ function InnerPodcastEmptyPlaceholder() {
         </p>
         <Dialog>
           <DialogTrigger>
-            <Button size="sm" className="relative">
+            <Button size="sm" className="relative text-foreground">
               Add Podcast
             </Button>
           </DialogTrigger>
@@ -685,8 +686,8 @@ export default function Hero() {
                         </TabsTrigger>
                       </TabsList>
                       <div className="ml-auto mr-4">
-                        <Button>
-                          <IconSpherePlus className="mr-2 h-4 w-4" />
+                        <Button className="text-foreground">
+                          <PlusCircle className="mr-2 h-4 w-4" />
                           Add music
                         </Button>
                       </div>
@@ -698,10 +699,10 @@ export default function Hero() {
                       <div className="flex items-center justify-between">
                         <div className="space-y-1">
                           <h2 className="text-2xl font-semibold tracking-tight">
-                            Listen Now
+                            Where
                           </h2>
                           <p className="text-sm text-muted-foreground">
-                            Top picks for you. Updated daily.
+                            Palaces where I am from.
                           </p>
                         </div>
                       </div>

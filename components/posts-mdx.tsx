@@ -24,7 +24,7 @@ export const ChevronLink: FC<{ label: string; url: string }> = ({
         className="inline-flex items-center space-x-1.5 text-violet-600 no-underline hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300"
       >
         <span className="font-semibold">{label}</span>
-        <IconChevronRight className="block w-2" />
+        <IconChevronRight className="block" size={14} />
       </a>
     );
   } else {
@@ -34,7 +34,7 @@ export const ChevronLink: FC<{ label: string; url: string }> = ({
         className="inline-flex items-center space-x-1.5 text-violet-600 no-underline hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300"
       >
         <span className="font-semibold">{label}</span>
-        <IconChevronRight className="block w-2" />
+        <IconChevronRight className="block" size={14} />
       </NextLink>
     );
   }
@@ -160,10 +160,10 @@ export const Card: FC<
   );
 };
 
-export const H2: FC<PropsWithChildren<{}>> = ({ children }) => {
+const H2: FC<PropsWithChildren<{}>> = ({ children }) => {
   const slug = sluggifyTitle(getNodeText(children));
   return (
-    <h2 id={slug} className="group cursor-pointer">
+    <h2 id={slug} className="group cursor-pointer scroll-mt-32">
       <span className="absolute left-8 hidden text-slate-400 dark:text-slate-600 lg:group-hover:inline">
         #
       </span>
@@ -172,10 +172,10 @@ export const H2: FC<PropsWithChildren<{}>> = ({ children }) => {
   );
 };
 
-export const H3: FC<PropsWithChildren<{}>> = ({ children }) => {
+const H3: FC<PropsWithChildren<{}>> = ({ children }) => {
   const slug = sluggifyTitle(getNodeText(children));
   return (
-    <h3 id={slug} className="group cursor-pointer">
+    <h3 id={slug} className="group cursor-pointer scroll-mt-32">
       <span className="absolute left-8 hidden text-slate-400 dark:text-slate-600 lg:group-hover:inline">
         #
       </span>
@@ -184,10 +184,10 @@ export const H3: FC<PropsWithChildren<{}>> = ({ children }) => {
   );
 };
 
-export const H4: FC<PropsWithChildren<{}>> = ({ children }) => {
+const H4: FC<PropsWithChildren<{}>> = ({ children }) => {
   const slug = sluggifyTitle(getNodeText(children));
   return (
-    <h4 id={slug} className="group cursor-pointer">
+    <h4 id={slug} className="group cursor-pointer  scroll-mt-32">
       <span className="absolute left-8 hidden text-slate-400 dark:text-slate-600 lg:group-hover:inline">
         #
       </span>
@@ -196,7 +196,12 @@ export const H4: FC<PropsWithChildren<{}>> = ({ children }) => {
   );
 };
 
+function HR() {
+  return <hr className="my-4" />;
+}
+
 export const mdxComponents = {
+  hr: HR,
   Callout,
   Card,
   Image,

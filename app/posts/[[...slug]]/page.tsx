@@ -101,7 +101,7 @@ function ArticlePage({ params }: { params: { slug?: string[] } }) {
         <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-b from-white/0 to-white/100 dark:from-gray-950/0 dark:to-gray-950/100" />
       </div>
 
-      <div className="relative w-full grow  overscroll-y-auto">
+      <div className="relative w-full grow ">
         <DocsHeader tree={tree} breadcrumbs={breadcrumbs} title={doc.title} />
         <div className="mx-auto mb-4 w-full max-w-3xl shrink p-4  pb-8  md:mb-8 md:px-8 lg:mx-0 lg:max-w-full lg:px-16">
           {MDXContent && <MDXContent components={mdxComponents as any} />}

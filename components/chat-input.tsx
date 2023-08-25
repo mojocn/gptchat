@@ -7,6 +7,7 @@ import {
   IconArrowsDown,
   IconArrowsUp,
   IconBackspace,
+  IconHistory,
   IconMicrophone,
   IconSend,
   IconWaveSine,
@@ -46,7 +47,7 @@ const ChatInput = () => {
   const doClearMessages = () => {
     selectedSessionId && deleteMessagesBySessionId(selectedSessionId);
   };
-
+  function doShowInputHistory() {}
   function doScrollToBottom() {
     console.info("doScrollToBottom");
     setIsScrollAuto(true);
