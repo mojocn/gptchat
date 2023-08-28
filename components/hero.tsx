@@ -44,7 +44,7 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { cn } from "@/lib/utils";
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, MouseEventHandler } from "react";
 
 type Playlist = (typeof playlists)[number];
 const playlists = ["Mick Jackson", "Acme Ltd"];
@@ -57,75 +57,71 @@ interface Album {
 
 import qichun from "@/images/qichun.jpg";
 import wuhan from "@/images/wuhan.png";
-import guangzhou from "@/images/guangzhou.jpg";
+import hangzhou from "@/images/hangzhou.webp";
 import gelihaian from "@/images/gelihaian.jpeg";
 import zhuhai2 from "@/images/zhuhai2.jpg";
+import wifeNsan from "@/images/wifeNsan.jpg";
+import oldFather from "@/images/oldFather.jpg";
+import kid2 from "@/images/kid2.jpg";
+import kid3 from "@/images/kid3.jpg";
+import blueKid from "@/images/blueKid.jpg";
+
 import { PlusCircle } from "lucide-react";
 
-const listenNowAlbums: Album[] = [
+const placeItem: Album[] = [
   {
     name: "Qichun",
-    artist: "Where I grew up",
+    artist: "The village where I grew up",
     cover: qichun.src,
   },
   {
     name: "Wuhan",
-    artist: "Where I studied",
+    artist: "The City where I studied",
     cover: wuhan.src,
   },
   {
-    name: "Guangzhou",
-    artist: "Where I worked",
-    cover: guangzhou.src,
+    name: "Hangzhou",
+    artist: "The City where I worked",
+    cover: hangzhou.src,
   },
   {
     name: "Zhuhai",
-    artist: "Where my son loves",
+    artist: "The city where my son likes",
     cover: zhuhai2.src,
   },
   {
     name: "Gree Coast",
-    artist: "Where My family lives",
+    artist: "The place My family lives",
     cover: gelihaian.src,
   },
 ];
 
 const madeForYouAlbums: Album[] = [
   {
-    name: "Thinking Components",
-    artist: "Lena Logic",
-    cover:
-      "https://images.unsplash.com/photo-1615247001958-f4bc92fa6a4a?w=300&dpr=2&q=80",
+    name: "Wife and Son",
+    artist: "A joyous child with his mother",
+    cover: wifeNsan.src,
+  },
+
+  {
+    name: "The Kid",
+    artist: "The playful and cheerful child",
+    cover: kid2.src,
   },
   {
-    name: "Functional Fury",
-    artist: "Beth Binary",
-    cover:
-      "https://images.unsplash.com/photo-1513745405825-efaf9a49315f?w=300&dpr=2&q=80",
+    name: "Child at the aquarium",
+    artist: "Happy child",
+    cover: blueKid.src,
   },
   {
-    name: "React Rendezvous",
-    artist: "Ethan Byte",
-    cover:
-      "https://images.unsplash.com/photo-1614113489855-66422ad300a4?w=300&dpr=2&q=80",
+    name: "The lady",
+    artist: "Mother and son spend quality time together",
+    cover: kid3.src,
   },
   {
-    name: "Stateful Symphony",
-    artist: "Beth Binary",
-    cover:
-      "https://images.unsplash.com/photo-1446185250204-f94591f7d702?w=300&dpr=2&q=80",
-  },
-  {
-    name: "Async Awakenings",
-    artist: "Nina Netcode",
-    cover:
-      "https://images.unsplash.com/photo-1468817814611-b7edf94b5d60?w=300&dpr=2&q=80",
-  },
-  {
-    name: "The Art of Reusability",
-    artist: "Lena Logic",
-    cover:
-      "https://images.unsplash.com/photo-1490300472339-79e4adc6be4a?w=300&dpr=2&q=80",
+    name: "Grandpa",
+    artist: "The gentle grandfather",
+    cover: oldFather.src,
   },
 ];
 
@@ -142,22 +138,6 @@ function InnerSidebar({ className, playlists }: SidebarProps) {
             Discover
           </h2>
           <div className="space-y-1">
-            <Button variant="secondary" className="w-full justify-start">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="mr-2 h-4 w-4"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <polygon points="10 8 16 12 10 16 10 8" />
-              </svg>
-              Listen Now
-            </Button>
             <Button variant="ghost" className="w-full justify-start">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -174,7 +154,7 @@ function InnerSidebar({ className, playlists }: SidebarProps) {
                 <rect width="7" height="7" x="14" y="14" rx="1" />
                 <rect width="7" height="7" x="3" y="14" rx="1" />
               </svg>
-              Browse
+              Life Gallery
             </Button>
             <Button variant="ghost" className="w-full justify-start">
               <svg
@@ -329,6 +309,11 @@ function InnerSidebar({ className, playlists }: SidebarProps) {
 }
 
 function InnerTopMusicNavBar() {
+  function gotoURL(url: string) {
+    //open url in a new tab
+    const win = window.open(url, "_blank");
+    win?.focus();
+  }
   return (
     <Menubar className="rounded-none border-b border-none px-2 lg:px-4">
       <MenubarMenu>
@@ -476,36 +461,46 @@ function InnerTopMusicNavBar() {
           </MenubarItem>
         </MenubarContent>
       </MenubarMenu>
-      <MenubarMenu>
-        <MenubarTrigger>View</MenubarTrigger>
-        <MenubarContent>
-          <MenubarCheckboxItem>Show Playing Next</MenubarCheckboxItem>
-          <MenubarCheckboxItem checked>Show Lyrics</MenubarCheckboxItem>
-          <MenubarSeparator />
-          <MenubarItem inset disabled>
-            Show Status Bar
-          </MenubarItem>
-          <MenubarSeparator />
-          <MenubarItem inset>Hide Sidebar</MenubarItem>
-          <MenubarItem disabled inset>
-            Enter Full Screen
-          </MenubarItem>
-        </MenubarContent>
-      </MenubarMenu>
+
       <MenubarMenu>
         <MenubarTrigger className="hidden md:block">Account</MenubarTrigger>
         <MenubarContent forceMount>
-          <MenubarLabel inset>Switch Account</MenubarLabel>
+          <MenubarLabel inset>Github Account</MenubarLabel>
           <MenubarSeparator />
-          <MenubarRadioGroup value="benoit">
-            <MenubarRadioItem value="andy">Andy</MenubarRadioItem>
-            <MenubarRadioItem value="benoit">Benoit</MenubarRadioItem>
-            <MenubarRadioItem value="Luis">Luis</MenubarRadioItem>
+          <MenubarRadioGroup value="mojocn">
+            <MenubarRadioItem
+              value="mojocn"
+              onClick={() => gotoURL("https://github.com/mojocn")}
+            >
+              mojocn
+            </MenubarRadioItem>
+            <MenubarRadioItem
+              value="go-gorm"
+              onClick={() => gotoURL("https://github.com/go-gorm")}
+            >
+              ORG:go-gorm
+            </MenubarRadioItem>
+            <MenubarRadioItem
+              value="bytegang"
+              onClick={() => gotoURL("https://github.com/bytegang")}
+            >
+              ORG:bytegang
+            </MenubarRadioItem>
           </MenubarRadioGroup>
           <MenubarSeparator />
-          <MenubarItem inset>Manage Famliy...</MenubarItem>
+          <MenubarItem
+            inset
+            onClick={() => gotoURL("https://twitter.com/neochau")}
+          >
+            Twitter
+          </MenubarItem>
           <MenubarSeparator />
-          <MenubarItem inset>Add Account...</MenubarItem>
+          <MenubarItem
+            inset
+            onClick={() => gotoURL("https://www.reddit.com/user/trytvorg")}
+          >
+            Reddit
+          </MenubarItem>
         </MenubarContent>
       </MenubarMenu>
     </Menubar>
@@ -678,18 +673,18 @@ export default function Hero() {
                     <div className="space-between flex items-center">
                       <TabsList>
                         <TabsTrigger value="music" className="relative">
-                          Music
+                          Personal
                         </TabsTrigger>
-                        <TabsTrigger value="podcasts">Podcasts</TabsTrigger>
+                        <TabsTrigger value="podcasts">Skills</TabsTrigger>
                         <TabsTrigger value="live" disabled>
-                          Live
+                          Projects
                         </TabsTrigger>
                       </TabsList>
                       <div className="ml-auto mr-4">
-                        <Button className="text-foreground">
-                          <PlusCircle className="mr-2 h-4 w-4" />
-                          Add music
-                        </Button>
+                        {/*<Button className="text-foreground">*/}
+                        {/*    <PlusCircle className="mr-2 h-4 w-4"/>*/}
+                        {/*    Add music*/}
+                        {/*</Button>*/}
                       </div>
                     </div>
                     <TabsContent
@@ -702,7 +697,7 @@ export default function Hero() {
                             Where
                           </h2>
                           <p className="text-sm text-muted-foreground">
-                            Palaces where I am from.
+                            Locations mean a lot
                           </p>
                         </div>
                       </div>
@@ -710,14 +705,14 @@ export default function Hero() {
                       <div className="relative">
                         <ScrollArea>
                           <div className="flex space-x-4 pb-4">
-                            {listenNowAlbums.map((album) => (
+                            {placeItem.map((album) => (
                               <InnerAlbumArtwork
                                 key={album.name}
                                 album={album}
-                                className="w-[250px]"
+                                className="w-[320px]"
                                 aspectRatio="portrait"
-                                width={250}
-                                height={330}
+                                width={320}
+                                height={640}
                               />
                             ))}
                           </div>
@@ -726,10 +721,11 @@ export default function Hero() {
                       </div>
                       <div className="mt-6 space-y-1">
                         <h2 className="text-2xl font-semibold tracking-tight">
-                          Made for You
+                          Family
                         </h2>
                         <p className="text-sm text-muted-foreground">
-                          Your personal playlists. Updated daily.
+                          I am blessed with a wonderful wife and an adorable
+                          son.
                         </p>
                       </div>
                       <Separator className="my-4" />
@@ -740,10 +736,10 @@ export default function Hero() {
                               <InnerAlbumArtwork
                                 key={album.name}
                                 album={album}
-                                className="w-[150px]"
-                                aspectRatio="square"
-                                width={150}
-                                height={150}
+                                className="w-[320px]"
+                                aspectRatio="portrait"
+                                width={320}
+                                height={640}
                               />
                             ))}
                           </div>
