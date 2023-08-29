@@ -51,7 +51,7 @@ export function NavBarCommandK({ ...props }: DialogProps) {
       <Button
         variant="outline"
         className={cn(
-          "w-full flex-row justify-between pr-2 text-sm text-muted-foreground md:w-40 lg:w-64",
+          "w-full flex-row justify-between px-2 text-sm text-muted-foreground md:w-40 lg:w-64",
         )}
         onClick={() => setOpen(true)}
         {...props}

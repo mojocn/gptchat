@@ -68,6 +68,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.4",
     "react-markdown": "^8.0.7",
+    "recharts": "^2.8.0",
     "rehype-highlight": "^6.0.0",
     "rehype-katex": "^6.0.3",
     "remark-breaks": "^3.0.3",

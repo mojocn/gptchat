@@ -2,8 +2,23 @@
 import { Metadata } from "next";
 import Image from "next/image";
 import {
+  Bar,
+  BarChart,
+  Legend,
+  Line,
+  LineChart,
+  PolarAngleAxis,
+  PolarGrid,
+  PolarRadiusAxis,
+  Radar,
+  RadarChart,
+  RadialBar,
+  RadialBarChart,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
+import {
   Menubar,
-  MenubarCheckboxItem,
   MenubarContent,
   MenubarItem,
   MenubarLabel,
@@ -21,18 +36,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { IconSpherePlus } from "@tabler/icons-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { IconMinus, IconPlus, IconSpherePlus } from "@tabler/icons-react";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -44,7 +48,7 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { cn } from "@/lib/utils";
-import { HTMLAttributes, MouseEventHandler } from "react";
+import { HTMLAttributes, useState } from "react";
 
 type Playlist = (typeof playlists)[number];
 const playlists = ["Mick Jackson", "Acme Ltd"];
@@ -65,8 +69,15 @@ import oldFather from "@/images/oldFather.jpg";
 import kid2 from "@/images/kid2.jpg";
 import kid3 from "@/images/kid3.jpg";
 import blueKid from "@/images/blueKid.jpg";
-
-import { PlusCircle } from "lucide-react";
+import { useTheme } from "next-themes";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDescription,
+  CardFooter,
+} from "@/components/ui/card";
 
 const placeItem: Album[] = [
   {
@@ -314,6 +325,7 @@ function InnerTopMusicNavBar() {
     const win = window.open(url, "_blank");
     win?.focus();
   }
+
   return (
     <Menubar className="rounded-none border-b border-none px-2 lg:px-4">
       <MenubarMenu>
@@ -507,11 +519,6 @@ function InnerTopMusicNavBar() {
   );
 }
 
-export const metadata: Metadata = {
-  title: "Music App",
-  description: "Example music app using the components.",
-};
-
 interface AlbumArtworkProps extends HTMLAttributes<HTMLDivElement> {
   album: Album;
   aspectRatio?: "portrait" | "square";
@@ -519,7 +526,7 @@ interface AlbumArtworkProps extends HTMLAttributes<HTMLDivElement> {
   height?: number;
 }
 
-function InnerAlbumArtwork({
+function InnerTabPersonal({
   album,
   aspectRatio = "portrait",
   width,
@@ -590,54 +597,485 @@ function InnerAlbumArtwork({
   );
 }
 
-function InnerPodcastEmptyPlaceholder() {
-  return (
-    <div className="flex h-[450px] shrink-0 items-center justify-center rounded-md border border-dashed">
-      <div className="mx-auto flex max-w-[420px] flex-col items-center justify-center text-center">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          className="h-10 w-10 text-muted-foreground"
-          viewBox="0 0 24 24"
-        >
-          <circle cx="12" cy="11" r="1" />
-          <path d="M11 17a1 1 0 0 1 2 0c0 .5-.34 3-.5 4.5a.5.5 0 0 1-1 0c-.16-1.5-.5-4-.5-4.5ZM8 14a5 5 0 1 1 8 0" />
-          <path d="M17 18.5a9 9 0 1 0-10 0" />
-        </svg>
+function InnerTabSkills() {
+  const dataStatus = [
+    {
+      revenue: 10400,
+      subscription: 240,
+    },
+    {
+      revenue: 14405,
+      subscription: 300,
+    },
+    {
+      revenue: 9400,
+      subscription: 200,
+    },
+    {
+      revenue: 8200,
+      subscription: 278,
+    },
+    {
+      revenue: 7000,
+      subscription: 189,
+    },
+    {
+      revenue: 9600,
+      subscription: 239,
+    },
+    {
+      revenue: 11244,
+      subscription: 278,
+    },
+    {
+      revenue: 26475,
+      subscription: 189,
+    },
+  ];
+  const data = [
+    {
+      goal: 400,
+    },
+    {
+      goal: 300,
+    },
+    {
+      goal: 200,
+    },
+    {
+      goal: 300,
+    },
+    {
+      goal: 200,
+    },
+    {
+      goal: 278,
+    },
+    {
+      goal: 189,
+    },
+    {
+      goal: 239,
+    },
+    {
+      goal: 300,
+    },
+    {
+      goal: 200,
+    },
+    {
+      goal: 278,
+    },
+    {
+      goal: 189,
+    },
+    {
+      goal: 349,
+    },
+  ];
+  const { theme: mode } = useTheme();
+  const [goal, setGoal] = useState(350);
+  const dataMetrics = [
+    {
+      average: 400,
+      today: 240,
+    },
+    {
+      average: 300,
+      today: 139,
+    },
+    {
+      average: 200,
+      today: 980,
+    },
+    {
+      average: 278,
+      today: 390,
+    },
+    {
+      average: 189,
+      today: 480,
+    },
+    {
+      average: 239,
+      today: 380,
+    },
+    {
+      average: 349,
+      today: 430,
+    },
+  ];
+  const lightPrimary = "hsl(221.2 83.2% 53.3%)";
+  const darkPrimary = "hsl(217.2 91.2% 59.8%)";
+  const color = mode === "light" ? lightPrimary : darkPrimary;
+  const dataRadar = [
+    {
+      subject: "Math",
+      A: 120,
+      B: 110,
+      fullMark: 150,
+    },
+    {
+      subject: "Chinese",
+      A: 98,
+      B: 130,
+      fullMark: 150,
+    },
+    {
+      subject: "English",
+      A: 86,
+      B: 130,
+      fullMark: 150,
+    },
+    {
+      subject: "Geography",
+      A: 99,
+      B: 100,
+      fullMark: 150,
+    },
+    {
+      subject: "Physics",
+      A: 85,
+      B: 90,
+      fullMark: 150,
+    },
+    {
+      subject: "History",
+      A: 65,
+      B: 85,
+      fullMark: 150,
+    },
+  ];
+  const dataRadarBar = [
+    {
+      name: "18-24",
+      uv: 31.47,
+      pv: 2400,
+      fill: "#8884d8",
+    },
+    {
+      name: "25-29",
+      uv: 26.69,
+      pv: 4567,
+      fill: "#83a6ed",
+    },
+    {
+      name: "30-34",
+      uv: 15.69,
+      pv: 1398,
+      fill: "#8dd1e1",
+    },
+    {
+      name: "35-39",
+      uv: 8.22,
+      pv: 9800,
+      fill: "#82ca9d",
+    },
+    {
+      name: "40-49",
+      uv: 8.63,
+      pv: 3908,
+      fill: "#a4de6c",
+    },
+    {
+      name: "50+",
+      uv: 2.63,
+      pv: 4800,
+      fill: "#d0ed57",
+    },
+    {
+      name: "unknow",
+      uv: 6.67,
+      pv: 4800,
+      fill: "#ffc658",
+    },
+  ];
+  function onClick(adjustment: number) {
+    setGoal(Math.max(200, Math.min(400, goal + adjustment)));
+  }
 
-        <h3 className="mt-4 text-lg font-semibold">No episodes added</h3>
-        <p className="mb-4 mt-2 text-sm text-muted-foreground">
-          You have not added any podcasts. Add one below.
-        </p>
-        <Dialog>
-          <DialogTrigger>
-            <Button size="sm" className="relative text-foreground">
-              Add Podcast
+  return (
+    <div className="grid w-full grid-cols-12 gap-3">
+      <Card className="col-span-4">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-normal">Total Revenue</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">$15,231.89</div>
+          <p className="text-xs text-muted-foreground">
+            +20.1% from last month
+          </p>
+          <div className="h-[80px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                data={dataStatus}
+                margin={{
+                  top: 5,
+                  right: 10,
+                  left: 10,
+                  bottom: 0,
+                }}
+              >
+                <Line
+                  type="monotone"
+                  strokeWidth={2}
+                  dataKey="revenue"
+                  activeDot={{
+                    r: 6,
+                    style: { fill: "var(--theme-primary)", opacity: 0.25 },
+                  }}
+                  style={
+                    {
+                      "--theme-primary": `hsl(${color})`,
+                    } as React.CSSProperties
+                  }
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+      </Card>
+      <Card className="col-span-4">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-normal">Subscriptions</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">+2350</div>
+          <p className="text-xs text-muted-foreground">
+            +180.1% from last month
+          </p>
+          <div className="mt-4 h-[80px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={dataStatus}>
+                <Bar
+                  dataKey="subscription"
+                  style={
+                    {
+                      fill: "var(--theme-primary)",
+                      "--theme-primary": color,
+                    } as React.CSSProperties
+                  }
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+      </Card>
+      <Card className="col-span-4">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-base">Move Goal</CardTitle>
+          <CardDescription>Set your daily activity goal.</CardDescription>
+        </CardHeader>
+        <CardContent className="pb-2">
+          <div className="flex items-center justify-center space-x-2">
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8 shrink-0 rounded-full"
+              onClick={() => onClick(-10)}
+              disabled={goal <= 200}
+            >
+              <IconMinus className="h-4 w-4" />
+              <span className="sr-only">Decrease</span>
             </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Add Podcast</DialogTitle>
-              <DialogDescription>
-                Copy and paste the podcast feed URL to import.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid gap-2">
-                <Label htmlFor="url">Podcast URL</Label>
-                <Input id="url" placeholder="https://example.com/feed.xml" />
+            <div className="flex-1 text-center">
+              <div className="text-5xl font-bold tracking-tighter">{goal}</div>
+              <div className="text-[0.70rem] uppercase text-muted-foreground">
+                Calories/day
               </div>
             </div>
-            <DialogFooter>
-              <Button>Import Podcast</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </div>
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8 shrink-0 rounded-full"
+              onClick={() => onClick(10)}
+              disabled={goal >= 400}
+            >
+              <IconPlus className="h-4 w-4" />
+              <span className="sr-only">Increase</span>
+            </Button>
+          </div>
+          <div className="my-3 h-[60px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={data}>
+                <Bar
+                  dataKey="goal"
+                  style={
+                    {
+                      fill: "var(--theme-primary)",
+                      "--theme-primary": color,
+                      // opacity: 0.8,
+                    } as React.CSSProperties
+                  }
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+        <CardFooter></CardFooter>
+      </Card>
+
+      <Card className="col-span-4">
+        <CardHeader>
+          <CardTitle>Exercise Minutes</CardTitle>
+          <CardDescription>
+            Your excercise minutes are ahead of where you normally are.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="pb-4">
+          <div className="h-[200px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                data={dataMetrics}
+                margin={{
+                  top: 5,
+                  right: 10,
+                  left: 10,
+                  bottom: 0,
+                }}
+              >
+                <Tooltip
+                  content={({ active, payload }) => {
+                    if (active && payload && payload.length) {
+                      return (
+                        <div className="rounded-lg border bg-background p-2 shadow-sm">
+                          <div className="grid grid-cols-2 gap-2">
+                            <div className="flex flex-col">
+                              <span className="text-[0.70rem] uppercase text-muted-foreground">
+                                Average
+                              </span>
+                              <span className="font-bold text-muted-foreground">
+                                {payload[0].value}
+                              </span>
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-[0.70rem] uppercase text-muted-foreground">
+                                Today
+                              </span>
+                              <span className="font-bold">
+                                {payload[1].value}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    }
+
+                    return null;
+                  }}
+                />
+                <Line
+                  type="monotone"
+                  strokeWidth={2}
+                  dataKey="average"
+                  activeDot={{
+                    r: 6,
+                    style: { fill: "var(--theme-primary)", opacity: 0.25 },
+                  }}
+                  style={
+                    {
+                      stroke: "var(--theme-primary)",
+                      "--theme-primary": color,
+                      opacity: 0.25,
+                    } as React.CSSProperties
+                  }
+                />
+                <Line
+                  type="monotone"
+                  dataKey="today"
+                  strokeWidth={2}
+                  activeDot={{
+                    r: 8,
+                    style: { fill: "var(--theme-primary)" },
+                  }}
+                  style={
+                    {
+                      stroke: "var(--theme-primary)",
+                      "--theme-primary": color,
+                    } as React.CSSProperties
+                  }
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* radar */}
+      <Card className="col-span-4">
+        <CardHeader>
+          <CardTitle>Data Radar</CardTitle>
+          <CardDescription>
+            What area are you having problems with?
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="">
+          <div className="h-[200px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <RadarChart data={dataRadar}>
+                <PolarGrid />
+                <PolarAngleAxis dataKey="subject" />
+                <PolarRadiusAxis angle={30} domain={[0, 150]} />
+                <Radar
+                  name="Mike"
+                  dataKey="A"
+                  stroke="#8884d8"
+                  fill="#8884d8"
+                  fillOpacity={0.6}
+                />
+                <Radar
+                  name="Lily"
+                  dataKey="B"
+                  stroke="#82ca9d"
+                  fill="#82ca9d"
+                  fillOpacity={0.6}
+                />
+                <Legend />
+              </RadarChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+        <CardFooter className="justify-between space-x-2"></CardFooter>
+      </Card>
+
+      <Card className="col-span-4">
+        <CardHeader>
+          <CardTitle>Data Radar</CardTitle>
+          <CardDescription> </CardDescription>
+        </CardHeader>
+        <CardContent className="">
+          <div className="h-[200px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <RadialBarChart
+                cx="50%"
+                cy="50%"
+                innerRadius="10%"
+                outerRadius="80%"
+                barSize={10}
+                data={dataRadarBar}
+              >
+                <RadialBar
+                  label={{ position: "insideStart", fill: "#fff" }}
+                  background
+                  dataKey="uv"
+                />
+                <Legend
+                  iconSize={10}
+                  layout="vertical"
+                  verticalAlign="middle"
+                  wrapperStyle={{
+                    top: "50%",
+                    right: 0,
+                    transform: "translate(0, -50%)",
+                    lineHeight: "24px",
+                  }}
+                />
+              </RadialBarChart>
+            </ResponsiveContainer>{" "}
+          </div>
+        </CardContent>
+        <CardFooter className="justify-between space-x-2"></CardFooter>
+      </Card>
     </div>
   );
 }
@@ -706,7 +1144,7 @@ export default function Hero() {
                         <ScrollArea>
                           <div className="flex space-x-4 pb-4">
                             {placeItem.map((album) => (
-                              <InnerAlbumArtwork
+                              <InnerTabPersonal
                                 key={album.name}
                                 album={album}
                                 className="w-[320px]"
@@ -733,7 +1171,7 @@ export default function Hero() {
                         <ScrollArea>
                           <div className="flex space-x-4 pb-4">
                             {madeForYouAlbums.map((album) => (
-                              <InnerAlbumArtwork
+                              <InnerTabPersonal
                                 key={album.name}
                                 album={album}
                                 className="w-[320px]"
@@ -762,7 +1200,7 @@ export default function Hero() {
                         </div>
                       </div>
                       <Separator className="my-4" />
-                      <InnerPodcastEmptyPlaceholder />
+                      <InnerTabSkills />
                     </TabsContent>
                   </Tabs>
                 </div>
