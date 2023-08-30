@@ -33,7 +33,7 @@ import { lemonCheckoutURL } from "@/types/lemon";
 import { showToast } from "@/components/ui-lib";
 import { useRouter } from "next/navigation";
 import { useLocal } from "@/store/local";
-import { IconDeviceLaptop } from "@tabler/icons-react";
+import { IconDeviceLaptop, IconHome } from "@tabler/icons-react";
 
 const REPO_URL = "https://github.com/mojocn/gptchat/issues";
 
@@ -89,6 +89,16 @@ export function UserNav() {
           {isAuthed ? `${user.username}` : `Welcome`}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+
+        <DropdownMenuItem
+          onClick={() => {
+            router.push("/");
+          }}
+        >
+          <IconHome className="mr-2 h-4 w-4" />
+          <span>Home</span>
+          <DropdownMenuShortcut></DropdownMenuShortcut>
+        </DropdownMenuItem>
 
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>

@@ -12,7 +12,7 @@ export function SiteFooter() {
             rel="noreferrer"
             className="font-medium underline underline-offset-4"
           >
-            Eric ZHou @mojotv.cn
+            Eric Zhou @mojotv.cn
           </a>
           . The source code is available on{" "}
           <a

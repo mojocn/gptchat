@@ -1,5 +1,4 @@
 "use client";
-import { Metadata } from "next";
 import Image from "next/image";
 import {
   Bar,
@@ -48,7 +47,7 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { cn } from "@/lib/utils";
-import { HTMLAttributes, useState } from "react";
+import { HTMLAttributes, useState, CSSProperties } from "react";
 
 type Playlist = (typeof playlists)[number];
 const playlists = ["Mick Jackson", "Acme Ltd"];
@@ -674,7 +673,7 @@ function InnerTabSkills() {
     },
   ];
   const { theme: mode } = useTheme();
-  const [goal, setGoal] = useState(350);
+  const [goal, setGoal] = useState(8);
   const dataMetrics = [
     {
       average: 400,
@@ -710,37 +709,37 @@ function InnerTabSkills() {
   const color = mode === "light" ? lightPrimary : darkPrimary;
   const dataRadar = [
     {
-      subject: "Math",
+      subject: "Go",
       A: 120,
       B: 110,
       fullMark: 150,
     },
     {
-      subject: "Chinese",
+      subject: "HTML",
       A: 98,
       B: 130,
       fullMark: 150,
     },
     {
-      subject: "English",
+      subject: "Rust",
       A: 86,
       B: 130,
       fullMark: 150,
     },
     {
-      subject: "Geography",
+      subject: "Vue.js",
       A: 99,
       B: 100,
       fullMark: 150,
     },
     {
-      subject: "Physics",
+      subject: "React.js",
       A: 85,
       B: 90,
       fullMark: 150,
     },
     {
-      subject: "History",
+      subject: "Java",
       A: 65,
       B: 85,
       fullMark: 150,
@@ -748,48 +747,39 @@ function InnerTabSkills() {
   ];
   const dataRadarBar = [
     {
-      name: "18-24",
+      name: "Backend",
       uv: 31.47,
       pv: 2400,
       fill: "#8884d8",
     },
+
     {
-      name: "25-29",
-      uv: 26.69,
-      pv: 4567,
-      fill: "#83a6ed",
-    },
-    {
-      name: "30-34",
+      name: "Web",
       uv: 15.69,
       pv: 1398,
       fill: "#8dd1e1",
     },
     {
-      name: "35-39",
+      name: "Database",
       uv: 8.22,
       pv: 9800,
       fill: "#82ca9d",
     },
     {
-      name: "40-49",
+      name: "System",
       uv: 8.63,
       pv: 3908,
       fill: "#a4de6c",
     },
+
     {
-      name: "50+",
-      uv: 2.63,
-      pv: 4800,
-      fill: "#d0ed57",
-    },
-    {
-      name: "unknow",
+      name: "Algorithm",
       uv: 6.67,
       pv: 4800,
       fill: "#ffc658",
     },
   ];
+
   function onClick(adjustment: number) {
     setGoal(Math.max(200, Math.min(400, goal + adjustment)));
   }
@@ -797,130 +787,42 @@ function InnerTabSkills() {
   return (
     <div className="grid w-full grid-cols-12 gap-3">
       <Card className="col-span-4">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-normal">Total Revenue</CardTitle>
+        <CardHeader>
+          <CardTitle>Program Languages</CardTitle>
+          <CardDescription></CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">$15,231.89</div>
-          <p className="text-xs text-muted-foreground">
-            +20.1% from last month
-          </p>
-          <div className="h-[80px]">
+        <CardContent className="">
+          <div className="h-[200px]">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                data={dataStatus}
-                margin={{
-                  top: 5,
-                  right: 10,
-                  left: 10,
-                  bottom: 0,
-                }}
-              >
-                <Line
-                  type="monotone"
-                  strokeWidth={2}
-                  dataKey="revenue"
-                  activeDot={{
-                    r: 6,
-                    style: { fill: "var(--theme-primary)", opacity: 0.25 },
-                  }}
-                  style={
-                    {
-                      "--theme-primary": `hsl(${color})`,
-                    } as React.CSSProperties
-                  }
+              <RadarChart data={dataRadar}>
+                <PolarGrid />
+                <PolarAngleAxis dataKey="subject" />
+                <PolarRadiusAxis angle={30} domain={[0, 150]} />
+                <Radar
+                  name="Frontend"
+                  dataKey="A"
+                  stroke="#8884d8"
+                  fill="#8884d8"
+                  fillOpacity={0.6}
                 />
-              </LineChart>
+                <Radar
+                  name="Backend"
+                  dataKey="B"
+                  stroke="#82ca9d"
+                  fill="#82ca9d"
+                  fillOpacity={0.6}
+                />
+                <Legend />
+              </RadarChart>
             </ResponsiveContainer>
           </div>
         </CardContent>
+        <CardFooter className="justify-between space-x-2"></CardFooter>
       </Card>
-      <Card className="col-span-4">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-normal">Subscriptions</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">+2350</div>
-          <p className="text-xs text-muted-foreground">
-            +180.1% from last month
-          </p>
-          <div className="mt-4 h-[80px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={dataStatus}>
-                <Bar
-                  dataKey="subscription"
-                  style={
-                    {
-                      fill: "var(--theme-primary)",
-                      "--theme-primary": color,
-                    } as React.CSSProperties
-                  }
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </CardContent>
-      </Card>
-      <Card className="col-span-4">
-        <CardHeader className="pb-4">
-          <CardTitle className="text-base">Move Goal</CardTitle>
-          <CardDescription>Set your daily activity goal.</CardDescription>
-        </CardHeader>
-        <CardContent className="pb-2">
-          <div className="flex items-center justify-center space-x-2">
-            <Button
-              variant="outline"
-              size="icon"
-              className="h-8 w-8 shrink-0 rounded-full"
-              onClick={() => onClick(-10)}
-              disabled={goal <= 200}
-            >
-              <IconMinus className="h-4 w-4" />
-              <span className="sr-only">Decrease</span>
-            </Button>
-            <div className="flex-1 text-center">
-              <div className="text-5xl font-bold tracking-tighter">{goal}</div>
-              <div className="text-[0.70rem] uppercase text-muted-foreground">
-                Calories/day
-              </div>
-            </div>
-            <Button
-              variant="outline"
-              size="icon"
-              className="h-8 w-8 shrink-0 rounded-full"
-              onClick={() => onClick(10)}
-              disabled={goal >= 400}
-            >
-              <IconPlus className="h-4 w-4" />
-              <span className="sr-only">Increase</span>
-            </Button>
-          </div>
-          <div className="my-3 h-[60px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={data}>
-                <Bar
-                  dataKey="goal"
-                  style={
-                    {
-                      fill: "var(--theme-primary)",
-                      "--theme-primary": color,
-                      // opacity: 0.8,
-                    } as React.CSSProperties
-                  }
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </CardContent>
-        <CardFooter></CardFooter>
-      </Card>
-
       <Card className="col-span-4">
         <CardHeader>
-          <CardTitle>Exercise Minutes</CardTitle>
-          <CardDescription>
-            Your excercise minutes are ahead of where you normally are.
-          </CardDescription>
+          <CardTitle>Commit History</CardTitle>
+          <CardDescription>github commit activity.</CardDescription>
         </CardHeader>
         <CardContent className="pb-4">
           <div className="h-[200px]">
@@ -977,7 +879,7 @@ function InnerTabSkills() {
                       stroke: "var(--theme-primary)",
                       "--theme-primary": color,
                       opacity: 0.25,
-                    } as React.CSSProperties
+                    } as CSSProperties
                   }
                 />
                 <Line
@@ -992,7 +894,7 @@ function InnerTabSkills() {
                     {
                       stroke: "var(--theme-primary)",
                       "--theme-primary": color,
-                    } as React.CSSProperties
+                    } as CSSProperties
                   }
                 />
               </LineChart>
@@ -1002,45 +904,10 @@ function InnerTabSkills() {
       </Card>
 
       {/* radar */}
-      <Card className="col-span-4">
-        <CardHeader>
-          <CardTitle>Data Radar</CardTitle>
-          <CardDescription>
-            What area are you having problems with?
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="">
-          <div className="h-[200px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <RadarChart data={dataRadar}>
-                <PolarGrid />
-                <PolarAngleAxis dataKey="subject" />
-                <PolarRadiusAxis angle={30} domain={[0, 150]} />
-                <Radar
-                  name="Mike"
-                  dataKey="A"
-                  stroke="#8884d8"
-                  fill="#8884d8"
-                  fillOpacity={0.6}
-                />
-                <Radar
-                  name="Lily"
-                  dataKey="B"
-                  stroke="#82ca9d"
-                  fill="#82ca9d"
-                  fillOpacity={0.6}
-                />
-                <Legend />
-              </RadarChart>
-            </ResponsiveContainer>
-          </div>
-        </CardContent>
-        <CardFooter className="justify-between space-x-2"></CardFooter>
-      </Card>
 
       <Card className="col-span-4">
         <CardHeader>
-          <CardTitle>Data Radar</CardTitle>
+          <CardTitle>Tech Stack</CardTitle>
           <CardDescription> </CardDescription>
         </CardHeader>
         <CardContent className="">
@@ -1076,139 +943,218 @@ function InnerTabSkills() {
         </CardContent>
         <CardFooter className="justify-between space-x-2"></CardFooter>
       </Card>
+      <Card className="col-span-4">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-normal">Github Stars</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">3.3k</div>
+          <p className="text-xs text-muted-foreground">+3.1% from last year</p>
+          <div className="h-[80px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                data={dataStatus}
+                margin={{
+                  top: 5,
+                  right: 10,
+                  left: 10,
+                  bottom: 0,
+                }}
+              >
+                <Line
+                  type="monotone"
+                  strokeWidth={2}
+                  dataKey="revenue"
+                  activeDot={{
+                    r: 6,
+                    style: { fill: "var(--theme-primary)", opacity: 0.25 },
+                  }}
+                  style={
+                    {
+                      "--theme-primary": `hsl(${color})`,
+                    } as CSSProperties
+                  }
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+      </Card>
+      <Card className="col-span-4">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-normal">Github Repo</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">90+</div>
+          <p className="text-xs text-muted-foreground">+4.1% from last year</p>
+          <div className="mt-4 h-[80px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={dataStatus}>
+                <Bar
+                  dataKey="subscription"
+                  style={
+                    {
+                      fill: "var(--theme-primary)",
+                      "--theme-primary": color,
+                    } as CSSProperties
+                  }
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+      </Card>
+      <Card className="col-span-4">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-base">Activity</CardTitle>
+          <CardDescription>activity meter</CardDescription>
+        </CardHeader>
+        <CardContent className="pb-2">
+          <div className="flex items-center justify-center space-x-2">
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8 shrink-0 rounded-full"
+              onClick={() => onClick(-10)}
+              disabled={goal <= 200}
+            >
+              <IconMinus className="h-4 w-4" />
+              <span className="sr-only">Decrease</span>
+            </Button>
+            <div className="flex-1 text-center">
+              <div className="text-5xl font-bold tracking-tighter">{goal}</div>
+              <div className="text-[0.70rem] uppercase text-muted-foreground">
+                Point/day
+              </div>
+            </div>
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8 shrink-0 rounded-full"
+              onClick={() => onClick(10)}
+              disabled={goal >= 400}
+            >
+              <IconPlus className="h-4 w-4" />
+              <span className="sr-only">Increase</span>
+            </Button>
+          </div>
+          <div className="my-3 h-[60px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={data}>
+                <Bar
+                  dataKey="goal"
+                  style={
+                    {
+                      fill: "var(--theme-primary)",
+                      "--theme-primary": color,
+                      // opacity: 0.8,
+                    } as CSSProperties
+                  }
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+        <CardFooter></CardFooter>
+      </Card>
     </div>
   );
 }
 
 export default function Hero() {
   return (
-    <>
-      <div className="md:hidden">
-        <Image
-          src="/examples/music-light.png"
-          width={1280}
-          height={1114}
-          alt="Music"
-          className="block dark:hidden"
-        />
-        <Image
-          src="/examples/music-dark.png"
-          width={1280}
-          height={1114}
-          alt="Music"
-          className="hidden dark:block"
-        />
-      </div>
-      <div className="hidden md:block">
-        <InnerTopMusicNavBar />
-        <div className="border-t">
-          <div className="bg-background">
-            <div className="grid lg:grid-cols-5">
-              <InnerSidebar playlists={playlists} className="hidden lg:block" />
-              <div className="col-span-3 lg:col-span-4 lg:border-l">
-                <div className="h-full px-4 py-6 lg:px-8">
-                  <Tabs defaultValue="music" className="h-full space-y-6">
-                    <div className="space-between flex items-center">
-                      <TabsList>
-                        <TabsTrigger value="music" className="relative">
-                          Personal
-                        </TabsTrigger>
-                        <TabsTrigger value="podcasts">Skills</TabsTrigger>
-                        <TabsTrigger value="live" disabled>
-                          Projects
-                        </TabsTrigger>
-                      </TabsList>
-                      <div className="ml-auto mr-4">
-                        {/*<Button className="text-foreground">*/}
-                        {/*    <PlusCircle className="mr-2 h-4 w-4"/>*/}
-                        {/*    Add music*/}
-                        {/*</Button>*/}
-                      </div>
-                    </div>
-                    <TabsContent
-                      value="music"
-                      className="border-none p-0 outline-none"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="space-y-1">
-                          <h2 className="text-2xl font-semibold tracking-tight">
-                            Where
-                          </h2>
-                          <p className="text-sm text-muted-foreground">
-                            Locations mean a lot
-                          </p>
-                        </div>
-                      </div>
-                      <Separator className="my-4" />
-                      <div className="relative">
-                        <ScrollArea>
-                          <div className="flex space-x-4 pb-4">
-                            {placeItem.map((album) => (
-                              <InnerTabPersonal
-                                key={album.name}
-                                album={album}
-                                className="w-[320px]"
-                                aspectRatio="portrait"
-                                width={320}
-                                height={640}
-                              />
-                            ))}
-                          </div>
-                          <ScrollBar orientation="horizontal" />
-                        </ScrollArea>
-                      </div>
-                      <div className="mt-6 space-y-1">
-                        <h2 className="text-2xl font-semibold tracking-tight">
-                          Family
-                        </h2>
-                        <p className="text-sm text-muted-foreground">
-                          I am blessed with a wonderful wife and an adorable
-                          son.
-                        </p>
-                      </div>
-                      <Separator className="my-4" />
-                      <div className="relative">
-                        <ScrollArea>
-                          <div className="flex space-x-4 pb-4">
-                            {madeForYouAlbums.map((album) => (
-                              <InnerTabPersonal
-                                key={album.name}
-                                album={album}
-                                className="w-[320px]"
-                                aspectRatio="portrait"
-                                width={320}
-                                height={640}
-                              />
-                            ))}
-                          </div>
-                          <ScrollBar orientation="horizontal" />
-                        </ScrollArea>
-                      </div>
-                    </TabsContent>
-                    <TabsContent
-                      value="podcasts"
-                      className="h-full flex-col border-none p-0 data-[state=active]:flex"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="space-y-1">
-                          <h2 className="text-2xl font-semibold tracking-tight">
-                            New Episodes
-                          </h2>
-                          <p className="text-sm text-muted-foreground">
-                            Your favorite podcasts. Updated daily.
-                          </p>
-                        </div>
-                      </div>
-                      <Separator className="my-4" />
-                      <InnerTabSkills />
-                    </TabsContent>
-                  </Tabs>
+    <div className="bg-background">
+      <div className="grid lg:grid-cols-5">
+        <InnerSidebar playlists={playlists} className="hidden lg:block" />
+        <div className="col-span-3 lg:col-span-4 lg:border-l">
+          <div className="h-full px-4 py-6 lg:px-8">
+            <Tabs defaultValue="music" className="h-full space-y-6">
+              <div className="space-between flex items-center">
+                <TabsList>
+                  <TabsTrigger value="music" className="relative">
+                    Personal
+                  </TabsTrigger>
+                  <TabsTrigger value="podcasts">Skills</TabsTrigger>
+                  <TabsTrigger value="live" disabled>
+                    Projects
+                  </TabsTrigger>
+                </TabsList>
+                <div className="ml-auto mr-4">
+                  {/*<Button className="text-foreground">*/}
+                  {/*    <PlusCircle className="mr-2 h-4 w-4"/>*/}
+                  {/*    Add music*/}
+                  {/*</Button>*/}
                 </div>
               </div>
-            </div>
+              <TabsContent
+                value="music"
+                className="border-none p-0 outline-none"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <h2 className="text-2xl font-semibold tracking-tight">
+                      Where
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                      Locations mean a lot
+                    </p>
+                  </div>
+                </div>
+                <Separator className="my-4" />
+                <div className="relative">
+                  <ScrollArea>
+                    <div className="flex space-x-4 pb-4">
+                      {placeItem.map((album) => (
+                        <InnerTabPersonal
+                          key={album.name}
+                          album={album}
+                          className="w-[320px]"
+                          aspectRatio="portrait"
+                          width={320}
+                          height={640}
+                        />
+                      ))}
+                    </div>
+                    <ScrollBar orientation="horizontal" />
+                  </ScrollArea>
+                </div>
+                <div className="mt-6 space-y-1">
+                  <h2 className="text-2xl font-semibold tracking-tight">
+                    Family
+                  </h2>
+                  <p className="text-sm text-muted-foreground">
+                    I am blessed with a wonderful wife and an adorable son.
+                  </p>
+                </div>
+                <Separator className="my-4" />
+                <div className="relative">
+                  <ScrollArea>
+                    <div className="flex space-x-4 pb-4">
+                      {madeForYouAlbums.map((album) => (
+                        <InnerTabPersonal
+                          key={album.name}
+                          album={album}
+                          className="w-[320px]"
+                          aspectRatio="portrait"
+                          width={320}
+                          height={640}
+                        />
+                      ))}
+                    </div>
+                    <ScrollBar orientation="horizontal" />
+                  </ScrollArea>
+                </div>
+              </TabsContent>
+              <TabsContent
+                value="podcasts"
+                className="h-full flex-col border-none p-0 data-[state=active]:flex"
+              >
+                <InnerTabSkills />
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

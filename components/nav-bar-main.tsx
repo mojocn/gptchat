@@ -29,12 +29,12 @@ export function NavBarMain() {
           Posts
         </Link>
         <Link
-          href={siteConfig.links.github}
+          href={"/chat"}
           className={cn(
             "hidden text-foreground/60 transition-colors hover:text-foreground/80 lg:block",
           )}
         >
-          GitHub
+          ChatGPT
         </Link>
       </nav>
     </div>

@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: "Dev",
+  name: "Eric Zhou",
   url: "",
   ogImage: "",
   description:
