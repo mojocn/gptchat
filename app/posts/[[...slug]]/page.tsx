@@ -24,7 +24,7 @@ function getSupportingProps(doc: Post, slugs: string[]) {
     const postDoc = allPosts.find((_) => _.slug === s);
     if (!postDoc) continue;
     breadcrumbs.push({
-      path: +postDoc.slug ? "/posts/" + postDoc.slug : "/posts",
+      path: postDoc.slug ? "/posts/" + postDoc.slug : "/posts",
       title: postDoc?.nav_title || postDoc?.title,
     });
   }
