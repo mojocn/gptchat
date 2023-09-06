@@ -8,7 +8,6 @@ import path from "node:path";
 import type * as unified from "unified";
 import highlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
-import { spawn } from "node:child_process";
 
 const contentDirPath = "_posts";
 const ORDER_REGEX = /^\d\d\d\-/; // 444-foo-bar -> foo-bar
@@ -31,46 +30,6 @@ function toSlug(doc: DocumentGen): string {
 export interface DocHeading {
   level: 1 | 2 | 3;
   title: string;
-}
-
-const gitUrl = "https://github.com/mojocn/contentant";
-const retryCount = 3;
-
-async function syncContentFromGit(contentDir: string) {
-  const cmdLines = `
-      if [ -d  "${contentDir}" ];
-        then
-          cd "${contentDir}"; git pull;
-        else
-          git clone --depth 1 --single-branch ${gitUrl} ${contentDir};
-      fi
-    `;
-  for (let i = 0; i < retryCount; i++) {
-    try {
-      await runBashCommand(cmdLines);
-      break;
-    } catch (err) {
-      console.error(err);
-      console.log("retrying...");
-    }
-  }
-}
-
-async function runBashCommand(command: string) {
-  new Promise((resolve, reject) => {
-    const child = spawn(command, [], { shell: true });
-    child.stdout.setEncoding("utf8");
-    child.stdout.on("data", (data) => process.stdout.write(data));
-    child.stderr.setEncoding("utf8");
-    child.stderr.on("data", (data) => process.stderr.write(data));
-    child.on("close", function (code) {
-      if (code === 0) {
-        resolve(void 0);
-      } else {
-        reject(new Error(`Command failed with exit code ${code}`));
-      }
-    });
-  });
 }
 
 export const Post = defineDocumentType(() => ({

@@ -157,7 +157,7 @@ export const Tree: FC<{
 };
 
 const githubBranch = "main";
-const githubBaseUrl = `https://github.com/contentlayerdev/website/blob/${githubBranch}/content/`;
+const githubBaseUrl = `https://github.com/mojocn/gptchat/blob/${githubBranch}/_posts/`;
 
 export const DocsFooter: FC<{ doc: Post }> = ({ doc }) => {
   return (
