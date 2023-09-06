@@ -167,7 +167,7 @@ export const DocsFooter: FC<{ doc: Post }> = ({ doc }) => {
         <p className="m-0">
           Was this article helpful to you? <br />{" "}
           <Link
-            href="https://github.com/mojocn/contentant/issues"
+            href="https://github.com/mojocn/contentant/discussions"
             className="inline-flex items-center space-x-1"
             target="_blank"
             rel="noreferrer"
