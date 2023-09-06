@@ -37,7 +37,7 @@ async function checkUserToken() {
   return await findTokenByIdToken(parseInt(uid), token);
 }
 
-export function jsonData(data: any, code?: number, msg?: string) {
+export function jsonData(data: any, code: number = 200, msg: string = "ok") {
   return NextResponse.json(
     {
       code: code || 200,

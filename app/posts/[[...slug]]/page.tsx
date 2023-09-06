@@ -12,19 +12,20 @@ import { mdxComponents } from "@/components/posts-mdx";
 import { notFound } from "next/navigation";
 
 function getSupportingProps(doc: Post, slugs: string[]) {
-  // console.error(slugs, '>>>>>>>>>>>>>>>')
-  let path = "";
   let breadcrumbs: any = [];
-  for (const slug of slugs) {
-    path += `/${slug}`;
-    //console.log(path, '>>>>>>>>>>>>>>>>>>>>>>>>>')
-    const breadcrumbDoc = allPosts.find(
-      (_) => _.url_path === path || _.url_path_without_id === path,
-    );
-    if (!breadcrumbDoc) continue;
+
+  let arrSlugStr = [""];
+  for (let i = 0; i < slugs.length; i++) {
+    const p = slugs.slice(0, i + 1).join("/");
+    arrSlugStr.push(p);
+  }
+
+  for (const s of arrSlugStr) {
+    const postDoc = allPosts.find((_) => _.slug === s);
+    if (!postDoc) continue;
     breadcrumbs.push({
-      path: "/posts" + breadcrumbDoc.url_path,
-      title: breadcrumbDoc?.nav_title || breadcrumbDoc?.title,
+      path: +postDoc.slug ? "/posts/" + postDoc.slug : "/posts",
+      title: postDoc?.nav_title || postDoc?.title,
     });
   }
   const tree = buildDocsTree(allPosts);
@@ -32,15 +33,12 @@ function getSupportingProps(doc: Post, slugs: string[]) {
     allPosts,
     doc.pathSegments.map((_: PathSegment) => _.pathName),
   );
-  debugger;
   return { tree, breadcrumbs, childrenTree };
 }
 
 export async function generateStaticParams() {
-  return allPosts.map((post) => {
-    const parts = post.url_path.split("/").filter(Boolean);
-    // console.log(parts, '-------------')
-    return { slug: parts };
+  return allPosts.map((_) => {
+    slug: _.slug.split("/");
   });
 }
 
@@ -62,11 +60,11 @@ export const generateMetadata = ({
 
 function firstPost(slugs: string[]) {
   const path = "/" + slugs.join("/");
-  const doc = allPosts.find((post) => post.url_path === path);
+  const doc = allPosts.find((post) => post.slug === slugs.join("/"));
   if (!doc) {
     console.error(`Post not found for path: ${path}`);
     allPosts.forEach((e) => {
-      console.error(e.url_path);
+      console.error(e.slug);
     });
     return undefined;
   }
@@ -75,7 +73,7 @@ function firstPost(slugs: string[]) {
 
 function ArticlePage({ params }: { params: { slug?: string[] } }) {
   if (!params.slug) {
-    params.slug = ["-"];
+    params.slug = [];
   }
   const doc = firstPost(params.slug);
   if (!doc) {

@@ -10,6 +10,7 @@ import highlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
 
 const contentDirPath = "_posts";
+const ORDER_REGEX = /^\d\d\d\-/; // 444-foo-bar -> foo-bar
 
 const getLastEditedDate = async (doc: DocumentGen): Promise<Date> => {
   const stats = await fs.stat(
@@ -18,17 +19,13 @@ const getLastEditedDate = async (doc: DocumentGen): Promise<Date> => {
   return stats.mtime;
 };
 
-const urlFromFilePath = (doc: DocumentGen): string => {
-  let urlPath = doc._raw.flattenedPath.replace(/^pages\/?/, "/") as string;
-  if (!urlPath.startsWith("/")) urlPath = `/${urlPath}`;
-  if ("global_id" in doc) urlPath += `-${doc.global_id}`;
+function rawFlattenedPathToSlug(doc: DocumentGen): string {
   // Remove preceding indexes from path segments
-  urlPath = urlPath
+  return doc._raw.flattenedPath
     .split("/")
-    .map((segment) => segment.replace(/^\d\d\d\-/, ""))
+    .map((segment) => segment.replace(ORDER_REGEX, ""))
     .join("/");
-  return urlPath;
-};
+}
 
 export interface DocHeading {
   level: 1 | 2 | 3;
@@ -79,35 +76,37 @@ export const Post = defineDocumentType(() => ({
     // seo: { type: 'nested', of: SEO },
   },
   computedFields: {
-    url_path: {
+    slug: {
       type: "string",
       description:
-        'The URL path of this page relative to site root. For example, the site root page would be "/", and doc page would be "docs/getting-started/"',
-      resolve: (doc) => {
-        if (doc._id.startsWith("posts/index.mdx")) return "/posts";
-        return urlFromFilePath(doc);
-      },
+        'slug of this page relative to site root. For example, the site root page would be "/", and doc page would be "docs/getting-started/"',
+      resolve: rawFlattenedPathToSlug,
     },
-    url_path_without_id: {
-      type: "string",
-      description:
-        'The URL path of this page relative to site root. For example, the site root page would be "/", and doc page would be "docs/getting-started/"',
-      resolve: (doc) =>
-        urlFromFilePath(doc).replace(new RegExp(`-${doc.global_id}$`), ""),
-    },
+    // url_path: {
+    //     type: "string",
+    //     description:
+    //         'The URL path of this page relative to site root. For example, the site root page would be "/", and doc page would be "docs/getting-started/"',
+    //     resolve: (doc) => {
+    //         if (doc._id.startsWith("posts/index.mdx")) return "/posts";
+    //         return urlFromFilePath(doc);
+    //     },
+    // },
+    // url_path_without_id: {
+    //     type: "string",
+    //     description:
+    //         'deprecated',
+    //     resolve: (doc) =>
+    //         urlFromFilePath(doc).replace(new RegExp(`-${doc.global_id}$`), ""),
+    // },
     pathSegments: {
       type: "json",
       resolve: (doc) =>
-        urlFromFilePath(doc)
-          .split("/")
-          // skip `/docs` prefix
-          .slice(1)
-          .map((dirName) => {
-            const re = /^((\d+)-)?(.*)$/;
-            const [, , orderStr, pathName] = dirName.match(re) ?? [];
-            const order = orderStr ? parseInt(orderStr) : 0;
-            return { order, pathName };
-          }),
+        doc._raw.flattenedPath.split("/").map((dirName) => {
+          const re = /^((\d+)-)?(.*)$/;
+          const [, , orderStr, pathName] = dirName.match(re) ?? [];
+          const order = orderStr ? parseInt(orderStr) : 0;
+          return { order, pathName };
+        }),
     },
     headings: {
       type: "json",

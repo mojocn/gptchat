@@ -9,10 +9,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function absoluteUrl(path: string) {
-  return `${process.env.NEXT_PUBLIC_APP_URL}${path}`;
-}
-
 export const sluggifyTitle = (title: string) => {
   const re = /[^\w\s]/g;
 
@@ -34,28 +30,28 @@ export const getNodeText = (node: React.ReactNode): string => {
   return "";
 };
 
+function isPrefixArray(subArr: string[], arr: string[]): boolean {
+  if (subArr.length + 1 != arr.length) return false;
+  for (let i = 0; i < subArr.length; i++) {
+    if (subArr[i] != arr[i]) return false;
+  }
+  return true;
+}
+
 export const buildDocsTree = (
   docs: Doc[],
   parentPathNames: string[] = [],
 ): TreeNode[] => {
   const level = parentPathNames.length;
 
-  // Remove ID from parent path
-  parentPathNames = parentPathNames
-    .join("/")
-    .split("-")
-    .slice(0, -1)
-    .join("-")
-    .split("/");
-  debugger;
   return docs
     .filter(
       (_) =>
-        _.pathSegments.length === level + 1 &&
-        _.pathSegments
-          .map((_: PathSegment) => _.pathName)
-          .join("/")
-          .startsWith(parentPathNames.join("/")),
+        _.slug !== "" &&
+        isPrefixArray(
+          parentPathNames,
+          _.pathSegments.map((_: PathSegment) => _.pathName),
+        ),
     )
     .sort((a, b) => a.pathSegments[level].order - b.pathSegments[level].order)
     .map<TreeNode>((doc) => ({
@@ -63,7 +59,7 @@ export const buildDocsTree = (
       title: doc.title,
       label: doc.label ?? null,
       excerpt: doc.excerpt ?? null,
-      urlPath: "/posts" + doc.url_path,
+      urlPath: "/posts/" + doc.slug,
       collapsible: doc.collapsible ?? null,
       collapsed: doc.collapsed ?? null,
       children: buildDocsTree(
