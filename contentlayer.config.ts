@@ -8,6 +8,7 @@ import path from "node:path";
 import type * as unified from "unified";
 import highlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
+import { spawn } from "node:child_process";
 
 const contentDirPath = "_posts";
 const ORDER_REGEX = /^\d\d\d\-/; // 444-foo-bar -> foo-bar
@@ -19,7 +20,7 @@ const getLastEditedDate = async (doc: DocumentGen): Promise<Date> => {
   return stats.mtime;
 };
 
-function rawFlattenedPathToSlug(doc: DocumentGen): string {
+function toSlug(doc: DocumentGen): string {
   // Remove preceding indexes from path segments
   return doc._raw.flattenedPath
     .split("/")
@@ -30,6 +31,46 @@ function rawFlattenedPathToSlug(doc: DocumentGen): string {
 export interface DocHeading {
   level: 1 | 2 | 3;
   title: string;
+}
+
+const gitUrl = "https://github.com/mojocn/contentant";
+const retryCount = 3;
+
+async function syncContentFromGit(contentDir: string) {
+  const cmdLines = `
+      if [ -d  "${contentDir}" ];
+        then
+          cd "${contentDir}"; git pull;
+        else
+          git clone --depth 1 --single-branch ${gitUrl} ${contentDir};
+      fi
+    `;
+  for (let i = 0; i < retryCount; i++) {
+    try {
+      await runBashCommand(cmdLines);
+      break;
+    } catch (err) {
+      console.error(err);
+      console.log("retrying...");
+    }
+  }
+}
+
+async function runBashCommand(command: string) {
+  new Promise((resolve, reject) => {
+    const child = spawn(command, [], { shell: true });
+    child.stdout.setEncoding("utf8");
+    child.stdout.on("data", (data) => process.stdout.write(data));
+    child.stderr.setEncoding("utf8");
+    child.stderr.on("data", (data) => process.stderr.write(data));
+    child.on("close", function (code) {
+      if (code === 0) {
+        resolve(void 0);
+      } else {
+        reject(new Error(`Command failed with exit code ${code}`));
+      }
+    });
+  });
 }
 
 export const Post = defineDocumentType(() => ({
@@ -80,24 +121,8 @@ export const Post = defineDocumentType(() => ({
       type: "string",
       description:
         'slug of this page relative to site root. For example, the site root page would be "/", and doc page would be "docs/getting-started/"',
-      resolve: rawFlattenedPathToSlug,
+      resolve: toSlug,
     },
-    // url_path: {
-    //     type: "string",
-    //     description:
-    //         'The URL path of this page relative to site root. For example, the site root page would be "/", and doc page would be "docs/getting-started/"',
-    //     resolve: (doc) => {
-    //         if (doc._id.startsWith("posts/index.mdx")) return "/posts";
-    //         return urlFromFilePath(doc);
-    //     },
-    // },
-    // url_path_without_id: {
-    //     type: "string",
-    //     description:
-    //         'deprecated',
-    //     resolve: (doc) =>
-    //         urlFromFilePath(doc).replace(new RegExp(`-${doc.global_id}$`), ""),
-    // },
     pathSegments: {
       type: "json",
       resolve: (doc) =>
