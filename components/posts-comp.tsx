@@ -157,7 +157,7 @@ export const Tree: FC<{
 };
 
 const githubBranch = "main";
-const githubBaseUrl = `https://github.com/mojocn/gptchat/blob/${githubBranch}/_posts/`;
+const githubBaseUrl = `https://github.com/mojocn/contentant/blob/${githubBranch}/`; //https://github.com/mojocn/contentant/blob/main/300-news/150-excel-python.mdx
 
 export const DocsFooter: FC<{ doc: Post }> = ({ doc }) => {
   return (
@@ -167,7 +167,7 @@ export const DocsFooter: FC<{ doc: Post }> = ({ doc }) => {
         <p className="m-0">
           Was this article helpful to you? <br />{" "}
           <Link
-            href="https://github.com/contentlayerdev/contentlayer/issues"
+            href="https://github.com/mojocn/contentant/issues"
             className="inline-flex items-center space-x-1"
             target="_blank"
             rel="noreferrer"
