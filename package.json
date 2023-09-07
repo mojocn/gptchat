@@ -13,7 +13,8 @@
     "preview": "next build && next start -p 3001",
     "lint": "next lint",
     "prepare": "husky install",
-    "pretty": "prettier --write ."
+    "pretty": "prettier --write .",
+    "siteurls": "ts-node middleware.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.2.0",
