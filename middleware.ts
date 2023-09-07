@@ -243,6 +243,7 @@ https://mojotv.cn/misc/tcpip-01`;
 
 export const config = {
   matcher: [
+    "/play",
     "/.netlify/functions",
     "/rust/rust-postgres-sql-sqlx-crud",
     "/misc/terraform-cicd",
