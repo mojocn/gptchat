@@ -141,7 +141,7 @@ function InnerSidebar({ className }: HTMLAttributes<any>) {
               variant="ghost"
               className="w-full justify-start"
               onClick={(_) => {
-                openNewTab("https://mojotv.cn");
+                openNewTab("https://zh.mojotv.cn");
               }}
             >
               <IconArticle size={14} className="mr-2" />

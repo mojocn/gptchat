@@ -41,7 +41,6 @@ export const Post = defineDocumentType(() => ({
       type: "string",
       description:
         "Random ID to uniquely identify this doc, even after it moves",
-      required: true,
     },
     title: {
       type: "string",
