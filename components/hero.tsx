@@ -45,11 +45,12 @@ import wuhan from "@/images/wuhan.png";
 import hangzhou from "@/images/hangzhou.webp";
 import gelihaian from "@/images/gelihaian.jpeg";
 import zhuhai2 from "@/images/zhuhai2.jpg";
-import wifeNsan from "@/images/wifeNsan.jpg";
-import oldFather from "@/images/oldFather.jpg";
-import kid2 from "@/images/kid2.jpg";
-import kid3 from "@/images/kid3.jpg";
-import blueKid from "@/images/blueKid.jpg";
+import bear01 from "@/images/bear01.jpeg";
+import bear02 from "@/images/bear02.jpg";
+import bear03 from "@/images/bear03.jpg";
+import cat04 from "@/images/cat04.jpeg";
+import monkey05 from "@/images/monkey05.jpeg";
+
 import { useTheme } from "next-themes";
 import {
   Card,
@@ -68,30 +69,30 @@ interface Album {
 
 const madeForYouAlbums: Album[] = [
   {
-    name: "Wife and Son",
-    artist: "A joyous child with his mother",
-    cover: wifeNsan.src,
+    name: "Bear",
+    artist: "BearBearBearBear",
+    cover: bear01.src,
   },
 
   {
-    name: "The Kid",
-    artist: "The playful and cheerful child",
-    cover: kid2.src,
+    name: "Bear",
+    artist: "The playful and cheerful bear",
+    cover: bear02.src,
   },
   {
-    name: "Child at the aquarium",
-    artist: "Happy child",
-    cover: blueKid.src,
+    name: "Bear at the aquarium",
+    artist: "Happy Bear",
+    cover: bear03.src,
   },
   {
-    name: "The lady",
-    artist: "Mother and son spend quality time together",
-    cover: kid3.src,
+    name: "Cate",
+    artist: "Cate and son spend quality time together",
+    cover: cat04.src,
   },
   {
-    name: "Grandpa",
+    name: "Monkey",
     artist: "The gentle grandfather",
-    cover: oldFather.src,
+    cover: monkey05.src,
   },
 ];
 
