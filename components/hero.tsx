@@ -110,6 +110,7 @@ function InnerSidebar({ className }: HTMLAttributes<any>) {
     { name: "Twitter", url: "https://twitter.com/neochau" },
     { name: "Email", url: "mailto:neochau@gmail.com" },
     { name: "Reddit", url: "https://reddit.com/trytv" },
+    { name: "Chinese Blog", url: "https://zh.mojotv.cn" },
   ];
 
   return (
@@ -137,16 +138,6 @@ function InnerSidebar({ className }: HTMLAttributes<any>) {
                 <rect width="7" height="7" x="3" y="14" rx="1" />
               </svg>
               Life Gallery
-            </Button>
-            <Button
-              variant="ghost"
-              className="w-full justify-start"
-              onClick={(_) => {
-                openNewTab("https://zh.mojotv.cn");
-              }}
-            >
-              <IconArticle size={14} className="mr-2" />
-              My Blog
             </Button>
           </div>
         </div>
