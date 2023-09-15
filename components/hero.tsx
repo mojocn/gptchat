@@ -22,7 +22,6 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  IconArticle,
   IconLink,
   IconMinus,
   IconPlus,
@@ -39,26 +38,27 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { cn } from "@/lib/utils";
-import { HTMLAttributes, useState, CSSProperties } from "react";
-import qichun from "@/images/qichun.jpg";
-import wuhan from "@/images/wuhan.png";
-import hangzhou from "@/images/hangzhou.webp";
-import gelihaian from "@/images/gelihaian.jpeg";
-import zhuhai2 from "@/images/zhuhai2.jpg";
-import bear01 from "@/images/bear01.jpeg";
-import bear02 from "@/images/bear02.jpg";
-import bear03 from "@/images/bear03.jpg";
-import cat04 from "@/images/cat04.jpeg";
-import monkey05 from "@/images/monkey05.jpeg";
+import { CSSProperties, HTMLAttributes, useState } from "react";
+
+import jpg01 from "@/images/01.jpg";
+import jpg02 from "@/images/02.jpg";
+import jpg03 from "@/images/03.jpg";
+import jpg04 from "@/images/04.jpg";
+import jpg05 from "@/images/05.jpg";
+import jpg06 from "@/images/06.jpg";
+import jpg08 from "@/images/08.jpg";
+import jpg10 from "@/images/10.jpg";
+import jpg11 from "@/images/11.jpg";
+import jpg12 from "@/images/12.jpg";
 
 import { useTheme } from "next-themes";
 import {
   Card,
-  CardHeader,
-  CardTitle,
   CardContent,
   CardDescription,
   CardFooter,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 
 interface Album {
@@ -69,30 +69,31 @@ interface Album {
 
 const madeForYouAlbums: Album[] = [
   {
-    name: "Bear",
-    artist: "BearBearBearBear",
-    cover: bear01.src,
+    name: "Macau Tower",
+    artist: "Macau",
+    cover: jpg03.src,
+  },
+  {
+    name: "Macau Museum Clock",
+    artist: "Macau",
+    cover: jpg01.src,
   },
 
   {
-    name: "Bear",
-    artist: "The playful and cheerful bear",
-    cover: bear02.src,
+    name: "Macau Museum Plane",
+    artist: "Macau",
+    cover: jpg02.src,
   },
+
   {
-    name: "Bear at the aquarium",
-    artist: "Happy Bear",
-    cover: bear03.src,
-  },
-  {
-    name: "Cate",
+    name: "Macau Building",
     artist: "Cate and son spend quality time together",
-    cover: cat04.src,
+    cover: jpg04.src,
   },
   {
     name: "Monkey",
     artist: "The gentle grandfather",
-    cover: monkey05.src,
+    cover: jpg05.src,
   },
 ];
 
@@ -101,7 +102,7 @@ interface Item {
   url: string;
 }
 function openNewTab(url: string) {
-  window.open(url, "_blank")?.focus();
+  window.open(url, "_bl5nk")?.focus();
 }
 
 function InnerSidebar({ className }: HTMLAttributes<any>) {
@@ -716,27 +717,27 @@ export default function Hero() {
     {
       name: "Qichun",
       artist: "The village where I grew up",
-      cover: qichun.src,
+      cover: jpg10.src,
     },
     {
       name: "Wuhan",
       artist: "The City where I studied",
-      cover: wuhan.src,
+      cover: jpg06.src,
     },
     {
       name: "Hangzhou",
       artist: "The City where I worked",
-      cover: hangzhou.src,
+      cover: jpg12.src,
     },
     {
       name: "Zhuhai",
       artist: "The city where my son likes",
-      cover: zhuhai2.src,
+      cover: jpg08.src,
     },
     {
       name: "Gree Coast",
       artist: "The place My family lives",
-      cover: gelihaian.src,
+      cover: jpg11.src,
     },
   ];
 
