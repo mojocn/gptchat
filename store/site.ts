@@ -6,7 +6,7 @@ export const siteConfig = {
     "Beautifully designed components built with Radix UI and Tailwind CSS.",
   links: {
     twitter: "https://twitter.com/neochau",
-    github: "https://github.com/mojocn",
+    github: "https://github.com/mojocn/gptchat",
   },
 };
 

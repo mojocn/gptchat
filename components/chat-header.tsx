@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { ChatState, Session, useChatStore } from "@/store/chat";
 import { useLocal } from "@/store/local";
 import { UserNav } from "@/components/user-nav";
+import { Button } from "@/components/ui/button";
+import { IconHome } from "@tabler/icons-react";
 
 export default function ChatHeader() {
   const [session, setSession] = useState<Session>({} as Session);
@@ -22,6 +24,10 @@ export default function ChatHeader() {
     ss && setSession(ss!);
   }, [selectedSessionId, sessions]);
 
+  function goHomePage() {
+    window.location.href = "/";
+  }
+
   return (
     <div className="align-center chat-header-height flex w-full items-center justify-between border-b px-4 py-[8px]">
       <section>
@@ -32,6 +38,10 @@ export default function ChatHeader() {
         </h5>
       </section>
       <div className="align-center flex items-center justify-center gap-x-4">
+        <Button variant="ghost" onClick={goHomePage}>
+          <IconHome size={18} stroke={2} className="accent-primary"></IconHome>
+        </Button>
+
         <UserNav />
       </div>
     </div>

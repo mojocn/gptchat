@@ -34,7 +34,7 @@ export default function Register() {
       <section className="h-full bg-gray-50 dark:bg-gray-900">
         <div className="mx-auto flex flex-col items-center  justify-center py-8">
           <a
-            href="#"
+            href="/"
             className="mb-6 flex items-center text-2xl font-semibold text-gray-900 dark:text-white"
           >
             <Image
@@ -163,7 +163,7 @@ export default function Register() {
                 <Button
                   type="submit"
                   disabled={isPending}
-                  className=" w-full px-5 py-2.5 text-foreground "
+                  className=" w-full px-5 py-2.5 text-white  "
                 >
                   {isPending ? (
                     <IconLoader

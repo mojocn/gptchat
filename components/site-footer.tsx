@@ -14,8 +14,7 @@ export function SiteFooter() {
           >
             Eric Zhou @mojotv.cn
           </a>
-          . The source code is available on , Powered by Next.js, TailwindCSS,
-          and Vercel.
+          . Powered by Next.js, TailwindCSS, and Vercel.
           <a
             href={siteConfig.links.github}
             target="_blank"

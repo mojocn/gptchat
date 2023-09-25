@@ -111,7 +111,7 @@ function InnerSidebar({ className }: HTMLAttributes<any>) {
     { name: "Twitter", url: "https://twitter.com/neochau" },
     { name: "Email", url: "mailto:neochau@gmail.com" },
     { name: "Reddit", url: "https://reddit.com/trytv" },
-    { name: "Chinese Blog", url: "https://zh.mojotv.cn" },
+    { name: "Chinese", url: "https://zh.mojotv.cn" },
   ];
 
   return (
