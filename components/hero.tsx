@@ -91,7 +91,7 @@ const madeForYouAlbums: Album[] = [
     cover: jpg04.src,
   },
   {
-    name: "Monkey",
+    name: "Macau View",
     artist: "The gentle grandfather",
     cover: jpg05.src,
   },
