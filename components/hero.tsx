@@ -108,9 +108,9 @@ function openNewTab(url: string) {
 function InnerSidebar({ className }: HTMLAttributes<any>) {
   const linkItems: Item[] = [
     { name: "Github", url: "https://github.com/mojocn" },
-    { name: "Twitter", url: "https://twitter.com/neochau" },
+    // { name: "Twitter", url: "https://twitter.com/neochau" },
     { name: "Email", url: "mailto:neochau@gmail.com" },
-    { name: "Reddit", url: "https://reddit.com/trytv" },
+    // { name: "Reddit", url: "https://reddit.com/trytv" },
     { name: "Chinese", url: "https://zh.mojotv.cn" },
   ];
 
